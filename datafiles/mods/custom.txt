@@ -1,0 +1,47 @@
+# ---------------
+# IMPORTANT NOTE
+# ---------------
+# Do NOT remove this file. 
+#
+# Removing this file will result in a crash.
+
+# -----------
+# PROPERTIES
+# -----------
+lang = "oveninjector"
+display_name = "THIS SHOULD NOT APPEAR"
+custom_fonts = false
+custom_graphics = false
+
+# CUSTOM PALETTES
+dresser_pisstitle = "Piss Yellow"
+dresser_piss = "The default palette"
+
+# TOWER HUB NAMES
+hubname_tutorial = "Tutorial"
+hubname_entrance = "John Gutter"
+hubname_medieval = "Pizzascape"
+hubname_ruin = "Ancient Cheese"
+hubname_dungeon = "Bloodsauce Dungeon"
+hubname_badland = "Oregano Desert"
+hubname_graveyard = "Wasteyard"
+hubname_farm = "Fun Farm"
+hubname_saloon = "Fastfood Saloon"
+hubname_plage = "Crust Cove"
+hubname_forest = "Gnome Forest"
+hubname_minigolf = "GOLF"
+hubname_space = "Deep-Dish 9"
+hubname_street = "The Pig City"
+hubname_freezer = "Refrigerator-Refrigerador-Freezerator"
+hubname_industrial = "Peppibot Factory"
+hubname_sewer = "Oh Shit!"
+hubname_chateau = "Pizzascare"
+hubname_kidsparty = "Don't Make A Sound"
+hubname_war = "WAR"
+hubname_exit = "The Crumbling Tower of Pizza"
+hubname_b_pepperman = "VS Pepperman"
+hubname_b_vigilante = "VS The Vigilante"
+hubname_b_noise = "VS The Noise"
+hubname_b_fakepep = "VS Peppino?"
+hubname_b_pizzaface = "Pizzaface Hallway"
+hubname_none = ""

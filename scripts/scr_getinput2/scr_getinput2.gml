@@ -2,6 +2,8 @@ function scr_getinput2()
 {
 	if (instance_exists(obj_debugcontroller) && obj_debugcontroller.active)
 		exit;
+	if instance_exists(obj_shell) && obj_shell.isOpen
+		exit;
 	
 	var _dvc = obj_inputAssigner.player_input_device[1];
 	gamepad_set_axis_deadzone(_dvc, 0.4);

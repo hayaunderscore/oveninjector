@@ -216,3 +216,14 @@ function heat_calculate(heat)
 	// return heat + round(heat * global.stylemultiplier);
 	return heat;
 }
+function get_string_from_file(path, strip_multiline = true)
+{
+	if !file_exists(path)
+		return " "
+	var file_buffer = buffer_load(path);
+	var s = buffer_read(file_buffer, buffer_string);
+	if strip_multiline
+		s = scr_strip_funcs(s);
+	buffer_delete(file_buffer);
+	return s;
+}

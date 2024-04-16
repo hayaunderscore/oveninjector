@@ -10,6 +10,7 @@ sprites/*/*/*/*.png
 !options/main/template_icon.png
 !github/*
 !datafiles/licenses
+!datafiles/mods
 
 # The manually fixed tilesets
 !sprites/tile_beachprops1/**
@@ -50,3 +51,8 @@ sprites/*/*/*/*.png
 !sprites/tile_dungeon3/**
 !sprites/spr_ruincheese/**
 !sprites/spr_ruinend/**
+
+# Ignore GMLive objects and scripts
+objects/obj_gmlive/**
+scripts/GMLive**
+extensions/GMLive/**

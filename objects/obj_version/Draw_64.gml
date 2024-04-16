@@ -1,4 +1,4 @@
-draw_set_font(global.smallfont);
+draw_set_font(global.font_small);
 draw_set_halign(fa_right);
 draw_set_valign(fa_bottom);
 var a = 0;

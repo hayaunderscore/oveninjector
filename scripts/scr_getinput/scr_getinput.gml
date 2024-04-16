@@ -77,6 +77,9 @@ function scr_menu_getinput()
 {
 	if (!instance_exists(obj_player))
 		tdp_input_update(obj_inputAssigner.player_input_device[obj_inputAssigner.player_index]);
+		
+	if instance_exists(obj_shell) && obj_shell.isOpen
+		exit;
 	
 	key_up = tdp_input_get("menu_up").held || tdp_input_get("menu_upC").held;
 	key_up2 = tdp_input_get("menu_up").pressed || tdp_input_get("menu_upC").pressed;
@@ -168,6 +171,8 @@ function scr_getinput()
 	tdp_input_update(_dvc);
 	
 	if instance_exists(obj_debugcontroller) && obj_debugcontroller.active
+		exit;
+	if instance_exists(obj_shell) && obj_shell.isOpen
 		exit;
 	if instance_exists(obj_consoledebug) && obj_consoledebug.state > 0
 		exit;

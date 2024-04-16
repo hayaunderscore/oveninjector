@@ -89,7 +89,7 @@ function scr_pause_deactivate_objects(pause_sounds = true)
 	for (var i = 0; i < instance_count; i++)
 	{
 		var obj = instance_find(all, i);
-		if (instance_exists(obj) && obj.object_index != obj_pause && obj.object_index != obj_inputAssigner && obj.object_index != obj_screensizer)
+		if (instance_exists(obj) && obj.object_index != obj_pause && obj.object_index != obj_musiccontroller && obj.object_index != obj_gmlive && obj.object_index != obj_inputAssigner && obj.object_index != obj_screensizer)
 			ds_list_add(instance_list, obj);
 	}
 	instance_deactivate_all(true);
@@ -100,6 +100,14 @@ function scr_pause_deactivate_objects(pause_sounds = true)
 	instance_activate_object(obj_music);
 	instance_activate_object(obj_fmod);
 	instance_activate_object(obj_globaltimer);
+	instance_activate_object(obj_customcontroller);
+	instance_activate_object(obj_musiccontroller);
+	instance_activate_object(obj_gmlive);
+	with (obj_customcontroller)
+	{
+		if !runPaused
+			instance_deactivate_object(id);
+	}
 }
 function pause_spawn_priests()
 {

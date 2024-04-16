@@ -1,0 +1,2 @@
+music = undefined;
+paused = false;

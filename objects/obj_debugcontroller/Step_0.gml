@@ -2,11 +2,6 @@ if DEBUG
 {
 	if (keyboard_check_pressed(vk_f8))
 		DoCommand("loadtest");
-	if (keyboard_check_pressed(vk_f5))
-	{
-		active = !active;
-		keyboard_string = "";
-	}
 	if active
 	{
 		var _search = false;
