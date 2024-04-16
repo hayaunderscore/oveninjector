@@ -2,6 +2,8 @@
 - A decompilation mod for Pizza Tower v1.1.0 (Noise Update)
 - A modloader in it's purest form.
 
+Looking for downloads? Here's the latest build [(April 16, 2024, experimental2)](https://file.garden/ZEHSglmmckD7qQR7/oveninjector_experimental2.zip)
+
 # Requirements
 - [Pizza Tower on Steam](https://store.steampowered.com/app/2231450/Pizza_Tower/)
 - [GameMaker LTS 2022](https://gms.yoyogames.com/GameMaker-Installer-2022.0.1.31.exe) w/ Runtime 2022.0.1.30 <br/>
@@ -44,3 +46,16 @@ icon="assets/icon.png"
 ```
 
 If no mod icon is specified, it simply shows the default icon on the mod menu instead. If you don't want to store the mod icon as an asset, you can also use `icon_base64` to store it as a base 64 encoded string.
+
+# Modding API
+
+There is not a whole lot of constants and functions specific to this mod but there are a few.
+Constants from ToppinLoader are also included here (`player_*` constants to be specific).
+There is a music controller so that you don't have to make one yourself (via `scr_stop_external_music()`
+and `scr_play_external_music(audio_id)`), though this may be deprecated soon once I figure out a way to load external user created banks properly.
+
+I'll set up a GitHub Pages for Modding API once I finish the full mod, which is eventually™
+
+# LICENSE
+
+The mod is dual licensed. Due to the nature of decompiled code the base game is CC0-1.0, though all custom code made by me is under the MIT License. 
