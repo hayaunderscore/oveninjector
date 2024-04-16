@@ -1,13 +1,13 @@
-# Pizza Tower
-- A full decompilation of Pizza Tower v1.1.0 (Noise Update).
-- I am not affiliated with Tour De Pizza in any way.
+# OvenInjector
+- A decompilation mod for Pizza Tower v1.1.0 (Noise Update)
+- A modloader in it's purest form.
 
 # Requirements
 - [Pizza Tower on Steam](https://store.steampowered.com/app/2231450/Pizza_Tower/)
 - [GameMaker LTS 2022](https://gms.yoyogames.com/GameMaker-Installer-2022.0.1.31.exe) w/ Runtime 2022.0.1.30 <br/>
-This seems to be the exact version they use judging by the Steamworks extension. Any other versions break it too
-- [Steamworks SDK](https://partner.steamgames.com/downloads/steamworks_sdk.zip) <br/>
-This one's optional if you're gonna remove it, which you need to for mods
+This seems to be the exact version Tour De Pizza used. 2023.6 might work though I have not tested it yet
+- [GMLive.gml](https://yellowafterlife.itch.io/gamemaker-live) <br/>
+The repo does not provide GMLive as-is due to the extension being a paid product.
 
 This repository doesn't include any of the datafiles (FMOD, langs) or sprites. An [UndertaleModTool](https://github.com/krzys-h/UndertaleModTool/releases) script is included to extract everything needed from the `data.win`, and port the required files to the decomp folder.
 
@@ -26,6 +26,21 @@ This repository doesn't include any of the datafiles (FMOD, langs) or sprites. A
 <img src="github/guide3.png">
 
 4. It takes a while to dump every frame of every sprite. Give it about 15 minutes... Make sure it dumps this to the same folder the YYP file is located.
-5. Run the `PizzaTower_GM2.yyp` in the *right version of GameMaker*. Open Extensions > Steamworks and change the "Steam SDK" location to wherever you put your Steamworks SDK. If that doesn't work, try going INTO the Steamworks folder and make that the path instead. 
+5. Run the `PizzaTower_GM2.yyp` in the *right version of GameMaker*. Import your GMLive package and add all contents of the extension. You should now be able to compile.
 
-**If you try building the game with Steamworks, it will just run the unmodded game.** You can always just remove the extension though. Look through all Steam related code, and comment out any use of the `steam_` functions. I think you can also just delete the `steam_api64.dll` file from the build.
+# mod.ini Specification
+
+The mod uses a folder structure to sort out mods. Each folder contains a `mod.ini` that contains metadata about the mod, like it's name and description. **Atleast a name is required. This will be the mod's identifier when you interop with other mods.**
+
+A `mod.ini` file can contain the following information:
+
+```
+[meta]
+name="Mod Name"
+description="Basic description"
+author="Author 1, Author 2"
+version="1.0"
+icon="assets/icon.png"
+```
+
+If no mod icon is specified, it simply shows the default icon on the mod menu instead. If you don't want to store the mod icon as an asset, you can also use `icon_base64` to store it as a base 64 encoded string.
