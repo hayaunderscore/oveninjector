@@ -18,11 +18,12 @@ function scr_get_languages()
 	global.noisecredits_arr = scr_lang_get_noise_credits();
 	global.lang_textures_to_load = ds_list_create();
 	lang_parse_file("english.txt");
+	lang_parse_file("custom.txt", "mods/");
 }
 
-function lang_parse_file(filename)
+function lang_parse_file(filename, prefix = "lang/")
 {
-	var fo = file_text_open_read("lang/" + filename);
+	var fo = file_text_open_read(prefix + filename);
 	var str = ""
 	while (!file_text_eof(fo))
 	{
@@ -80,6 +81,8 @@ function scr_lang_get_noise_credits()
 function lang_get_value_raw(lang, entry)
 {
 	var n = ds_map_find_value(ds_map_find_value(global.lang_map, lang), entry);
+	if is_undefined(n)
+		n = ds_map_find_value(ds_map_find_value(global.lang_map, "oveninjector"), entry);
 	if is_undefined(n)
 		n = ds_map_find_value(ds_map_find_value(global.lang_map, "en"), entry);
 	if is_undefined(n)

@@ -37,6 +37,7 @@ scr_pauseicon_add(spr_pauseicons, 4);
 scr_pauseicon_add(spr_pauseicons, 5);
 scr_pauseicon_add(spr_pauseicons, 6);
 scr_pauseicon_add(spr_pauseicons, 7, 8, 8);
+scr_pauseicon_add(spr_pauseicons, 7, 8, 8);
 
 #region categories
 
@@ -60,6 +61,11 @@ add_option_press(categories, 3, "option_controls", function()
 	instance_create_unique(0, 0, obj_keyconfig);
 	*/
 	menu_goto(menus.controls);
+});
+add_option_press(categories, 4, "option_modmenu", function()
+{
+	obj_option.key_jump = false;
+	instance_create(0, 0, obj_modmenu);
 });
 array_push(menus, categories);
 
@@ -254,7 +260,9 @@ var key = ds_map_find_first(global.lang_map);
 for (i = 0; i < ds_map_size(global.lang_map); i++)
 {
 	var l = ds_map_find_value(global.lang_map, key);
-	array_push(lang, create_option_value(ds_map_find_value(l, "display_name"), key, false));
+	var displayname = ds_map_find_value(l, "display_name")
+	if displayname != "THIS SHOULD NOT APPEAR"
+		array_push(lang, create_option_value(displayname, key, false));
 	key = ds_map_find_next(global.lang_map, key);
 }
 

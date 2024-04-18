@@ -386,13 +386,9 @@ function meta_loadgml()
 	}
 }
 
-// EXPERIMENTAL EVEN MORE
-function sh_loadmod(args)
+function scr_loadmod(path)
 {
-	if args[1] == undefined
-		return "Please input a path to a mod folder. (Without \"mods/\".)";
-	
-	var fullpath = working_directory + "mods/" + args[1];
+	var fullpath = working_directory + "mods/" + path;
 	if !string_ends_with(fullpath, "/")
 		fullpath = fullpath + "/";
 		
@@ -440,4 +436,39 @@ function sh_loadmod(args)
 		events.room_start = live_snippet_create(get_string_from_file(fullpath + coolinfo.room_start));
 		events.room_end = live_snippet_create(get_string_from_file(fullpath + coolinfo.room_end));
 	}
+}
+
+// EXPERIMENTAL EVEN MORE
+function sh_loadmod(args)
+{
+	if array_length(args) < 2
+		return "Please input a path to a mod folder. (Without \"mods/\".)";
+	
+	return scr_loadmod(args[1]);
+}
+
+function scr_unloadmod(path)
+{
+	var fullpath = working_directory + "mods/" + path;
+	if !string_ends_with(fullpath, "/")
+		fullpath = fullpath + "/";
+		
+	if !directory_exists(fullpath)
+		return "Mod folder does not exist.";
+		
+	var coolinfo = scr_mod_info(fullpath + "mod.ini");
+	
+	with (obj_customcontroller)
+	{
+		if coolinfo.name == modname
+			instance_destroy();
+	}
+}
+
+function sh_unloadmod(args)
+{
+	if array_length(args) < 2
+		return "Please input a path to a mod folder. (Without \"mods/\".)";
+		
+	return scr_unloadmod(args[1]);
 }

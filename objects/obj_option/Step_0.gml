@@ -23,7 +23,7 @@ for (var i = 0; i < array_length(bg_alpha); i++)
 bg_x -= 1;
 bg_y -= 1;
 
-if (instance_exists(obj_keyconfig) || instance_exists(obj_screenconfirm))
+if (instance_exists(obj_keyconfig) || instance_exists(obj_screenconfirm) || instance_exists(obj_modmenu))
 	exit;
 
 scr_menu_getinput();
@@ -137,7 +137,7 @@ else
 if slidebuffer > 0
 	slidebuffer--;
 
-if ((key_back || key_slap2 || keyboard_check_pressed(vk_escape)) && !instance_exists(obj_keyconfig) && !instance_exists(obj_audioconfig))
+if ((key_back || key_slap2 || keyboard_check_pressed(vk_escape)) && !instance_exists(obj_keyconfig) && !instance_exists(obj_audioconfig) && !instance_exists(obj_modmenu))
 {
 	fmod_event_one_shot("event:/sfx/ui/back");
 	if menu == menus.options

@@ -13,6 +13,8 @@ display_name = "THIS SHOULD NOT APPEAR"
 custom_fonts = false
 custom_graphics = false
 
+option_modmenu = "MOD MENU"
+
 # CUSTOM PALETTES
 dresser_pisstitle = "Piss Yellow"
 dresser_piss = "The default palette"

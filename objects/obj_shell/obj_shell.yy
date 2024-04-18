@@ -101,7 +101,7 @@
   ],
   "overriddenProperties": [],
   "parent": {
-    "name": "Objects",
-    "path": "folders/Objects.yy",
+    "name": "OvenInjector",
+    "path": "folders/Objects/OvenInjector.yy",
   },
 }
