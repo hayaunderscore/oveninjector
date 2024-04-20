@@ -52,6 +52,10 @@ sprites/*/*/*/*.png
 !sprites/spr_ruincheese/**
 !sprites/spr_ruinend/**
 
+# I'm fucking stupid.
+!sprites/spr_smallfont/**
+!sprites/spr_defaulticon/**
+
 # Ignore GMLive objects and scripts
 objects/obj_gmlive/**
 scripts/GMLive**

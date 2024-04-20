@@ -15,11 +15,23 @@ for (var i = 0; i < array_length(mod_list); i++)
 	tdp_draw_set_halign(fa_left);
 	tdp_draw_set_valign(fa_top);
 	var yy = 40 + (72 - (select_visual * 72)) + (72 * i);
-	draw_sprite(mod_info[? mod_list[i]].icon, 1, xx, yy + 32);
+	var select = mod_info[? mod_list[i]];
+	var icon_x = xx; var icon_y = yy + 32;
+	if (optionselected == i)
+	{
+		icon_x += select.rnd_x;
+		icon_y += select.rnd_y;
+	}
+	draw_sprite(select.icon, 1, icon_x, icon_y);
 	c = (optionselected == i) ? c_white : c_gray;
+	var text_x = xx + 72; var text_y = yy + 6;
 	if ds_list_find_index(mods_on, mod_list[i]) != -1
+	{
 		c = (optionselected == i) ? c_lime : c_green;
-	tdp_draw_text_color(xx + 72, yy, mod_info[? mod_list[i]].name, c, c, c, c, 1);
+		text_x += select.rnd2_x;
+		text_y += select.rnd2_y;
+	}
+	tdp_draw_text_color(text_x, text_y, select.name, c, c, c, c, 1);
 	tdp_text_commit(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
@@ -31,6 +43,10 @@ var yy = (SCREEN_HEIGHT / 2) + SCREEN_HEIGHT / 4 + 30;
 tdp_draw_set_font(lang_get_font("creditsfont"));
 tdp_draw_set_halign(fa_left);
 tdp_draw_set_valign(fa_top);
-tdp_draw_text_color(12, yy - 30, selectedmodinfo.name, c_white, c_white, c_white, c_white, 1);
+tdp_draw_text_color(12, yy - 30, selectedmodinfo.name, c_yellow, c_yellow, c_yellow, c_yellow, 1);
+var str_width = string_width(selectedmodinfo.name);
 draw_set_font(global.font_small);
-scr_draw_text_arr(12, yy + 20, selectedmodinfo.description, c_white, 1);
+tdp_draw_text_color(12 + str_width + 6, yy - 12, selectedmodinfo.version, c_white, c_white, c_white, c_white, 1);
+tdp_draw_text_color(12, yy + 9, selectedmodinfo.author, c_white, c_white, c_white, c_white, 1);
+draw_set_font(global.font_small);
+scr_draw_text_arr(12, yy + 40, selectedmodinfo.description, c_white, 1);

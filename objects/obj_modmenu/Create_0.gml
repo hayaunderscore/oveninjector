@@ -1,10 +1,10 @@
 mod_list = [];
 mods_on = ds_list_create();
-mod_icons = ds_map_create();
 mod_info = ds_map_create();
 optionselected = 0;
 select_visual = 0;
 startbuffer = 5;
+// Look, I dont't want to always chuck shit in obj_player, ok?
 if !variable_global_exists("stored_mod_icons")
 	global.stored_mod_icons = ds_map_create();
 file = file_find_first(working_directory + "mods/*", fa_directory);
@@ -33,11 +33,13 @@ while (file != "")
 	var icon = spr_defaulticon;
 	var icon_path = ini_read_string("meta", "icon", "");
 	var icon_base64 = ini_read_string("meta", "icon_base64", "")
-	// icon is encoded in base 64
-	if icon_base64 != ""
+	if icon_path != "" || icon_base64 != ""
+		icon = global.stored_mod_icons[? (icon_base64 == "") ? icon_path : icon_base64];
+	// could not find icon
+	if icon == undefined
 	{
-		// has not been cached yet
-		if global.stored_mod_icons[? icon_base64] == undefined
+		// icon is encoded in base 64
+		if icon_base64 != ""
 		{
 			var decoded = buffer_base64_decode(icon_base64);
 			buffer_save(decoded, working_directory + "temp_sprite.png");
@@ -46,49 +48,29 @@ while (file != "")
 			ds_map_add(global.stored_mod_icons, icon_base64, icon);
 			file_delete(working_directory + "temp_sprite.png");
 		}
-		else
-		{
-			icon = global.stored_mod_icons[? icon_base64];
-		}
-	}
-	// not encoded in base64, is a path to an icon
-	else if icon_path != ""
-	{
-		// has not been cached yet
-		if global.stored_mod_icons[? icon_path] == undefined
+		// not encoded in base64, is a path to an icon
+		else if icon_path != ""
 		{
 			icon = sprite_add(file_dir + icon_path, 1, false, false, 32, 32);
 			ds_map_add(global.stored_mod_icons, icon_path, icon);
-		}
-		else
-		{
-			icon = global.stored_mod_icons[? icon_path];
 		}
 	}
 		
 	show_debug_message("Added " + file + " to mod list");
 	array_push(mod_list, file);
-	ds_map_add(mod_icons, file, icon);
-	var text = ini_read_string("meta", "description", "");
-	var p = 1;
-	var l = string_length(text);
-	var old_text = text;
-	text = "";
-	draw_set_font(global.font_small);
-	trace("Separating text: ", old_text);
-	while p <= l
-	{
-		text = string_insert(string_char_at(old_text, p), text, p + 1);
-		text = scr_separate_text(text, -4, (96*((SCREEN_WIDTH - 64) / 96)) - (16 * 2));
-		p++;
-	}
-	trace("Separated text: ", text);
+	var desc = string_replace_all(ini_read_string("meta", "description", ""), "$", "\"");
+	desc = string_replace_all(desc, "\\n", "\n");
+	var text = scr_oven_splittext(desc);
 	ds_map_add(mod_info, file, {
 		icon: icon,
 		name: ini_read_string("meta", "name", ""),
 		description: scr_compile_icon_text(text),
 		author: ini_read_string("meta", "author", ""),
-		version: ini_read_string("meta", "version", "")
+		version: ini_read_string("meta", "version", ""),
+		rnd_x: 0,
+		rnd_y: 0,
+		rnd2_x: 0,
+		rnd2_y: 0
 	});
 	file = file_find_next();
 	ini_close();

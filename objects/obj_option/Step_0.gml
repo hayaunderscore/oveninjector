@@ -3,6 +3,8 @@ var m = menus[menu];
 
 if instance_exists(obj_keyconfig)
 	j = 4;
+if instance_exists(obj_modmenu)
+	j = 4;
 if m.menu_id >= menus.controls && m.menu_id <= menus.unused_3
 	j = 4;
 else if m.menu_id >= menus.video && m.menu_id <= menus.unused_1

@@ -15,6 +15,15 @@ optionselected = clamp(optionselected, 0, array_length(mod_list) - 1);
 if os != optionselected
 	fmod_event_one_shot("event:/sfx/ui/step");
 	
+for (var i = 0; i < array_length(mod_list); i++)
+{
+	var select = mod_info[? mod_list[i]];;
+	select.rnd_x = irandom_range(-1, 1);
+	select.rnd_y = irandom_range(-1, 1);
+	select.rnd2_x = irandom_range(-1, 1);
+	select.rnd2_y = irandom_range(-1, 1);
+}
+	
 var option = mod_list[optionselected];
 
 if (key_jump || -key_left2 || key_right2)
