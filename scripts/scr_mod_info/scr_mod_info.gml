@@ -14,6 +14,7 @@ function scr_mod_info(path)
 		desc: ini_read_string("meta", "description", ""),				// basic description
 		author: ini_read_string("meta", "author", ""),					// author(s)
 		version: ini_read_string("meta", "version", "1.0"),				// version
+		options: ini_read_string("meta", "options", ""),
 		// path to gml scripts
 		init: ini_read_string("gml", "init", "scripts/init.gml"),						// runs on creation of the obj_custom object
 		destroy: ini_read_string("gml", "destroy", "scripts/destroy.gml"),					// runs on destruction of the object

@@ -12,6 +12,8 @@ enum menus
 	keyboard,
 	deadzone,
 	unused_3, // 11, related to controls.
+	mod_menu,
+	realmod_menu,
 }
 enum anchor
 {
@@ -31,6 +33,8 @@ lastmenu = 0;
 menu = 0;
 optionselected = 0;
 backbuffer = 0;
+
+saved_mod_menu_option = -1;
 
 pause_icons = array_create(0);
 scr_pauseicon_add(spr_pauseicons, 4);
@@ -65,11 +69,23 @@ add_option_press(categories, 3, "option_controls", function()
 add_option_press(categories, 4, "option_modmenu", function()
 {
 	obj_option.key_jump = false;
+	menu_goto(menus.realmod_menu);
 	instance_create(0, 0, obj_modmenu);
 });
 array_push(menus, categories);
 
 #endregion
+
+#region dummy mod menu
+var cmod_menu = create_menu_fixed(menus.realmod_menu, anchor.left, 150, 40);
+add_option_press(cmod_menu, 0, "option_back", function()
+{
+	// im lazyyyy
+	menu_goto(menus.options);
+});
+array_push(menus, cmod_menu);
+#endregion
+
 #region audio menu
 
 var audio_menu = create_menu_fixed(menus.audio, anchor.left, 150, 40);

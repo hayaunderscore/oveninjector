@@ -50,3 +50,11 @@ tdp_draw_text_color(12 + str_width + 6, yy - 12, selectedmodinfo.version, c_whit
 tdp_draw_text_color(12, yy + 9, selectedmodinfo.author, c_white, c_white, c_white, c_white, 1);
 draw_set_font(global.font_small);
 scr_draw_text_arr(12, yy + 40, selectedmodinfo.description, c_white, 1);
+draw_set_color(c_white);
+draw_set_alpha(1);
+draw_text(4, 4, "Press the taunt key for mod specific options.");
+if room != Mainmenu
+{
+	with obj_transfotip
+		event_perform(ev_draw, ev_gui);
+}

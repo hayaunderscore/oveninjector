@@ -60,8 +60,8 @@ switch m.anchor
 			if i == _os
 				c = c_white;
 			
-			if o.type == menutype.press && !o.localization
-				var txt = o.name;
+			if !o.localization
+				var txt = string_replace_all(o.name, "_", " ");
 			else
 				var txt = lang_get_value(o.name);
 			tdp_draw_text_color(xx, yy + (m.ypad * i), txt, c, c, c, c, a);

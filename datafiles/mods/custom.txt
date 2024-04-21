@@ -14,6 +14,7 @@ custom_fonts = false
 custom_graphics = false
 
 option_modmenu = "MOD MENU"
+control_shoot = "SHOOT"
 
 # CUSTOM PALETTES
 dresser_pisstitle = "Piss Yellow"

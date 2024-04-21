@@ -24,6 +24,7 @@ input = [
 	["menu_start"],
 	["player_superjump"],
 	["player_groundpound"],
+	["player_shoot", "control_shoot"],
 	["menu_up", "control_menu_up"],
 	["menu_down", "control_menu_down"],
 	["menu_right", "control_menu_right"],

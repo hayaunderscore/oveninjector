@@ -47,7 +47,7 @@ function add_option_press(_menu, _optionid, _name, _func)
 	array_push(_menu.options, b);
 	return b;
 }
-function add_option_toggle(_menu, _optionid, _name, _onchanged = noone)
+function add_option_toggle(_menu, _optionid, _name, _onchanged = noone, _localization = true)
 {
 	var b = 
 	{
@@ -55,7 +55,8 @@ function add_option_toggle(_menu, _optionid, _name, _onchanged = noone)
 		type: menutype.toggle,
 		value: false,
 		name: _name,
-		on_changed: _onchanged
+		on_changed: _onchanged,
+		localization: _localization
 	};
 	array_push(_menu.options, b);
 	return b;

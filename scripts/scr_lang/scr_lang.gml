@@ -1,6 +1,7 @@
 function scr_get_languages()
 {
 	global.lang_map = ds_map_create();
+	global.mod_lang_map = ds_map_create();
 	global.lang_sprite_map = ds_map_create();
 	global.lang_texture_map = ds_map_create();
 	global.lang_to_load = ds_queue_create();
@@ -32,6 +33,21 @@ function lang_parse_file(filename, prefix = "lang/")
 	}
 	file_text_close(fo);
 	var key = lang_parse(str);
+	if (lang_get_value_raw(key, "custom_graphics"))
+		lang_sprites_parse(key);
+}
+
+function lang_parse_mod_file(filename, prefix = "lang/")
+{
+	var fo = file_text_open_read(prefix + filename);
+	var str = ""
+	while (!file_text_eof(fo))
+	{
+		str += file_text_readln(fo);
+		str += "\n";
+	}
+	file_text_close(fo);
+	var key = lang_parse_mod(str);
 	if (lang_get_value_raw(key, "custom_graphics"))
 		lang_sprites_parse(key);
 }
@@ -84,6 +100,13 @@ function lang_get_value_raw(lang, entry)
 	if is_undefined(n)
 		n = ds_map_find_value(ds_map_find_value(global.lang_map, "oveninjector"), entry);
 	if is_undefined(n)
+	{
+		for (var k = ds_map_find_first(global.mod_lang_map); !is_undefined(k); k = ds_map_find_next(global.mod_lang_map, k)) {
+			var v = global.mod_lang_map[? k];
+			n = ds_map_find_value(v, entry);
+		}
+	}
+	if is_undefined(n)
 		n = ds_map_find_value(ds_map_find_value(global.lang_map, "en"), entry);
 	if is_undefined(n)
 	{
@@ -112,6 +135,17 @@ function lang_parse(langstring) // langstring being the entire file in a single 
 	var map = lang_exec(list);
 	var lang = ds_map_find_value(map, "lang");
 	ds_map_set(global.lang_map, lang, map);
+	ds_list_destroy(list);
+	return lang;
+}
+
+function lang_parse_mod(langstring) // langstring being the entire file in a single string
+{
+	var list = ds_list_create();
+	lang_lexer(list, langstring);
+	var map = lang_exec(list);
+	var lang = ds_map_find_value(map, "mod");
+	ds_map_set(global.mod_lang_map, lang, map);
 	ds_list_destroy(list);
 	return lang;
 }

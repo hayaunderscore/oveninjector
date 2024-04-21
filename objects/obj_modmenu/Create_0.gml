@@ -25,10 +25,15 @@ while (file != "")
 		ini_close();
 		continue;
 	}
+	instance_activate_object(obj_customcontroller);
 	with (obj_customcontroller)
 	{
 		if modname == _modname
+		{
 			ds_list_add(other.mods_on, other.file);
+		}
+		if !runPaused && obj_pause.pause
+			instance_deactivate_object(id);
 	}
 	var icon = spr_defaulticon;
 	var icon_path = ini_read_string("meta", "icon", "");
@@ -67,6 +72,8 @@ while (file != "")
 		description: scr_compile_icon_text(text),
 		author: ini_read_string("meta", "author", ""),
 		version: ini_read_string("meta", "version", ""),
+		options: ini_read_string("meta", "options", ""),
+		ini_path: modini,
 		rnd_x: 0,
 		rnd_y: 0,
 		rnd2_x: 0,

@@ -210,6 +210,8 @@ function scr_getinput()
 		key_superjump = tdp_input_get("player_superjumpC").held || tdp_input_get("player_superjump").held;
 		key_groundpound = tdp_input_get("player_groundpoundC").pressed || tdp_input_get("player_groundpound").pressed;
 		key_groundpound2 = tdp_input_get("player_groundpoundC").held || tdp_input_get("player_groundpound").held;
+		key_shoot = tdp_input_get("player_shootC").pressed || tdp_input_get("player_shoot").pressed;
+		key_shoot2 = tdp_input_get("player_shootC").held || tdp_input_get("player_shoot").held;
 	}
 	else if _dvc >= 0
 	{
@@ -233,10 +235,10 @@ function scr_getinput()
 		key_superjump = tdp_input_get("player_superjumpC").held;
 		key_groundpound = tdp_input_get("player_groundpoundC").pressed;
 		key_groundpound2 = tdp_input_get("player_groundpoundC").held;
+		key_shoot = tdp_input_get("player_shootC").pressed;
+		key_shoot2 = tdp_input_get("player_shootC").held;
 	}
 	
-	key_shoot = false;
-	key_shoot2 = false;
 	key_chainsaw = false;
 	key_chainsaw2 = false;
 	key_left_axis = scr_get_move_axis("player_leftC");

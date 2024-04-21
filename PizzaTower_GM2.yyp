@@ -9220,6 +9220,11 @@
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"begin_step.gml","CopyToMask":-1,"filePath":"datafiles/mods/Pizza Multi/scripts",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"init.gml","CopyToMask":-1,"filePath":"datafiles/mods/Pizza Multi/scripts",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"end_step.gml","CopyToMask":-1,"filePath":"datafiles/mods/Pizza Multi/scripts",},
+    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"mod.ini","CopyToMask":-1,"filePath":"datafiles/mods/Breakplant",},
+    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"init.gml","CopyToMask":-1,"filePath":"datafiles/mods/Breakplant/scripts",},
+    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"english.txt","CopyToMask":-1,"filePath":"datafiles/mods/Breakplant/lang",},
+    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"end_step.gml","CopyToMask":-1,"filePath":"datafiles/mods/Breakplant/scripts",},
+    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"english.txt","CopyToMask":-1,"filePath":"datafiles/mods/Breakplant/lang",},
   ],
   "MetaData": {
     "IDEVersion": "2022.0.1.31",

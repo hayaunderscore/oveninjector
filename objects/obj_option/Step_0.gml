@@ -4,7 +4,7 @@ var m = menus[menu];
 if instance_exists(obj_keyconfig)
 	j = 4;
 if instance_exists(obj_modmenu)
-	j = 4;
+	j = 2;
 if m.menu_id >= menus.controls && m.menu_id <= menus.unused_3
 	j = 4;
 else if m.menu_id >= menus.video && m.menu_id <= menus.unused_1
@@ -13,6 +13,13 @@ else if m.menu_id == menus.audio
 	j = 1;
 else if m.menu_id == menus.game
 	j = 3;
+else if m.menu_id == menus.mod_menu
+	j = 3;
+else if m.menu_id == menus.realmod_menu
+	j = 2;
+	
+if m.menu_id == menus.realmod_menu && !instance_exists(obj_modmenu)
+	instance_create(0, 0, obj_modmenu);
 
 for (var i = 0; i < array_length(bg_alpha); i++)
 {
@@ -67,8 +74,9 @@ switch option.type
 		{
 			fmod_event_one_shot("event:/sfx/ui/select");
 			option.value = !option.value;
+			trace("FROM OBJ_OPTION: " + option.name);
 			if option.on_changed != -4
-				option.on_changed(option.value);
+				option.on_changed(option.value, option.name);
 		}
 		break;
 	
@@ -144,11 +152,19 @@ if ((key_back || key_slap2 || keyboard_check_pressed(vk_escape)) && !instance_ex
 	fmod_event_one_shot("event:/sfx/ui/back");
 	if menu == menus.options
 	{
-		if (instance_exists(obj_mainmenuselect))
-			obj_mainmenuselect.selected = false;
-		if (instance_exists(obj_mainmenu))
-			obj_mainmenu.optionbuffer = 2;
-		instance_destroy();
+		if backbuffer == 0
+		{
+			if (instance_exists(obj_mainmenuselect))
+				obj_mainmenuselect.selected = false;
+			if (instance_exists(obj_mainmenu))
+				obj_mainmenu.optionbuffer = 2;
+			instance_destroy();
+		}
+	}
+	else if menu == menus.mod_menu
+	{
+		key_jump = false;
+		instance_create(0, 0, obj_modmenu);
 	}
 	else
 	{
