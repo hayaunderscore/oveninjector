@@ -13,10 +13,12 @@
 
 # Modding Guide
 
-- [mod.ini](modding/STRUCTURE.md)
+- [The `mod.ini`](modding/STRUCTURE.md)
 - [Non-API](modding/GUIDE.md)
    - [Custom Controllers](modding/CUSTOM.md)
    - [Asset Loading](modding/ASSETS.md)
    - [Music Handling](modding/MUSIC.md)
    - [Mod-Specific Options](modding/OPTIONS.md)
-- [API]()
+   - [Sprite Replacements (NI)](modding/SPRITES.md)
+   - [Startup Mods (NI)](modding/STARTUP.md)
+- [API](api/INDEX.md)

@@ -20,3 +20,19 @@ with (instance_create(0, 0, obj_customcontroller))
     ');
 }
 ```
+
+**The stuff below has not been implemented yet!**
+
+You can also use `instance_custom(x, y, name)` to easily instance a new persistent custom controller object, that runs it's scripts based on a subdirectory in the scripts folder.
+
+```gml,filepath=scripts/init.gml
+instance_custom(0, 0, "ctopPeppino");
+```
+
+```gml,filepath=scripts/ctopPeppino/init.gml
+sprite_index = spr_player_idle
+x = 1999
+y = 200
+```
+
+Upon loading the mod, the game immediately creates a new custom controller and loads it's init script on the `ctopPeppino` folder, and runs the init script from within that custom controller's context.

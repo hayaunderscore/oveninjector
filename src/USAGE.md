@@ -13,3 +13,4 @@ OvenInjector already comes with 3 mods by default for you to play around with!
 Open up your options menu in-game or in the title screen, and select "MOD MENU". Congratition!
 
 You should now be able to enable and disable mods, as well as their configuration via the taunt key if they have one.
+~~You can also press the shoot key (configurable in the bindings menu) to make a mod automatically be loaded after launching the game.~~ Not implemented yet. ;)
