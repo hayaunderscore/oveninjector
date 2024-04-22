@@ -15,11 +15,9 @@ The archive includes the `xdelta` patch for you to patch via [Delta Patcher](htt
 Compiling via GameMaker is also an option, though you will need these in order to compile it properly:
     
 - [Pizza Tower on Steam](https://store.steampowered.com/app/2231450/Pizza_Tower/)
-- [GameMaker LTS 2022](https://gms.yoyogames.com/GameMaker-Installer-2022.0.1.31.exe) w/ Runtime 2022.0.1.30
-
+- [GameMaker LTS 2022](https://gms.yoyogames.com/GameMaker-Installer-2022.0.1.31.exe) w/ Runtime 2022.0.1.30 <br/>
 This seems to be the exact version Tour De Pizza used. 2023.6 might work, though I have not tested it yet.
-- [GMLive.gml](https://yellowafterlife.itch.io/gamemaker-live)
-
+- [GMLive.gml](https://yellowafterlife.itch.io/gamemaker-live) <br/>
 The repo does not provide GMLive as-is due to the extension being a paid product.
 
 The source code doesn't include any of the datafiles (FMOD, langs) or sprites. An [UndertaleModTool](https://github.com/krzys-h/UndertaleModTool/releases) script is included to extract everything needed from the `data.win`, and port the required files to the decomp folder.

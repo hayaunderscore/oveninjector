@@ -12,7 +12,7 @@ This guide is an introduction on what the mod loader does, how to use it, and ho
 ## Contributing
 
 OvenInjector *(the mod)* is free and open source. The mod uses a decompile of the Noise Update (PT 1.1.0), and therefore may be in a different license.
-Feel free to report issues in the GitHub issue tracker. If you'd like to contribute/implement a new feature, consider making a pull request.
+Feel free to report issues in the [GitHub issue tracker](https://github.com/hayaunderscore/oveninjector/issues). If you'd like to contribute/implement a new feature, consider making a pull request.
 
 You can implement the mod in other projects as you please, provided you follow the license.
 
