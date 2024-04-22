@@ -1,3 +1,3 @@
-# dummy
+# Summary
 
-dummy page
+[Introduction and Nerd Info](NERD-INFO.md)
