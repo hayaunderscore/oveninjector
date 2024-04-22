@@ -4,20 +4,20 @@ OvenInjector uses a `mod.ini` to differentiate and identify mods.
 
 Let's just say there's a mod folder
 
-```ignore
+```nolang
 mods/
 ```
 
 next, we add a new folder that will hold all of the script and asset files of our mod
 
-```ignore
+```ignore,nolang
 mods/
 - Sample Mod/
 ```
 
 with this, a `mod.ini` file is required, which contains all the information needed for a mod to work.
 
-```toml
+```ini,filepath=mod.ini
 [meta]
 name="Sample Mod"
 description="An example mod."
@@ -31,7 +31,7 @@ The `meta` block defines metadata and general info about the mod. An optional `g
 
 The `gml` block takes numerous event callbacks. Which are:
 
-```ignore
+```ignore,nolang
 init
 destroy
 begin_step
@@ -51,7 +51,7 @@ By default, the game would look for these names plus the gml extension on the sc
 
 Now the general structure should now look like this:
 
-```ignore
+```ignore,nolang
 mods/
 - Sample Mod/
   - scripts/

@@ -2,7 +2,7 @@
 
 You can now make players configure your mods via the `options` key in the `meta` block! Like so:
 
-```toml
+```ini,filepath=mod.ini
 [meta]
 name="yeah"
 options="enable_something,another_toggle"
@@ -14,7 +14,7 @@ Pressing TAUNT on the mod menu while hovering an active mod will bring up the op
 
 Options have a default value of zero, though these can be changed via the `options` block:
 
-```toml
+```ini
 [options]
 enable_something="1"
 ```

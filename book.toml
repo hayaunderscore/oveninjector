@@ -4,3 +4,7 @@ authors=["hayasaka3218"]
 description="A mod loader for Pizza Tower."
 src="src"
 language="en"
+
+[output.html]
+additional-css=["theme/whichlang.css"]
+additional-js=["theme/whichlang.js"]
