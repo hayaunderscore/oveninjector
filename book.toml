@@ -1,0 +1,9 @@
+[book]
+title="OvenInjector"
+authors=["hayasaka3218"]
+description="A mod loader for Pizza Tower."
+src="src"
+language="en"
+
+[output.html]
+default-theme="navy"
