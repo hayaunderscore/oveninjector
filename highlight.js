@@ -1,53 +1,18425 @@
-/*
-  Highlight.js 10.1.1 (93fd0d73)
+/*!
+  Highlight.js v11.9.0 (git: b7ec4bfafc)
+  (c) 2006-2024 undefined and other contributors
   License: BSD-3-Clause
-  Copyright (c) 2006-2020, Ivan Sagalaev
-*/
-var hljs=function(){"use strict";function e(n){Object.freeze(n);var t="function"==typeof n;return Object.getOwnPropertyNames(n).forEach((function(r){!Object.hasOwnProperty.call(n,r)||null===n[r]||"object"!=typeof n[r]&&"function"!=typeof n[r]||t&&("caller"===r||"callee"===r||"arguments"===r)||Object.isFrozen(n[r])||e(n[r])})),n}class n{constructor(e){void 0===e.data&&(e.data={}),this.data=e.data}ignoreMatch(){this.ignore=!0}}function t(e){return e.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#x27;")}function r(e,...n){var t={};for(const n in e)t[n]=e[n];return n.forEach((function(e){for(const n in e)t[n]=e[n]})),t}function a(e){return e.nodeName.toLowerCase()}var i=Object.freeze({__proto__:null,escapeHTML:t,inherit:r,nodeStream:function(e){var n=[];return function e(t,r){for(var i=t.firstChild;i;i=i.nextSibling)3===i.nodeType?r+=i.nodeValue.length:1===i.nodeType&&(n.push({event:"start",offset:r,node:i}),r=e(i,r),a(i).match(/br|hr|img|input/)||n.push({event:"stop",offset:r,node:i}));return r}(e,0),n},mergeStreams:function(e,n,r){var i=0,s="",o=[];function l(){return e.length&&n.length?e[0].offset!==n[0].offset?e[0].offset<n[0].offset?e:n:"start"===n[0].event?e:n:e.length?e:n}function c(e){s+="<"+a(e)+[].map.call(e.attributes,(function(e){return" "+e.nodeName+'="'+t(e.value)+'"'})).join("")+">"}function u(e){s+="</"+a(e)+">"}function d(e){("start"===e.event?c:u)(e.node)}for(;e.length||n.length;){var g=l();if(s+=t(r.substring(i,g[0].offset)),i=g[0].offset,g===e){o.reverse().forEach(u);do{d(g.splice(0,1)[0]),g=l()}while(g===e&&g.length&&g[0].offset===i);o.reverse().forEach(c)}else"start"===g[0].event?o.push(g[0].node):o.pop(),d(g.splice(0,1)[0])}return s+t(r.substr(i))}});const s="</span>",o=e=>!!e.kind;class l{constructor(e,n){this.buffer="",this.classPrefix=n.classPrefix,e.walk(this)}addText(e){this.buffer+=t(e)}openNode(e){if(!o(e))return;let n=e.kind;e.sublanguage||(n=`${this.classPrefix}${n}`),this.span(n)}closeNode(e){o(e)&&(this.buffer+=s)}value(){return this.buffer}span(e){this.buffer+=`<span class="${e}">`}}class c{constructor(){this.rootNode={children:[]},this.stack=[this.rootNode]}get top(){return this.stack[this.stack.length-1]}get root(){return this.rootNode}add(e){this.top.children.push(e)}openNode(e){const n={kind:e,children:[]};this.add(n),this.stack.push(n)}closeNode(){if(this.stack.length>1)return this.stack.pop()}closeAllNodes(){for(;this.closeNode(););}toJSON(){return JSON.stringify(this.rootNode,null,4)}walk(e){return this.constructor._walk(e,this.rootNode)}static _walk(e,n){return"string"==typeof n?e.addText(n):n.children&&(e.openNode(n),n.children.forEach(n=>this._walk(e,n)),e.closeNode(n)),e}static _collapse(e){"string"!=typeof e&&e.children&&(e.children.every(e=>"string"==typeof e)?e.children=[e.children.join("")]:e.children.forEach(e=>{c._collapse(e)}))}}class u extends c{constructor(e){super(),this.options=e}addKeyword(e,n){""!==e&&(this.openNode(n),this.addText(e),this.closeNode())}addText(e){""!==e&&this.add(e)}addSublanguage(e,n){const t=e.root;t.kind=n,t.sublanguage=!0,this.add(t)}toHTML(){return new l(this,this.options).value()}finalize(){return!0}}function d(e){return e?"string"==typeof e?e:e.source:null}const g="(-?)(\\b0[xX][a-fA-F0-9]+|(\\b\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)",h={begin:"\\\\[\\s\\S]",relevance:0},f={className:"string",begin:"'",end:"'",illegal:"\\n",contains:[h]},p={className:"string",begin:'"',end:'"',illegal:"\\n",contains:[h]},b={begin:/\b(a|an|the|are|I'm|isn't|don't|doesn't|won't|but|just|should|pretty|simply|enough|gonna|going|wtf|so|such|will|you|your|they|like|more)\b/},m=function(e,n,t={}){var a=r({className:"comment",begin:e,end:n,contains:[]},t);return a.contains.push(b),a.contains.push({className:"doctag",begin:"(?:TODO|FIXME|NOTE|BUG|OPTIMIZE|HACK|XXX):",relevance:0}),a},v=m("//","$"),x=m("/\\*","\\*/"),E=m("#","$");var _=Object.freeze({__proto__:null,IDENT_RE:"[a-zA-Z]\\w*",UNDERSCORE_IDENT_RE:"[a-zA-Z_]\\w*",NUMBER_RE:"\\b\\d+(\\.\\d+)?",C_NUMBER_RE:g,BINARY_NUMBER_RE:"\\b(0b[01]+)",RE_STARTERS_RE:"!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|-|-=|/=|/|:|;|<<|<<=|<=|<|===|==|=|>>>=|>>=|>=|>>>|>>|>|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~",SHEBANG:(e={})=>{const n=/^#![ ]*\//;return e.binary&&(e.begin=function(...e){return e.map(e=>d(e)).join("")}(n,/.*\b/,e.binary,/\b.*/)),r({className:"meta",begin:n,end:/$/,relevance:0,"on:begin":(e,n)=>{0!==e.index&&n.ignoreMatch()}},e)},BACKSLASH_ESCAPE:h,APOS_STRING_MODE:f,QUOTE_STRING_MODE:p,PHRASAL_WORDS_MODE:b,COMMENT:m,C_LINE_COMMENT_MODE:v,C_BLOCK_COMMENT_MODE:x,HASH_COMMENT_MODE:E,NUMBER_MODE:{className:"number",begin:"\\b\\d+(\\.\\d+)?",relevance:0},C_NUMBER_MODE:{className:"number",begin:g,relevance:0},BINARY_NUMBER_MODE:{className:"number",begin:"\\b(0b[01]+)",relevance:0},CSS_NUMBER_MODE:{className:"number",begin:"\\b\\d+(\\.\\d+)?(%|em|ex|ch|rem|vw|vh|vmin|vmax|cm|mm|in|pt|pc|px|deg|grad|rad|turn|s|ms|Hz|kHz|dpi|dpcm|dppx)?",relevance:0},REGEXP_MODE:{begin:/(?=\/[^/\n]*\/)/,contains:[{className:"regexp",begin:/\//,end:/\/[gimuy]*/,illegal:/\n/,contains:[h,{begin:/\[/,end:/\]/,relevance:0,contains:[h]}]}]},TITLE_MODE:{className:"title",begin:"[a-zA-Z]\\w*",relevance:0},UNDERSCORE_TITLE_MODE:{className:"title",begin:"[a-zA-Z_]\\w*",relevance:0},METHOD_GUARD:{begin:"\\.\\s*[a-zA-Z_]\\w*",relevance:0},END_SAME_AS_BEGIN:function(e){return Object.assign(e,{"on:begin":(e,n)=>{n.data._beginMatch=e[1]},"on:end":(e,n)=>{n.data._beginMatch!==e[1]&&n.ignoreMatch()}})}}),N="of and for in not or if then".split(" ");function w(e,n){return n?+n:function(e){return N.includes(e.toLowerCase())}(e)?0:1}const R=t,y=r,{nodeStream:k,mergeStreams:O}=i,M=Symbol("nomatch");return function(t){var a=[],i={},s={},o=[],l=!0,c=/(^(<[^>]+>|\t|)+|\n)/gm,g="Could not find the language '{}', did you forget to load/include a language module?";const h={disableAutodetect:!0,name:"Plain text",contains:[]};var f={noHighlightRe:/^(no-?highlight)$/i,languageDetectRe:/\blang(?:uage)?-([\w-]+)\b/i,classPrefix:"hljs-",tabReplace:null,useBR:!1,languages:null,__emitter:u};function p(e){return f.noHighlightRe.test(e)}function b(e,n,t,r){var a={code:n,language:e};S("before:highlight",a);var i=a.result?a.result:m(a.language,a.code,t,r);return i.code=a.code,S("after:highlight",i),i}function m(e,t,a,s){var o=t;function c(e,n){var t=E.case_insensitive?n[0].toLowerCase():n[0];return Object.prototype.hasOwnProperty.call(e.keywords,t)&&e.keywords[t]}function u(){null!=y.subLanguage?function(){if(""!==A){var e=null;if("string"==typeof y.subLanguage){if(!i[y.subLanguage])return void O.addText(A);e=m(y.subLanguage,A,!0,k[y.subLanguage]),k[y.subLanguage]=e.top}else e=v(A,y.subLanguage.length?y.subLanguage:null);y.relevance>0&&(I+=e.relevance),O.addSublanguage(e.emitter,e.language)}}():function(){if(!y.keywords)return void O.addText(A);let e=0;y.keywordPatternRe.lastIndex=0;let n=y.keywordPatternRe.exec(A),t="";for(;n;){t+=A.substring(e,n.index);const r=c(y,n);if(r){const[e,a]=r;O.addText(t),t="",I+=a,O.addKeyword(n[0],e)}else t+=n[0];e=y.keywordPatternRe.lastIndex,n=y.keywordPatternRe.exec(A)}t+=A.substr(e),O.addText(t)}(),A=""}function h(e){return e.className&&O.openNode(e.className),y=Object.create(e,{parent:{value:y}})}function p(e){return 0===y.matcher.regexIndex?(A+=e[0],1):(L=!0,0)}var b={};function x(t,r){var i=r&&r[0];if(A+=t,null==i)return u(),0;if("begin"===b.type&&"end"===r.type&&b.index===r.index&&""===i){if(A+=o.slice(r.index,r.index+1),!l){const n=Error("0 width match regex");throw n.languageName=e,n.badRule=b.rule,n}return 1}if(b=r,"begin"===r.type)return function(e){var t=e[0],r=e.rule;const a=new n(r),i=[r.__beforeBegin,r["on:begin"]];for(const n of i)if(n&&(n(e,a),a.ignore))return p(t);return r&&r.endSameAsBegin&&(r.endRe=RegExp(t.replace(/[-/\\^$*+?.()|[\]{}]/g,"\\$&"),"m")),r.skip?A+=t:(r.excludeBegin&&(A+=t),u(),r.returnBegin||r.excludeBegin||(A=t)),h(r),r.returnBegin?0:t.length}(r);if("illegal"===r.type&&!a){const e=Error('Illegal lexeme "'+i+'" for mode "'+(y.className||"<unnamed>")+'"');throw e.mode=y,e}if("end"===r.type){var s=function(e){var t=e[0],r=o.substr(e.index),a=function e(t,r,a){let i=function(e,n){var t=e&&e.exec(n);return t&&0===t.index}(t.endRe,a);if(i){if(t["on:end"]){const e=new n(t);t["on:end"](r,e),e.ignore&&(i=!1)}if(i){for(;t.endsParent&&t.parent;)t=t.parent;return t}}if(t.endsWithParent)return e(t.parent,r,a)}(y,e,r);if(!a)return M;var i=y;i.skip?A+=t:(i.returnEnd||i.excludeEnd||(A+=t),u(),i.excludeEnd&&(A=t));do{y.className&&O.closeNode(),y.skip||y.subLanguage||(I+=y.relevance),y=y.parent}while(y!==a.parent);return a.starts&&(a.endSameAsBegin&&(a.starts.endRe=a.endRe),h(a.starts)),i.returnEnd?0:t.length}(r);if(s!==M)return s}if("illegal"===r.type&&""===i)return 1;if(B>1e5&&B>3*r.index)throw Error("potential infinite loop, way more iterations than matches");return A+=i,i.length}var E=T(e);if(!E)throw console.error(g.replace("{}",e)),Error('Unknown language: "'+e+'"');var _=function(e){function n(n,t){return RegExp(d(n),"m"+(e.case_insensitive?"i":"")+(t?"g":""))}class t{constructor(){this.matchIndexes={},this.regexes=[],this.matchAt=1,this.position=0}addRule(e,n){n.position=this.position++,this.matchIndexes[this.matchAt]=n,this.regexes.push([n,e]),this.matchAt+=function(e){return RegExp(e.toString()+"|").exec("").length-1}(e)+1}compile(){0===this.regexes.length&&(this.exec=()=>null);const e=this.regexes.map(e=>e[1]);this.matcherRe=n(function(e,n="|"){for(var t=/\[(?:[^\\\]]|\\.)*\]|\(\??|\\([1-9][0-9]*)|\\./,r=0,a="",i=0;i<e.length;i++){var s=r+=1,o=d(e[i]);for(i>0&&(a+=n),a+="(";o.length>0;){var l=t.exec(o);if(null==l){a+=o;break}a+=o.substring(0,l.index),o=o.substring(l.index+l[0].length),"\\"===l[0][0]&&l[1]?a+="\\"+(+l[1]+s):(a+=l[0],"("===l[0]&&r++)}a+=")"}return a}(e),!0),this.lastIndex=0}exec(e){this.matcherRe.lastIndex=this.lastIndex;const n=this.matcherRe.exec(e);if(!n)return null;const t=n.findIndex((e,n)=>n>0&&void 0!==e),r=this.matchIndexes[t];return n.splice(0,t),Object.assign(n,r)}}class a{constructor(){this.rules=[],this.multiRegexes=[],this.count=0,this.lastIndex=0,this.regexIndex=0}getMatcher(e){if(this.multiRegexes[e])return this.multiRegexes[e];const n=new t;return this.rules.slice(e).forEach(([e,t])=>n.addRule(e,t)),n.compile(),this.multiRegexes[e]=n,n}considerAll(){this.regexIndex=0}addRule(e,n){this.rules.push([e,n]),"begin"===n.type&&this.count++}exec(e){const n=this.getMatcher(this.regexIndex);n.lastIndex=this.lastIndex;const t=n.exec(e);return t&&(this.regexIndex+=t.position+1,this.regexIndex===this.count&&(this.regexIndex=0)),t}}function i(e,n){const t=e.input[e.index-1],r=e.input[e.index+e[0].length];"."!==t&&"."!==r||n.ignoreMatch()}if(e.contains&&e.contains.includes("self"))throw Error("ERR: contains `self` is not supported at the top-level of a language.  See documentation.");return function t(s,o){const l=s;if(s.compiled)return l;s.compiled=!0,s.__beforeBegin=null,s.keywords=s.keywords||s.beginKeywords;let c=null;if("object"==typeof s.keywords&&(c=s.keywords.$pattern,delete s.keywords.$pattern),s.keywords&&(s.keywords=function(e,n){var t={};return"string"==typeof e?r("keyword",e):Object.keys(e).forEach((function(n){r(n,e[n])})),t;function r(e,r){n&&(r=r.toLowerCase()),r.split(" ").forEach((function(n){var r=n.split("|");t[r[0]]=[e,w(r[0],r[1])]}))}}(s.keywords,e.case_insensitive)),s.lexemes&&c)throw Error("ERR: Prefer `keywords.$pattern` to `mode.lexemes`, BOTH are not allowed. (see mode reference) ");return l.keywordPatternRe=n(s.lexemes||c||/\w+/,!0),o&&(s.beginKeywords&&(s.begin="\\b("+s.beginKeywords.split(" ").join("|")+")(?=\\b|\\s)",s.__beforeBegin=i),s.begin||(s.begin=/\B|\b/),l.beginRe=n(s.begin),s.endSameAsBegin&&(s.end=s.begin),s.end||s.endsWithParent||(s.end=/\B|\b/),s.end&&(l.endRe=n(s.end)),l.terminator_end=d(s.end)||"",s.endsWithParent&&o.terminator_end&&(l.terminator_end+=(s.end?"|":"")+o.terminator_end)),s.illegal&&(l.illegalRe=n(s.illegal)),void 0===s.relevance&&(s.relevance=1),s.contains||(s.contains=[]),s.contains=[].concat(...s.contains.map((function(e){return function(e){return e.variants&&!e.cached_variants&&(e.cached_variants=e.variants.map((function(n){return r(e,{variants:null},n)}))),e.cached_variants?e.cached_variants:function e(n){return!!n&&(n.endsWithParent||e(n.starts))}(e)?r(e,{starts:e.starts?r(e.starts):null}):Object.isFrozen(e)?r(e):e}("self"===e?s:e)}))),s.contains.forEach((function(e){t(e,l)})),s.starts&&t(s.starts,o),l.matcher=function(e){const n=new a;return e.contains.forEach(e=>n.addRule(e.begin,{rule:e,type:"begin"})),e.terminator_end&&n.addRule(e.terminator_end,{type:"end"}),e.illegal&&n.addRule(e.illegal,{type:"illegal"}),n}(l),l}(e)}(E),N="",y=s||_,k={},O=new f.__emitter(f);!function(){for(var e=[],n=y;n!==E;n=n.parent)n.className&&e.unshift(n.className);e.forEach(e=>O.openNode(e))}();var A="",I=0,S=0,B=0,L=!1;try{for(y.matcher.considerAll();;){B++,L?L=!1:(y.matcher.lastIndex=S,y.matcher.considerAll());const e=y.matcher.exec(o);if(!e)break;const n=x(o.substring(S,e.index),e);S=e.index+n}return x(o.substr(S)),O.closeAllNodes(),O.finalize(),N=O.toHTML(),{relevance:I,value:N,language:e,illegal:!1,emitter:O,top:y}}catch(n){if(n.message&&n.message.includes("Illegal"))return{illegal:!0,illegalBy:{msg:n.message,context:o.slice(S-100,S+100),mode:n.mode},sofar:N,relevance:0,value:R(o),emitter:O};if(l)return{illegal:!1,relevance:0,value:R(o),emitter:O,language:e,top:y,errorRaised:n};throw n}}function v(e,n){n=n||f.languages||Object.keys(i);var t=function(e){const n={relevance:0,emitter:new f.__emitter(f),value:R(e),illegal:!1,top:h};return n.emitter.addText(e),n}(e),r=t;return n.filter(T).filter(I).forEach((function(n){var a=m(n,e,!1);a.language=n,a.relevance>r.relevance&&(r=a),a.relevance>t.relevance&&(r=t,t=a)})),r.language&&(t.second_best=r),t}function x(e){return f.tabReplace||f.useBR?e.replace(c,e=>"\n"===e?f.useBR?"<br>":e:f.tabReplace?e.replace(/\t/g,f.tabReplace):e):e}function E(e){let n=null;const t=function(e){var n=e.className+" ";n+=e.parentNode?e.parentNode.className:"";const t=f.languageDetectRe.exec(n);if(t){var r=T(t[1]);return r||(console.warn(g.replace("{}",t[1])),console.warn("Falling back to no-highlight mode for this block.",e)),r?t[1]:"no-highlight"}return n.split(/\s+/).find(e=>p(e)||T(e))}(e);if(p(t))return;S("before:highlightBlock",{block:e,language:t}),f.useBR?(n=document.createElement("div")).innerHTML=e.innerHTML.replace(/\n/g,"").replace(/<br[ /]*>/g,"\n"):n=e;const r=n.textContent,a=t?b(t,r,!0):v(r),i=k(n);if(i.length){const e=document.createElement("div");e.innerHTML=a.value,a.value=O(i,k(e),r)}a.value=x(a.value),S("after:highlightBlock",{block:e,result:a}),e.innerHTML=a.value,e.className=function(e,n,t){var r=n?s[n]:t,a=[e.trim()];return e.match(/\bhljs\b/)||a.push("hljs"),e.includes(r)||a.push(r),a.join(" ").trim()}(e.className,t,a.language),e.result={language:a.language,re:a.relevance,relavance:a.relevance},a.second_best&&(e.second_best={language:a.second_best.language,re:a.second_best.relevance,relavance:a.second_best.relevance})}const N=()=>{if(!N.called){N.called=!0;var e=document.querySelectorAll("pre code");a.forEach.call(e,E)}};function T(e){return e=(e||"").toLowerCase(),i[e]||i[s[e]]}function A(e,{languageName:n}){"string"==typeof e&&(e=[e]),e.forEach(e=>{s[e]=n})}function I(e){var n=T(e);return n&&!n.disableAutodetect}function S(e,n){var t=e;o.forEach((function(e){e[t]&&e[t](n)}))}Object.assign(t,{highlight:b,highlightAuto:v,fixMarkup:x,highlightBlock:E,configure:function(e){f=y(f,e)},initHighlighting:N,initHighlightingOnLoad:function(){window.addEventListener("DOMContentLoaded",N,!1)},registerLanguage:function(e,n){var r=null;try{r=n(t)}catch(n){if(console.error("Language definition for '{}' could not be registered.".replace("{}",e)),!l)throw n;console.error(n),r=h}r.name||(r.name=e),i[e]=r,r.rawDefinition=n.bind(null,t),r.aliases&&A(r.aliases,{languageName:e})},listLanguages:function(){return Object.keys(i)},getLanguage:T,registerAliases:A,requireLanguage:function(e){var n=T(e);if(n)return n;throw Error("The '{}' language is required, but not loaded.".replace("{}",e))},autoDetection:I,inherit:y,addPlugin:function(e){o.push(e)}}),t.debugMode=function(){l=!1},t.safeMode=function(){l=!0},t.versionString="10.1.1";for(const n in _)"object"==typeof _[n]&&e(_[n]);return Object.assign(t,_),t}({})}();"object"==typeof exports&&"undefined"!=typeof module&&(module.exports=hljs);
-hljs.registerLanguage("apache",function(){"use strict";return function(e){var n={className:"number",begin:"\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}(:\\d{1,5})?"};return{name:"Apache config",aliases:["apacheconf"],case_insensitive:!0,contains:[e.HASH_COMMENT_MODE,{className:"section",begin:"</?",end:">",contains:[n,{className:"number",begin:":\\d{1,5}"},e.inherit(e.QUOTE_STRING_MODE,{relevance:0})]},{className:"attribute",begin:/\w+/,relevance:0,keywords:{nomarkup:"order deny allow setenv rewriterule rewriteengine rewritecond documentroot sethandler errordocument loadmodule options header listen serverroot servername"},starts:{end:/$/,relevance:0,keywords:{literal:"on off all deny allow"},contains:[{className:"meta",begin:"\\s\\[",end:"\\]$"},{className:"variable",begin:"[\\$%]\\{",end:"\\}",contains:["self",{className:"number",begin:"[\\$%]\\d+"}]},n,{className:"number",begin:"\\d+"},e.QUOTE_STRING_MODE]}}],illegal:/\S/}}}());
-hljs.registerLanguage("bash",function(){"use strict";return function(e){const s={};Object.assign(s,{className:"variable",variants:[{begin:/\$[\w\d#@][\w\d_]*/},{begin:/\$\{/,end:/\}/,contains:[{begin:/:-/,contains:[s]}]}]});const t={className:"subst",begin:/\$\(/,end:/\)/,contains:[e.BACKSLASH_ESCAPE]},n={className:"string",begin:/"/,end:/"/,contains:[e.BACKSLASH_ESCAPE,s,t]};t.contains.push(n);const a={begin:/\$\(\(/,end:/\)\)/,contains:[{begin:/\d+#[0-9a-f]+/,className:"number"},e.NUMBER_MODE,s]},i=e.SHEBANG({binary:"(fish|bash|zsh|sh|csh|ksh|tcsh|dash|scsh)",relevance:10}),c={className:"function",begin:/\w[\w\d_]*\s*\(\s*\)\s*\{/,returnBegin:!0,contains:[e.inherit(e.TITLE_MODE,{begin:/\w[\w\d_]*/})],relevance:0};return{name:"Bash",aliases:["sh","zsh"],keywords:{$pattern:/\b-?[a-z\._]+\b/,keyword:"if then else elif fi for while in do done case esac function",literal:"true false",built_in:"break cd continue eval exec exit export getopts hash pwd readonly return shift test times trap umask unset alias bind builtin caller command declare echo enable help let local logout mapfile printf read readarray source type typeset ulimit unalias set shopt autoload bg bindkey bye cap chdir clone comparguments compcall compctl compdescribe compfiles compgroups compquote comptags comptry compvalues dirs disable disown echotc echoti emulate fc fg float functions getcap getln history integer jobs kill limit log noglob popd print pushd pushln rehash sched setcap setopt stat suspend ttyctl unfunction unhash unlimit unsetopt vared wait whence where which zcompile zformat zftp zle zmodload zparseopts zprof zpty zregexparse zsocket zstyle ztcp",_:"-ne -eq -lt -gt -f -d -e -s -l -a"},contains:[i,e.SHEBANG(),c,a,e.HASH_COMMENT_MODE,n,{className:"",begin:/\\"/},{className:"string",begin:/'/,end:/'/},s]}}}());
-hljs.registerLanguage("c-like",function(){"use strict";return function(e){function t(e){return"(?:"+e+")?"}var n="(decltype\\(auto\\)|"+t("[a-zA-Z_]\\w*::")+"[a-zA-Z_]\\w*"+t("<.*?>")+")",r={className:"keyword",begin:"\\b[a-z\\d_]*_t\\b"},a={className:"string",variants:[{begin:'(u8?|U|L)?"',end:'"',illegal:"\\n",contains:[e.BACKSLASH_ESCAPE]},{begin:"(u8?|U|L)?'(\\\\(x[0-9A-Fa-f]{2}|u[0-9A-Fa-f]{4,8}|[0-7]{3}|\\S)|.)",end:"'",illegal:"."},e.END_SAME_AS_BEGIN({begin:/(?:u8?|U|L)?R"([^()\\ ]{0,16})\(/,end:/\)([^()\\ ]{0,16})"/})]},i={className:"number",variants:[{begin:"\\b(0b[01']+)"},{begin:"(-?)\\b([\\d']+(\\.[\\d']*)?|\\.[\\d']+)(u|U|l|L|ul|UL|f|F|b|B)"},{begin:"(-?)(\\b0[xX][a-fA-F0-9']+|(\\b[\\d']+(\\.[\\d']*)?|\\.[\\d']+)([eE][-+]?[\\d']+)?)"}],relevance:0},s={className:"meta",begin:/#\s*[a-z]+\b/,end:/$/,keywords:{"meta-keyword":"if else elif endif define undef warning error line pragma _Pragma ifdef ifndef include"},contains:[{begin:/\\\n/,relevance:0},e.inherit(a,{className:"meta-string"}),{className:"meta-string",begin:/<.*?>/,end:/$/,illegal:"\\n"},e.C_LINE_COMMENT_MODE,e.C_BLOCK_COMMENT_MODE]},o={className:"title",begin:t("[a-zA-Z_]\\w*::")+e.IDENT_RE,relevance:0},c=t("[a-zA-Z_]\\w*::")+e.IDENT_RE+"\\s*\\(",l={keyword:"int float while private char char8_t char16_t char32_t catch import module export virtual operator sizeof dynamic_cast|10 typedef const_cast|10 const for static_cast|10 union namespace unsigned long volatile static protected bool template mutable if public friend do goto auto void enum else break extern using asm case typeid wchar_t short reinterpret_cast|10 default double register explicit signed typename try this switch continue inline delete alignas alignof constexpr consteval constinit decltype concept co_await co_return co_yield requires noexcept static_assert thread_local restrict final override atomic_bool atomic_char atomic_schar atomic_uchar atomic_short atomic_ushort atomic_int atomic_uint atomic_long atomic_ulong atomic_llong atomic_ullong new throw return and and_eq bitand bitor compl not not_eq or or_eq xor xor_eq",built_in:"std string wstring cin cout cerr clog stdin stdout stderr stringstream istringstream ostringstream auto_ptr deque list queue stack vector map set pair bitset multiset multimap unordered_set unordered_map unordered_multiset unordered_multimap priority_queue make_pair array shared_ptr abort terminate abs acos asin atan2 atan calloc ceil cosh cos exit exp fabs floor fmod fprintf fputs free frexp fscanf future isalnum isalpha iscntrl isdigit isgraph islower isprint ispunct isspace isupper isxdigit tolower toupper labs ldexp log10 log malloc realloc memchr memcmp memcpy memset modf pow printf putchar puts scanf sinh sin snprintf sprintf sqrt sscanf strcat strchr strcmp strcpy strcspn strlen strncat strncmp strncpy strpbrk strrchr strspn strstr tanh tan vfprintf vprintf vsprintf endl initializer_list unique_ptr _Bool complex _Complex imaginary _Imaginary",literal:"true false nullptr NULL"},d=[r,e.C_LINE_COMMENT_MODE,e.C_BLOCK_COMMENT_MODE,i,a],_={variants:[{begin:/=/,end:/;/},{begin:/\(/,end:/\)/},{beginKeywords:"new throw return else",end:/;/}],keywords:l,contains:d.concat([{begin:/\(/,end:/\)/,keywords:l,contains:d.concat(["self"]),relevance:0}]),relevance:0},u={className:"function",begin:"("+n+"[\\*&\\s]+)+"+c,returnBegin:!0,end:/[{;=]/,excludeEnd:!0,keywords:l,illegal:/[^\w\s\*&:<>]/,contains:[{begin:"decltype\\(auto\\)",keywords:l,relevance:0},{begin:c,returnBegin:!0,contains:[o],relevance:0},{className:"params",begin:/\(/,end:/\)/,keywords:l,relevance:0,contains:[e.C_LINE_COMMENT_MODE,e.C_BLOCK_COMMENT_MODE,a,i,r,{begin:/\(/,end:/\)/,keywords:l,relevance:0,contains:["self",e.C_LINE_COMMENT_MODE,e.C_BLOCK_COMMENT_MODE,a,i,r]}]},r,e.C_LINE_COMMENT_MODE,e.C_BLOCK_COMMENT_MODE,s]};return{aliases:["c","cc","h","c++","h++","hpp","hh","hxx","cxx"],keywords:l,disableAutodetect:!0,illegal:"</",contains:[].concat(_,u,d,[s,{begin:"\\b(deque|list|queue|priority_queue|pair|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",end:">",keywords:l,contains:["self",r]},{begin:e.IDENT_RE+"::",keywords:l},{className:"class",beginKeywords:"class struct",end:/[{;:]/,contains:[{begin:/</,end:/>/,contains:["self"]},e.TITLE_MODE]}]),exports:{preprocessor:s,strings:a,keywords:l}}}}());
-hljs.registerLanguage("c",function(){"use strict";return function(e){var n=e.getLanguage("c-like").rawDefinition();return n.name="C",n.aliases=["c","h"],n}}());
-hljs.registerLanguage("coffeescript",function(){"use strict";const e=["as","in","of","if","for","while","finally","var","new","function","do","return","void","else","break","catch","instanceof","with","throw","case","default","try","switch","continue","typeof","delete","let","yield","const","class","debugger","async","await","static","import","from","export","extends"],n=["true","false","null","undefined","NaN","Infinity"],a=[].concat(["setInterval","setTimeout","clearInterval","clearTimeout","require","exports","eval","isFinite","isNaN","parseFloat","parseInt","decodeURI","decodeURIComponent","encodeURI","encodeURIComponent","escape","unescape"],["arguments","this","super","console","window","document","localStorage","module","global"],["Intl","DataView","Number","Math","Date","String","RegExp","Object","Function","Boolean","Error","Symbol","Set","Map","WeakSet","WeakMap","Proxy","Reflect","JSON","Promise","Float64Array","Int16Array","Int32Array","Int8Array","Uint16Array","Uint32Array","Float32Array","Array","Uint8Array","Uint8ClampedArray","ArrayBuffer"],["EvalError","InternalError","RangeError","ReferenceError","SyntaxError","TypeError","URIError"]);return function(r){var t={keyword:e.concat(["then","unless","until","loop","by","when","and","or","is","isnt","not"]).filter((e=>n=>!e.includes(n))(["var","const","let","function","static"])).join(" "),literal:n.concat(["yes","no","on","off"]).join(" "),built_in:a.concat(["npm","print"]).join(" ")},i="[A-Za-z$_][0-9A-Za-z$_]*",s={className:"subst",begin:/#\{/,end:/}/,keywords:t},o=[r.BINARY_NUMBER_MODE,r.inherit(r.C_NUMBER_MODE,{starts:{end:"(\\s*/)?",relevance:0}}),{className:"string",variants:[{begin:/'''/,end:/'''/,contains:[r.BACKSLASH_ESCAPE]},{begin:/'/,end:/'/,contains:[r.BACKSLASH_ESCAPE]},{begin:/"""/,end:/"""/,contains:[r.BACKSLASH_ESCAPE,s]},{begin:/"/,end:/"/,contains:[r.BACKSLASH_ESCAPE,s]}]},{className:"regexp",variants:[{begin:"///",end:"///",contains:[s,r.HASH_COMMENT_MODE]},{begin:"//[gim]{0,3}(?=\\W)",relevance:0},{begin:/\/(?![ *]).*?(?![\\]).\/[gim]{0,3}(?=\W)/}]},{begin:"@"+i},{subLanguage:"javascript",excludeBegin:!0,excludeEnd:!0,variants:[{begin:"```",end:"```"},{begin:"`",end:"`"}]}];s.contains=o;var c=r.inherit(r.TITLE_MODE,{begin:i}),l={className:"params",begin:"\\([^\\(]",returnBegin:!0,contains:[{begin:/\(/,end:/\)/,keywords:t,contains:["self"].concat(o)}]};return{name:"CoffeeScript",aliases:["coffee","cson","iced"],keywords:t,illegal:/\/\*/,contains:o.concat([r.COMMENT("###","###"),r.HASH_COMMENT_MODE,{className:"function",begin:"^\\s*"+i+"\\s*=\\s*(\\(.*\\))?\\s*\\B[-=]>",end:"[-=]>",returnBegin:!0,contains:[c,l]},{begin:/[:\(,=]\s*/,relevance:0,contains:[{className:"function",begin:"(\\(.*\\))?\\s*\\B[-=]>",end:"[-=]>",returnBegin:!0,contains:[l]}]},{className:"class",beginKeywords:"class",end:"$",illegal:/[:="\[\]]/,contains:[{beginKeywords:"extends",endsWithParent:!0,illegal:/[:="\[\]]/,contains:[c]},c]},{begin:i+":",end:":",returnBegin:!0,returnEnd:!0,relevance:0}])}}}());
-hljs.registerLanguage("cpp",function(){"use strict";return function(e){var t=e.getLanguage("c-like").rawDefinition();return t.disableAutodetect=!1,t.name="C++",t.aliases=["cc","c++","h++","hpp","hh","hxx","cxx"],t}}());
-hljs.registerLanguage("csharp",function(){"use strict";return function(e){var n={keyword:"abstract as base bool break byte case catch char checked const continue decimal default delegate do double enum event explicit extern finally fixed float for foreach goto if implicit in int interface internal is lock long object operator out override params private protected public readonly ref sbyte sealed short sizeof stackalloc static string struct switch this try typeof uint ulong unchecked unsafe ushort using virtual void volatile while add alias ascending async await by descending dynamic equals from get global group into join let nameof on orderby partial remove select set value var when where yield",literal:"null false true"},i=e.inherit(e.TITLE_MODE,{begin:"[a-zA-Z](\\.?\\w)*"}),a={className:"number",variants:[{begin:"\\b(0b[01']+)"},{begin:"(-?)\\b([\\d']+(\\.[\\d']*)?|\\.[\\d']+)(u|U|l|L|ul|UL|f|F|b|B)"},{begin:"(-?)(\\b0[xX][a-fA-F0-9']+|(\\b[\\d']+(\\.[\\d']*)?|\\.[\\d']+)([eE][-+]?[\\d']+)?)"}],relevance:0},s={className:"string",begin:'@"',end:'"',contains:[{begin:'""'}]},t=e.inherit(s,{illegal:/\n/}),l={className:"subst",begin:"{",end:"}",keywords:n},r=e.inherit(l,{illegal:/\n/}),c={className:"string",begin:/\$"/,end:'"',illegal:/\n/,contains:[{begin:"{{"},{begin:"}}"},e.BACKSLASH_ESCAPE,r]},o={className:"string",begin:/\$@"/,end:'"',contains:[{begin:"{{"},{begin:"}}"},{begin:'""'},l]},g=e.inherit(o,{illegal:/\n/,contains:[{begin:"{{"},{begin:"}}"},{begin:'""'},r]});l.contains=[o,c,s,e.APOS_STRING_MODE,e.QUOTE_STRING_MODE,a,e.C_BLOCK_COMMENT_MODE],r.contains=[g,c,t,e.APOS_STRING_MODE,e.QUOTE_STRING_MODE,a,e.inherit(e.C_BLOCK_COMMENT_MODE,{illegal:/\n/})];var d={variants:[o,c,s,e.APOS_STRING_MODE,e.QUOTE_STRING_MODE]},E={begin:"<",end:">",contains:[{beginKeywords:"in out"},i]},_=e.IDENT_RE+"(<"+e.IDENT_RE+"(\\s*,\\s*"+e.IDENT_RE+")*>)?(\\[\\])?",b={begin:"@"+e.IDENT_RE,relevance:0};return{name:"C#",aliases:["cs","c#"],keywords:n,illegal:/::/,contains:[e.COMMENT("///","$",{returnBegin:!0,contains:[{className:"doctag",variants:[{begin:"///",relevance:0},{begin:"\x3c!--|--\x3e"},{begin:"</?",end:">"}]}]}),e.C_LINE_COMMENT_MODE,e.C_BLOCK_COMMENT_MODE,{className:"meta",begin:"#",end:"$",keywords:{"meta-keyword":"if else elif endif define undef warning error line region endregion pragma checksum"}},d,a,{beginKeywords:"class interface",end:/[{;=]/,illegal:/[^\s:,]/,contains:[{beginKeywords:"where class"},i,E,e.C_LINE_COMMENT_MODE,e.C_BLOCK_COMMENT_MODE]},{beginKeywords:"namespace",end:/[{;=]/,illegal:/[^\s:]/,contains:[i,e.C_LINE_COMMENT_MODE,e.C_BLOCK_COMMENT_MODE]},{className:"meta",begin:"^\\s*\\[",excludeBegin:!0,end:"\\]",excludeEnd:!0,contains:[{className:"meta-string",begin:/"/,end:/"/}]},{beginKeywords:"new return throw await else",relevance:0},{className:"function",begin:"("+_+"\\s+)+"+e.IDENT_RE+"\\s*(\\<.+\\>)?\\s*\\(",returnBegin:!0,end:/\s*[{;=]/,excludeEnd:!0,keywords:n,contains:[{begin:e.IDENT_RE+"\\s*(\\<.+\\>)?\\s*\\(",returnBegin:!0,contains:[e.TITLE_MODE,E],relevance:0},{className:"params",begin:/\(/,end:/\)/,excludeBegin:!0,excludeEnd:!0,keywords:n,relevance:0,contains:[d,a,e.C_BLOCK_COMMENT_MODE]},e.C_LINE_COMMENT_MODE,e.C_BLOCK_COMMENT_MODE]},b]}}}());
-hljs.registerLanguage("css",function(){"use strict";return function(e){var n={begin:/(?:[A-Z\_\.\-]+|--[a-zA-Z0-9_-]+)\s*:/,returnBegin:!0,end:";",endsWithParent:!0,contains:[{className:"attribute",begin:/\S/,end:":",excludeEnd:!0,starts:{endsWithParent:!0,excludeEnd:!0,contains:[{begin:/[\w-]+\(/,returnBegin:!0,contains:[{className:"built_in",begin:/[\w-]+/},{begin:/\(/,end:/\)/,contains:[e.APOS_STRING_MODE,e.QUOTE_STRING_MODE,e.CSS_NUMBER_MODE]}]},e.CSS_NUMBER_MODE,e.QUOTE_STRING_MODE,e.APOS_STRING_MODE,e.C_BLOCK_COMMENT_MODE,{className:"number",begin:"#[0-9A-Fa-f]+"},{className:"meta",begin:"!important"}]}}]};return{name:"CSS",case_insensitive:!0,illegal:/[=\/|'\$]/,contains:[e.C_BLOCK_COMMENT_MODE,{className:"selector-id",begin:/#[A-Za-z0-9_-]+/},{className:"selector-class",begin:/\.[A-Za-z0-9_-]+/},{className:"selector-attr",begin:/\[/,end:/\]/,illegal:"$",contains:[e.APOS_STRING_MODE,e.QUOTE_STRING_MODE]},{className:"selector-pseudo",begin:/:(:)?[a-zA-Z0-9\_\-\+\(\)"'.]+/},{begin:"@(page|font-face)",lexemes:"@[a-z-]+",keywords:"@page @font-face"},{begin:"@",end:"[{;]",illegal:/:/,returnBegin:!0,contains:[{className:"keyword",begin:/@\-?\w[\w]*(\-\w+)*/},{begin:/\s/,endsWithParent:!0,excludeEnd:!0,relevance:0,keywords:"and or not only",contains:[{begin:/[a-z-]+:/,className:"attribute"},e.APOS_STRING_MODE,e.QUOTE_STRING_MODE,e.CSS_NUMBER_MODE]}]},{className:"selector-tag",begin:"[a-zA-Z-][a-zA-Z0-9_-]*",relevance:0},{begin:"{",end:"}",illegal:/\S/,contains:[e.C_BLOCK_COMMENT_MODE,n]}]}}}());
-hljs.registerLanguage("diff",function(){"use strict";return function(e){return{name:"Diff",aliases:["patch"],contains:[{className:"meta",relevance:10,variants:[{begin:/^@@ +\-\d+,\d+ +\+\d+,\d+ +@@$/},{begin:/^\*\*\* +\d+,\d+ +\*\*\*\*$/},{begin:/^\-\-\- +\d+,\d+ +\-\-\-\-$/}]},{className:"comment",variants:[{begin:/Index: /,end:/$/},{begin:/={3,}/,end:/$/},{begin:/^\-{3}/,end:/$/},{begin:/^\*{3} /,end:/$/},{begin:/^\+{3}/,end:/$/},{begin:/^\*{15}$/}]},{className:"addition",begin:"^\\+",end:"$"},{className:"deletion",begin:"^\\-",end:"$"},{className:"addition",begin:"^\\!",end:"$"}]}}}());
-hljs.registerLanguage("go",function(){"use strict";return function(e){var n={keyword:"break default func interface select case map struct chan else goto package switch const fallthrough if range type continue for import return var go defer bool byte complex64 complex128 float32 float64 int8 int16 int32 int64 string uint8 uint16 uint32 uint64 int uint uintptr rune",literal:"true false iota nil",built_in:"append cap close complex copy imag len make new panic print println real recover delete"};return{name:"Go",aliases:["golang"],keywords:n,illegal:"</",contains:[e.C_LINE_COMMENT_MODE,e.C_BLOCK_COMMENT_MODE,{className:"string",variants:[e.QUOTE_STRING_MODE,e.APOS_STRING_MODE,{begin:"`",end:"`"}]},{className:"number",variants:[{begin:e.C_NUMBER_RE+"[i]",relevance:1},e.C_NUMBER_MODE]},{begin:/:=/},{className:"function",beginKeywords:"func",end:"\\s*(\\{|$)",excludeEnd:!0,contains:[e.TITLE_MODE,{className:"params",begin:/\(/,end:/\)/,keywords:n,illegal:/["']/}]}]}}}());
-hljs.registerLanguage("http",function(){"use strict";return function(e){var n="HTTP/[0-9\\.]+";return{name:"HTTP",aliases:["https"],illegal:"\\S",contains:[{begin:"^"+n,end:"$",contains:[{className:"number",begin:"\\b\\d{3}\\b"}]},{begin:"^[A-Z]+ (.*?) "+n+"$",returnBegin:!0,end:"$",contains:[{className:"string",begin:" ",end:" ",excludeBegin:!0,excludeEnd:!0},{begin:n},{className:"keyword",begin:"[A-Z]+"}]},{className:"attribute",begin:"^\\w",end:": ",excludeEnd:!0,illegal:"\\n|\\s|=",starts:{end:"$",relevance:0}},{begin:"\\n\\n",starts:{subLanguage:[],endsWithParent:!0}}]}}}());
-hljs.registerLanguage("ini",function(){"use strict";function e(e){return e?"string"==typeof e?e:e.source:null}function n(...n){return n.map(n=>e(n)).join("")}return function(a){var s={className:"number",relevance:0,variants:[{begin:/([\+\-]+)?[\d]+_[\d_]+/},{begin:a.NUMBER_RE}]},i=a.COMMENT();i.variants=[{begin:/;/,end:/$/},{begin:/#/,end:/$/}];var t={className:"variable",variants:[{begin:/\$[\w\d"][\w\d_]*/},{begin:/\$\{(.*?)}/}]},r={className:"literal",begin:/\bon|off|true|false|yes|no\b/},l={className:"string",contains:[a.BACKSLASH_ESCAPE],variants:[{begin:"'''",end:"'''",relevance:10},{begin:'"""',end:'"""',relevance:10},{begin:'"',end:'"'},{begin:"'",end:"'"}]},c={begin:/\[/,end:/\]/,contains:[i,r,t,l,s,"self"],relevance:0},g="("+[/[A-Za-z0-9_-]+/,/"(\\"|[^"])*"/,/'[^']*'/].map(n=>e(n)).join("|")+")";return{name:"TOML, also INI",aliases:["toml"],case_insensitive:!0,illegal:/\S/,contains:[i,{className:"section",begin:/\[+/,end:/\]+/},{begin:n(g,"(\\s*\\.\\s*",g,")*",n("(?=",/\s*=\s*[^#\s]/,")")),className:"attr",starts:{end:/$/,contains:[i,c,r,t,l,s]}}]}}}());
-hljs.registerLanguage("java",function(){"use strict";function e(e){return e?"string"==typeof e?e:e.source:null}function n(e){return a("(",e,")?")}function a(...n){return n.map(n=>e(n)).join("")}function s(...n){return"("+n.map(n=>e(n)).join("|")+")"}return function(e){var t="false synchronized int abstract float private char boolean var static null if const for true while long strictfp finally protected import native final void enum else break transient catch instanceof byte super volatile case assert short package default double public try this switch continue throws protected public private module requires exports do",i={className:"meta",begin:"@[À-ʸa-zA-Z_$][À-ʸa-zA-Z_$0-9]*",contains:[{begin:/\(/,end:/\)/,contains:["self"]}]},r=e=>a("[",e,"]+([",e,"_]*[",e,"]+)?"),c={className:"number",variants:[{begin:`\\b(0[bB]${r("01")})[lL]?`},{begin:`\\b(0${r("0-7")})[dDfFlL]?`},{begin:a(/\b0[xX]/,s(a(r("a-fA-F0-9"),/\./,r("a-fA-F0-9")),a(r("a-fA-F0-9"),/\.?/),a(/\./,r("a-fA-F0-9"))),/([pP][+-]?(\d+))?/,/[fFdDlL]?/)},{begin:a(/\b/,s(a(/\d*\./,r("\\d")),r("\\d")),/[eE][+-]?[\d]+[dDfF]?/)},{begin:a(/\b/,r(/\d/),n(/\.?/),n(r(/\d/)),/[dDfFlL]?/)}],relevance:0};return{name:"Java",aliases:["jsp"],keywords:t,illegal:/<\/|#/,contains:[e.COMMENT("/\\*\\*","\\*/",{relevance:0,contains:[{begin:/\w+@/,relevance:0},{className:"doctag",begin:"@[A-Za-z]+"}]}),e.C_LINE_COMMENT_MODE,e.C_BLOCK_COMMENT_MODE,e.APOS_STRING_MODE,e.QUOTE_STRING_MODE,{className:"class",beginKeywords:"class interface",end:/[{;=]/,excludeEnd:!0,keywords:"class interface",illegal:/[:"\[\]]/,contains:[{beginKeywords:"extends implements"},e.UNDERSCORE_TITLE_MODE]},{beginKeywords:"new throw return else",relevance:0},{className:"function",begin:"([À-ʸa-zA-Z_$][À-ʸa-zA-Z_$0-9]*(<[À-ʸa-zA-Z_$][À-ʸa-zA-Z_$0-9]*(\\s*,\\s*[À-ʸa-zA-Z_$][À-ʸa-zA-Z_$0-9]*)*>)?\\s+)+"+e.UNDERSCORE_IDENT_RE+"\\s*\\(",returnBegin:!0,end:/[{;=]/,excludeEnd:!0,keywords:t,contains:[{begin:e.UNDERSCORE_IDENT_RE+"\\s*\\(",returnBegin:!0,relevance:0,contains:[e.UNDERSCORE_TITLE_MODE]},{className:"params",begin:/\(/,end:/\)/,keywords:t,relevance:0,contains:[i,e.APOS_STRING_MODE,e.QUOTE_STRING_MODE,e.C_NUMBER_MODE,e.C_BLOCK_COMMENT_MODE]},e.C_LINE_COMMENT_MODE,e.C_BLOCK_COMMENT_MODE]},c,i]}}}());
-hljs.registerLanguage("javascript",function(){"use strict";const e=["as","in","of","if","for","while","finally","var","new","function","do","return","void","else","break","catch","instanceof","with","throw","case","default","try","switch","continue","typeof","delete","let","yield","const","class","debugger","async","await","static","import","from","export","extends"],n=["true","false","null","undefined","NaN","Infinity"],a=[].concat(["setInterval","setTimeout","clearInterval","clearTimeout","require","exports","eval","isFinite","isNaN","parseFloat","parseInt","decodeURI","decodeURIComponent","encodeURI","encodeURIComponent","escape","unescape"],["arguments","this","super","console","window","document","localStorage","module","global"],["Intl","DataView","Number","Math","Date","String","RegExp","Object","Function","Boolean","Error","Symbol","Set","Map","WeakSet","WeakMap","Proxy","Reflect","JSON","Promise","Float64Array","Int16Array","Int32Array","Int8Array","Uint16Array","Uint32Array","Float32Array","Array","Uint8Array","Uint8ClampedArray","ArrayBuffer"],["EvalError","InternalError","RangeError","ReferenceError","SyntaxError","TypeError","URIError"]);function s(e){return r("(?=",e,")")}function r(...e){return e.map(e=>(function(e){return e?"string"==typeof e?e:e.source:null})(e)).join("")}return function(t){var i="[A-Za-z$_][0-9A-Za-z$_]*",c={begin:/<[A-Za-z0-9\\._:-]+/,end:/\/[A-Za-z0-9\\._:-]+>|\/>/},o={$pattern:"[A-Za-z$_][0-9A-Za-z$_]*",keyword:e.join(" "),literal:n.join(" "),built_in:a.join(" ")},l={className:"number",variants:[{begin:"\\b(0[bB][01]+)n?"},{begin:"\\b(0[oO][0-7]+)n?"},{begin:t.C_NUMBER_RE+"n?"}],relevance:0},E={className:"subst",begin:"\\$\\{",end:"\\}",keywords:o,contains:[]},d={begin:"html`",end:"",starts:{end:"`",returnEnd:!1,contains:[t.BACKSLASH_ESCAPE,E],subLanguage:"xml"}},g={begin:"css`",end:"",starts:{end:"`",returnEnd:!1,contains:[t.BACKSLASH_ESCAPE,E],subLanguage:"css"}},u={className:"string",begin:"`",end:"`",contains:[t.BACKSLASH_ESCAPE,E]};E.contains=[t.APOS_STRING_MODE,t.QUOTE_STRING_MODE,d,g,u,l,t.REGEXP_MODE];var b=E.contains.concat([{begin:/\(/,end:/\)/,contains:["self"].concat(E.contains,[t.C_BLOCK_COMMENT_MODE,t.C_LINE_COMMENT_MODE])},t.C_BLOCK_COMMENT_MODE,t.C_LINE_COMMENT_MODE]),_={className:"params",begin:/\(/,end:/\)/,excludeBegin:!0,excludeEnd:!0,contains:b};return{name:"JavaScript",aliases:["js","jsx","mjs","cjs"],keywords:o,contains:[t.SHEBANG({binary:"node",relevance:5}),{className:"meta",relevance:10,begin:/^\s*['"]use (strict|asm)['"]/},t.APOS_STRING_MODE,t.QUOTE_STRING_MODE,d,g,u,t.C_LINE_COMMENT_MODE,t.COMMENT("/\\*\\*","\\*/",{relevance:0,contains:[{className:"doctag",begin:"@[A-Za-z]+",contains:[{className:"type",begin:"\\{",end:"\\}",relevance:0},{className:"variable",begin:i+"(?=\\s*(-)|$)",endsParent:!0,relevance:0},{begin:/(?=[^\n])\s/,relevance:0}]}]}),t.C_BLOCK_COMMENT_MODE,l,{begin:r(/[{,\n]\s*/,s(r(/(((\/\/.*)|(\/\*(.|\n)*\*\/))\s*)*/,i+"\\s*:"))),relevance:0,contains:[{className:"attr",begin:i+s("\\s*:"),relevance:0}]},{begin:"("+t.RE_STARTERS_RE+"|\\b(case|return|throw)\\b)\\s*",keywords:"return throw case",contains:[t.C_LINE_COMMENT_MODE,t.C_BLOCK_COMMENT_MODE,t.REGEXP_MODE,{className:"function",begin:"(\\([^(]*(\\([^(]*(\\([^(]*\\))?\\))?\\)|"+t.UNDERSCORE_IDENT_RE+")\\s*=>",returnBegin:!0,end:"\\s*=>",contains:[{className:"params",variants:[{begin:t.UNDERSCORE_IDENT_RE},{className:null,begin:/\(\s*\)/,skip:!0},{begin:/\(/,end:/\)/,excludeBegin:!0,excludeEnd:!0,keywords:o,contains:b}]}]},{begin:/,/,relevance:0},{className:"",begin:/\s/,end:/\s*/,skip:!0},{variants:[{begin:"<>",end:"</>"},{begin:c.begin,end:c.end}],subLanguage:"xml",contains:[{begin:c.begin,end:c.end,skip:!0,contains:["self"]}]}],relevance:0},{className:"function",beginKeywords:"function",end:/\{/,excludeEnd:!0,contains:[t.inherit(t.TITLE_MODE,{begin:i}),_],illegal:/\[|%/},{begin:/\$[(.]/},t.METHOD_GUARD,{className:"class",beginKeywords:"class",end:/[{;=]/,excludeEnd:!0,illegal:/[:"\[\]]/,contains:[{beginKeywords:"extends"},t.UNDERSCORE_TITLE_MODE]},{beginKeywords:"constructor",end:/\{/,excludeEnd:!0},{begin:"(get|set)\\s+(?="+i+"\\()",end:/{/,keywords:"get set",contains:[t.inherit(t.TITLE_MODE,{begin:i}),{begin:/\(\)/},_]}],illegal:/#(?!!)/}}}());
-hljs.registerLanguage("json",function(){"use strict";return function(n){var e={literal:"true false null"},i=[n.C_LINE_COMMENT_MODE,n.C_BLOCK_COMMENT_MODE],t=[n.QUOTE_STRING_MODE,n.C_NUMBER_MODE],a={end:",",endsWithParent:!0,excludeEnd:!0,contains:t,keywords:e},l={begin:"{",end:"}",contains:[{className:"attr",begin:/"/,end:/"/,contains:[n.BACKSLASH_ESCAPE],illegal:"\\n"},n.inherit(a,{begin:/:/})].concat(i),illegal:"\\S"},s={begin:"\\[",end:"\\]",contains:[n.inherit(a)],illegal:"\\S"};return t.push(l,s),i.forEach((function(n){t.push(n)})),{name:"JSON",contains:t,keywords:e,illegal:"\\S"}}}());
-hljs.registerLanguage("kotlin",function(){"use strict";return function(e){var n={keyword:"abstract as val var vararg get set class object open private protected public noinline crossinline dynamic final enum if else do while for when throw try catch finally import package is in fun override companion reified inline lateinit init interface annotation data sealed internal infix operator out by constructor super tailrec where const inner suspend typealias external expect actual trait volatile transient native default",built_in:"Byte Short Char Int Long Boolean Float Double Void Unit Nothing",literal:"true false null"},a={className:"symbol",begin:e.UNDERSCORE_IDENT_RE+"@"},i={className:"subst",begin:"\\${",end:"}",contains:[e.C_NUMBER_MODE]},s={className:"variable",begin:"\\$"+e.UNDERSCORE_IDENT_RE},t={className:"string",variants:[{begin:'"""',end:'"""(?=[^"])',contains:[s,i]},{begin:"'",end:"'",illegal:/\n/,contains:[e.BACKSLASH_ESCAPE]},{begin:'"',end:'"',illegal:/\n/,contains:[e.BACKSLASH_ESCAPE,s,i]}]};i.contains.push(t);var r={className:"meta",begin:"@(?:file|property|field|get|set|receiver|param|setparam|delegate)\\s*:(?:\\s*"+e.UNDERSCORE_IDENT_RE+")?"},l={className:"meta",begin:"@"+e.UNDERSCORE_IDENT_RE,contains:[{begin:/\(/,end:/\)/,contains:[e.inherit(t,{className:"meta-string"})]}]},c=e.COMMENT("/\\*","\\*/",{contains:[e.C_BLOCK_COMMENT_MODE]}),o={variants:[{className:"type",begin:e.UNDERSCORE_IDENT_RE},{begin:/\(/,end:/\)/,contains:[]}]},d=o;return d.variants[1].contains=[o],o.variants[1].contains=[d],{name:"Kotlin",aliases:["kt"],keywords:n,contains:[e.COMMENT("/\\*\\*","\\*/",{relevance:0,contains:[{className:"doctag",begin:"@[A-Za-z]+"}]}),e.C_LINE_COMMENT_MODE,c,{className:"keyword",begin:/\b(break|continue|return|this)\b/,starts:{contains:[{className:"symbol",begin:/@\w+/}]}},a,r,l,{className:"function",beginKeywords:"fun",end:"[(]|$",returnBegin:!0,excludeEnd:!0,keywords:n,illegal:/fun\s+(<.*>)?[^\s\(]+(\s+[^\s\(]+)\s*=/,relevance:5,contains:[{begin:e.UNDERSCORE_IDENT_RE+"\\s*\\(",returnBegin:!0,relevance:0,contains:[e.UNDERSCORE_TITLE_MODE]},{className:"type",begin:/</,end:/>/,keywords:"reified",relevance:0},{className:"params",begin:/\(/,end:/\)/,endsParent:!0,keywords:n,relevance:0,contains:[{begin:/:/,end:/[=,\/]/,endsWithParent:!0,contains:[o,e.C_LINE_COMMENT_MODE,c],relevance:0},e.C_LINE_COMMENT_MODE,c,r,l,t,e.C_NUMBER_MODE]},c]},{className:"class",beginKeywords:"class interface trait",end:/[:\{(]|$/,excludeEnd:!0,illegal:"extends implements",contains:[{beginKeywords:"public protected internal private constructor"},e.UNDERSCORE_TITLE_MODE,{className:"type",begin:/</,end:/>/,excludeBegin:!0,excludeEnd:!0,relevance:0},{className:"type",begin:/[,:]\s*/,end:/[<\(,]|$/,excludeBegin:!0,returnEnd:!0},r,l]},t,{className:"meta",begin:"^#!/usr/bin/env",end:"$",illegal:"\n"},{className:"number",begin:"\\b(0[bB]([01]+[01_]+[01]+|[01]+)|0[xX]([a-fA-F0-9]+[a-fA-F0-9_]+[a-fA-F0-9]+|[a-fA-F0-9]+)|(([\\d]+[\\d_]+[\\d]+|[\\d]+)(\\.([\\d]+[\\d_]+[\\d]+|[\\d]+))?|\\.([\\d]+[\\d_]+[\\d]+|[\\d]+))([eE][-+]?\\d+)?)[lLfF]?",relevance:0}]}}}());
-hljs.registerLanguage("less",function(){"use strict";return function(e){var n="([\\w-]+|@{[\\w-]+})",a=[],s=[],t=function(e){return{className:"string",begin:"~?"+e+".*?"+e}},r=function(e,n,a){return{className:e,begin:n,relevance:a}},i={begin:"\\(",end:"\\)",contains:s,relevance:0};s.push(e.C_LINE_COMMENT_MODE,e.C_BLOCK_COMMENT_MODE,t("'"),t('"'),e.CSS_NUMBER_MODE,{begin:"(url|data-uri)\\(",starts:{className:"string",end:"[\\)\\n]",excludeEnd:!0}},r("number","#[0-9A-Fa-f]+\\b"),i,r("variable","@@?[\\w-]+",10),r("variable","@{[\\w-]+}"),r("built_in","~?`[^`]*?`"),{className:"attribute",begin:"[\\w-]+\\s*:",end:":",returnBegin:!0,excludeEnd:!0},{className:"meta",begin:"!important"});var c=s.concat({begin:"{",end:"}",contains:a}),l={beginKeywords:"when",endsWithParent:!0,contains:[{beginKeywords:"and not"}].concat(s)},o={begin:n+"\\s*:",returnBegin:!0,end:"[;}]",relevance:0,contains:[{className:"attribute",begin:n,end:":",excludeEnd:!0,starts:{endsWithParent:!0,illegal:"[<=$]",relevance:0,contains:s}}]},g={className:"keyword",begin:"@(import|media|charset|font-face|(-[a-z]+-)?keyframes|supports|document|namespace|page|viewport|host)\\b",starts:{end:"[;{}]",returnEnd:!0,contains:s,relevance:0}},d={className:"variable",variants:[{begin:"@[\\w-]+\\s*:",relevance:15},{begin:"@[\\w-]+"}],starts:{end:"[;}]",returnEnd:!0,contains:c}},b={variants:[{begin:"[\\.#:&\\[>]",end:"[;{}]"},{begin:n,end:"{"}],returnBegin:!0,returnEnd:!0,illegal:"[<='$\"]",relevance:0,contains:[e.C_LINE_COMMENT_MODE,e.C_BLOCK_COMMENT_MODE,l,r("keyword","all\\b"),r("variable","@{[\\w-]+}"),r("selector-tag",n+"%?",0),r("selector-id","#"+n),r("selector-class","\\."+n,0),r("selector-tag","&",0),{className:"selector-attr",begin:"\\[",end:"\\]"},{className:"selector-pseudo",begin:/:(:)?[a-zA-Z0-9\_\-\+\(\)"'.]+/},{begin:"\\(",end:"\\)",contains:c},{begin:"!important"}]};return a.push(e.C_LINE_COMMENT_MODE,e.C_BLOCK_COMMENT_MODE,g,d,o,b),{name:"Less",case_insensitive:!0,illegal:"[=>'/<($\"]",contains:a}}}());
-hljs.registerLanguage("lua",function(){"use strict";return function(e){var t={begin:"\\[=*\\[",end:"\\]=*\\]",contains:["self"]},a=[e.COMMENT("--(?!\\[=*\\[)","$"),e.COMMENT("--\\[=*\\[","\\]=*\\]",{contains:[t],relevance:10})];return{name:"Lua",keywords:{$pattern:e.UNDERSCORE_IDENT_RE,literal:"true false nil",keyword:"and break do else elseif end for goto if in local not or repeat return then until while",built_in:"_G _ENV _VERSION __index __newindex __mode __call __metatable __tostring __len __gc __add __sub __mul __div __mod __pow __concat __unm __eq __lt __le assert collectgarbage dofile error getfenv getmetatable ipairs load loadfile loadstring module next pairs pcall print rawequal rawget rawset require select setfenv setmetatable tonumber tostring type unpack xpcall arg self coroutine resume yield status wrap create running debug getupvalue debug sethook getmetatable gethook setmetatable setlocal traceback setfenv getinfo setupvalue getlocal getregistry getfenv io lines write close flush open output type read stderr stdin input stdout popen tmpfile math log max acos huge ldexp pi cos tanh pow deg tan cosh sinh random randomseed frexp ceil floor rad abs sqrt modf asin min mod fmod log10 atan2 exp sin atan os exit setlocale date getenv difftime remove time clock tmpname rename execute package preload loadlib loaded loaders cpath config path seeall string sub upper len gfind rep find match char dump gmatch reverse byte format gsub lower table setn insert getn foreachi maxn foreach concat sort remove"},contains:a.concat([{className:"function",beginKeywords:"function",end:"\\)",contains:[e.inherit(e.TITLE_MODE,{begin:"([_a-zA-Z]\\w*\\.)*([_a-zA-Z]\\w*:)?[_a-zA-Z]\\w*"}),{className:"params",begin:"\\(",endsWithParent:!0,contains:a}].concat(a)},e.C_NUMBER_MODE,e.APOS_STRING_MODE,e.QUOTE_STRING_MODE,{className:"string",begin:"\\[=*\\[",end:"\\]=*\\]",contains:[t],relevance:5}])}}}());
-hljs.registerLanguage("makefile",function(){"use strict";return function(e){var i={className:"variable",variants:[{begin:"\\$\\("+e.UNDERSCORE_IDENT_RE+"\\)",contains:[e.BACKSLASH_ESCAPE]},{begin:/\$[@%<?\^\+\*]/}]},n={className:"string",begin:/"/,end:/"/,contains:[e.BACKSLASH_ESCAPE,i]},a={className:"variable",begin:/\$\([\w-]+\s/,end:/\)/,keywords:{built_in:"subst patsubst strip findstring filter filter-out sort word wordlist firstword lastword dir notdir suffix basename addsuffix addprefix join wildcard realpath abspath error warning shell origin flavor foreach if or and call eval file value"},contains:[i]},r={begin:"^"+e.UNDERSCORE_IDENT_RE+"\\s*(?=[:+?]?=)"},s={className:"section",begin:/^[^\s]+:/,end:/$/,contains:[i]};return{name:"Makefile",aliases:["mk","mak"],keywords:{$pattern:/[\w-]+/,keyword:"define endef undefine ifdef ifndef ifeq ifneq else endif include -include sinclude override export unexport private vpath"},contains:[e.HASH_COMMENT_MODE,i,n,a,r,{className:"meta",begin:/^\.PHONY:/,end:/$/,keywords:{$pattern:/[\.\w]+/,"meta-keyword":".PHONY"}},s]}}}());
-hljs.registerLanguage("xml",function(){"use strict";return function(e){var n={className:"symbol",begin:"&[a-z]+;|&#[0-9]+;|&#x[a-f0-9]+;"},a={begin:"\\s",contains:[{className:"meta-keyword",begin:"#?[a-z_][a-z1-9_-]+",illegal:"\\n"}]},s=e.inherit(a,{begin:"\\(",end:"\\)"}),t=e.inherit(e.APOS_STRING_MODE,{className:"meta-string"}),i=e.inherit(e.QUOTE_STRING_MODE,{className:"meta-string"}),c={endsWithParent:!0,illegal:/</,relevance:0,contains:[{className:"attr",begin:"[A-Za-z0-9\\._:-]+",relevance:0},{begin:/=\s*/,relevance:0,contains:[{className:"string",endsParent:!0,variants:[{begin:/"/,end:/"/,contains:[n]},{begin:/'/,end:/'/,contains:[n]},{begin:/[^\s"'=<>`]+/}]}]}]};return{name:"HTML, XML",aliases:["html","xhtml","rss","atom","xjb","xsd","xsl","plist","wsf","svg"],case_insensitive:!0,contains:[{className:"meta",begin:"<![a-z]",end:">",relevance:10,contains:[a,i,t,s,{begin:"\\[",end:"\\]",contains:[{className:"meta",begin:"<![a-z]",end:">",contains:[a,s,i,t]}]}]},e.COMMENT("\x3c!--","--\x3e",{relevance:10}),{begin:"<\\!\\[CDATA\\[",end:"\\]\\]>",relevance:10},n,{className:"meta",begin:/<\?xml/,end:/\?>/,relevance:10},{className:"tag",begin:"<style(?=\\s|>)",end:">",keywords:{name:"style"},contains:[c],starts:{end:"</style>",returnEnd:!0,subLanguage:["css","xml"]}},{className:"tag",begin:"<script(?=\\s|>)",end:">",keywords:{name:"script"},contains:[c],starts:{end:"<\/script>",returnEnd:!0,subLanguage:["javascript","handlebars","xml"]}},{className:"tag",begin:"</?",end:"/?>",contains:[{className:"name",begin:/[^\/><\s]+/,relevance:0},c]}]}}}());
-hljs.registerLanguage("markdown",function(){"use strict";return function(n){const e={begin:"<",end:">",subLanguage:"xml",relevance:0},a={begin:"\\[.+?\\][\\(\\[].*?[\\)\\]]",returnBegin:!0,contains:[{className:"string",begin:"\\[",end:"\\]",excludeBegin:!0,returnEnd:!0,relevance:0},{className:"link",begin:"\\]\\(",end:"\\)",excludeBegin:!0,excludeEnd:!0},{className:"symbol",begin:"\\]\\[",end:"\\]",excludeBegin:!0,excludeEnd:!0}],relevance:10},i={className:"strong",contains:[],variants:[{begin:/_{2}/,end:/_{2}/},{begin:/\*{2}/,end:/\*{2}/}]},s={className:"emphasis",contains:[],variants:[{begin:/\*(?!\*)/,end:/\*/},{begin:/_(?!_)/,end:/_/,relevance:0}]};i.contains.push(s),s.contains.push(i);var c=[e,a];return i.contains=i.contains.concat(c),s.contains=s.contains.concat(c),{name:"Markdown",aliases:["md","mkdown","mkd"],contains:[{className:"section",variants:[{begin:"^#{1,6}",end:"$",contains:c=c.concat(i,s)},{begin:"(?=^.+?\\n[=-]{2,}$)",contains:[{begin:"^[=-]*$"},{begin:"^",end:"\\n",contains:c}]}]},e,{className:"bullet",begin:"^[ \t]*([*+-]|(\\d+\\.))(?=\\s+)",end:"\\s+",excludeEnd:!0},i,s,{className:"quote",begin:"^>\\s+",contains:c,end:"$"},{className:"code",variants:[{begin:"(`{3,})(.|\\n)*?\\1`*[ ]*"},{begin:"(~{3,})(.|\\n)*?\\1~*[ ]*"},{begin:"```",end:"```+[ ]*$"},{begin:"~~~",end:"~~~+[ ]*$"},{begin:"`.+?`"},{begin:"(?=^( {4}|\\t))",contains:[{begin:"^( {4}|\\t)",end:"(\\n)$"}],relevance:0}]},{begin:"^[-\\*]{3,}",end:"$"},a,{begin:/^\[[^\n]+\]:/,returnBegin:!0,contains:[{className:"symbol",begin:/\[/,end:/\]/,excludeBegin:!0,excludeEnd:!0},{className:"link",begin:/:\s*/,end:/$/,excludeBegin:!0}]}]}}}());
-hljs.registerLanguage("nginx",function(){"use strict";return function(e){var n={className:"variable",variants:[{begin:/\$\d+/},{begin:/\$\{/,end:/}/},{begin:"[\\$\\@]"+e.UNDERSCORE_IDENT_RE}]},a={endsWithParent:!0,keywords:{$pattern:"[a-z/_]+",literal:"on off yes no true false none blocked debug info notice warn error crit select break last permanent redirect kqueue rtsig epoll poll /dev/poll"},relevance:0,illegal:"=>",contains:[e.HASH_COMMENT_MODE,{className:"string",contains:[e.BACKSLASH_ESCAPE,n],variants:[{begin:/"/,end:/"/},{begin:/'/,end:/'/}]},{begin:"([a-z]+):/",end:"\\s",endsWithParent:!0,excludeEnd:!0,contains:[n]},{className:"regexp",contains:[e.BACKSLASH_ESCAPE,n],variants:[{begin:"\\s\\^",end:"\\s|{|;",returnEnd:!0},{begin:"~\\*?\\s+",end:"\\s|{|;",returnEnd:!0},{begin:"\\*(\\.[a-z\\-]+)+"},{begin:"([a-z\\-]+\\.)+\\*"}]},{className:"number",begin:"\\b\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}(:\\d{1,5})?\\b"},{className:"number",begin:"\\b\\d+[kKmMgGdshdwy]*\\b",relevance:0},n]};return{name:"Nginx config",aliases:["nginxconf"],contains:[e.HASH_COMMENT_MODE,{begin:e.UNDERSCORE_IDENT_RE+"\\s+{",returnBegin:!0,end:"{",contains:[{className:"section",begin:e.UNDERSCORE_IDENT_RE}],relevance:0},{begin:e.UNDERSCORE_IDENT_RE+"\\s",end:";|{",returnBegin:!0,contains:[{className:"attribute",begin:e.UNDERSCORE_IDENT_RE,starts:a}],relevance:0}],illegal:"[^\\s\\}]"}}}());
-hljs.registerLanguage("objectivec",function(){"use strict";return function(e){var n=/[a-zA-Z@][a-zA-Z0-9_]*/,_={$pattern:n,keyword:"@interface @class @protocol @implementation"};return{name:"Objective-C",aliases:["mm","objc","obj-c"],keywords:{$pattern:n,keyword:"int float while char export sizeof typedef const struct for union unsigned long volatile static bool mutable if do return goto void enum else break extern asm case short default double register explicit signed typename this switch continue wchar_t inline readonly assign readwrite self @synchronized id typeof nonatomic super unichar IBOutlet IBAction strong weak copy in out inout bycopy byref oneway __strong __weak __block __autoreleasing @private @protected @public @try @property @end @throw @catch @finally @autoreleasepool @synthesize @dynamic @selector @optional @required @encode @package @import @defs @compatibility_alias __bridge __bridge_transfer __bridge_retained __bridge_retain __covariant __contravariant __kindof _Nonnull _Nullable _Null_unspecified __FUNCTION__ __PRETTY_FUNCTION__ __attribute__ getter setter retain unsafe_unretained nonnull nullable null_unspecified null_resettable class instancetype NS_DESIGNATED_INITIALIZER NS_UNAVAILABLE NS_REQUIRES_SUPER NS_RETURNS_INNER_POINTER NS_INLINE NS_AVAILABLE NS_DEPRECATED NS_ENUM NS_OPTIONS NS_SWIFT_UNAVAILABLE NS_ASSUME_NONNULL_BEGIN NS_ASSUME_NONNULL_END NS_REFINED_FOR_SWIFT NS_SWIFT_NAME NS_SWIFT_NOTHROW NS_DURING NS_HANDLER NS_ENDHANDLER NS_VALUERETURN NS_VOIDRETURN",literal:"false true FALSE TRUE nil YES NO NULL",built_in:"BOOL dispatch_once_t dispatch_queue_t dispatch_sync dispatch_async dispatch_once"},illegal:"</",contains:[{className:"built_in",begin:"\\b(AV|CA|CF|CG|CI|CL|CM|CN|CT|MK|MP|MTK|MTL|NS|SCN|SK|UI|WK|XC)\\w+"},e.C_LINE_COMMENT_MODE,e.C_BLOCK_COMMENT_MODE,e.C_NUMBER_MODE,e.QUOTE_STRING_MODE,e.APOS_STRING_MODE,{className:"string",variants:[{begin:'@"',end:'"',illegal:"\\n",contains:[e.BACKSLASH_ESCAPE]}]},{className:"meta",begin:/#\s*[a-z]+\b/,end:/$/,keywords:{"meta-keyword":"if else elif endif define undef warning error line pragma ifdef ifndef include"},contains:[{begin:/\\\n/,relevance:0},e.inherit(e.QUOTE_STRING_MODE,{className:"meta-string"}),{className:"meta-string",begin:/<.*?>/,end:/$/,illegal:"\\n"},e.C_LINE_COMMENT_MODE,e.C_BLOCK_COMMENT_MODE]},{className:"class",begin:"("+_.keyword.split(" ").join("|")+")\\b",end:"({|$)",excludeEnd:!0,keywords:_,contains:[e.UNDERSCORE_TITLE_MODE]},{begin:"\\."+e.UNDERSCORE_IDENT_RE,relevance:0}]}}}());
-hljs.registerLanguage("perl",function(){"use strict";return function(e){var n={$pattern:/[\w.]+/,keyword:"getpwent getservent quotemeta msgrcv scalar kill dbmclose undef lc ma syswrite tr send umask sysopen shmwrite vec qx utime local oct semctl localtime readpipe do return format read sprintf dbmopen pop getpgrp not getpwnam rewinddir qq fileno qw endprotoent wait sethostent bless s|0 opendir continue each sleep endgrent shutdown dump chomp connect getsockname die socketpair close flock exists index shmget sub for endpwent redo lstat msgctl setpgrp abs exit select print ref gethostbyaddr unshift fcntl syscall goto getnetbyaddr join gmtime symlink semget splice x|0 getpeername recv log setsockopt cos last reverse gethostbyname getgrnam study formline endhostent times chop length gethostent getnetent pack getprotoent getservbyname rand mkdir pos chmod y|0 substr endnetent printf next open msgsnd readdir use unlink getsockopt getpriority rindex wantarray hex system getservbyport endservent int chr untie rmdir prototype tell listen fork shmread ucfirst setprotoent else sysseek link getgrgid shmctl waitpid unpack getnetbyname reset chdir grep split require caller lcfirst until warn while values shift telldir getpwuid my getprotobynumber delete and sort uc defined srand accept package seekdir getprotobyname semop our rename seek if q|0 chroot sysread setpwent no crypt getc chown sqrt write setnetent setpriority foreach tie sin msgget map stat getlogin unless elsif truncate exec keys glob tied closedir ioctl socket readlink eval xor readline binmode setservent eof ord bind alarm pipe atan2 getgrent exp time push setgrent gt lt or ne m|0 break given say state when"},t={className:"subst",begin:"[$@]\\{",end:"\\}",keywords:n},s={begin:"->{",end:"}"},r={variants:[{begin:/\$\d/},{begin:/[\$%@](\^\w\b|#\w+(::\w+)*|{\w+}|\w+(::\w*)*)/},{begin:/[\$%@][^\s\w{]/,relevance:0}]},i=[e.BACKSLASH_ESCAPE,t,r],a=[r,e.HASH_COMMENT_MODE,e.COMMENT("^\\=\\w","\\=cut",{endsWithParent:!0}),s,{className:"string",contains:i,variants:[{begin:"q[qwxr]?\\s*\\(",end:"\\)",relevance:5},{begin:"q[qwxr]?\\s*\\[",end:"\\]",relevance:5},{begin:"q[qwxr]?\\s*\\{",end:"\\}",relevance:5},{begin:"q[qwxr]?\\s*\\|",end:"\\|",relevance:5},{begin:"q[qwxr]?\\s*\\<",end:"\\>",relevance:5},{begin:"qw\\s+q",end:"q",relevance:5},{begin:"'",end:"'",contains:[e.BACKSLASH_ESCAPE]},{begin:'"',end:'"'},{begin:"`",end:"`",contains:[e.BACKSLASH_ESCAPE]},{begin:"{\\w+}",contains:[],relevance:0},{begin:"-?\\w+\\s*\\=\\>",contains:[],relevance:0}]},{className:"number",begin:"(\\b0[0-7_]+)|(\\b0x[0-9a-fA-F_]+)|(\\b[1-9][0-9_]*(\\.[0-9_]+)?)|[0_]\\b",relevance:0},{begin:"(\\/\\/|"+e.RE_STARTERS_RE+"|\\b(split|return|print|reverse|grep)\\b)\\s*",keywords:"split return print reverse grep",relevance:0,contains:[e.HASH_COMMENT_MODE,{className:"regexp",begin:"(s|tr|y)/(\\\\.|[^/])*/(\\\\.|[^/])*/[a-z]*",relevance:10},{className:"regexp",begin:"(m|qr)?/",end:"/[a-z]*",contains:[e.BACKSLASH_ESCAPE],relevance:0}]},{className:"function",beginKeywords:"sub",end:"(\\s*\\(.*?\\))?[;{]",excludeEnd:!0,relevance:5,contains:[e.TITLE_MODE]},{begin:"-\\w\\b",relevance:0},{begin:"^__DATA__$",end:"^__END__$",subLanguage:"mojolicious",contains:[{begin:"^@@.*",end:"$",className:"comment"}]}];return t.contains=a,s.contains=a,{name:"Perl",aliases:["pl","pm"],keywords:n,contains:a}}}());
-hljs.registerLanguage("php",function(){"use strict";return function(e){var r={begin:"\\$+[a-zA-Z_-ÿ][a-zA-Z0-9_-ÿ]*"},t={className:"meta",variants:[{begin:/<\?php/,relevance:10},{begin:/<\?[=]?/},{begin:/\?>/}]},a={className:"string",contains:[e.BACKSLASH_ESCAPE,t],variants:[{begin:'b"',end:'"'},{begin:"b'",end:"'"},e.inherit(e.APOS_STRING_MODE,{illegal:null}),e.inherit(e.QUOTE_STRING_MODE,{illegal:null})]},n={variants:[e.BINARY_NUMBER_MODE,e.C_NUMBER_MODE]},i={keyword:"__CLASS__ __DIR__ __FILE__ __FUNCTION__ __LINE__ __METHOD__ __NAMESPACE__ __TRAIT__ die echo exit include include_once print require require_once array abstract and as binary bool boolean break callable case catch class clone const continue declare default do double else elseif empty enddeclare endfor endforeach endif endswitch endwhile eval extends final finally float for foreach from global goto if implements instanceof insteadof int integer interface isset iterable list new object or private protected public real return string switch throw trait try unset use var void while xor yield",literal:"false null true",built_in:"Error|0 AppendIterator ArgumentCountError ArithmeticError ArrayIterator ArrayObject AssertionError BadFunctionCallException BadMethodCallException CachingIterator CallbackFilterIterator CompileError Countable DirectoryIterator DivisionByZeroError DomainException EmptyIterator ErrorException Exception FilesystemIterator FilterIterator GlobIterator InfiniteIterator InvalidArgumentException IteratorIterator LengthException LimitIterator LogicException MultipleIterator NoRewindIterator OutOfBoundsException OutOfRangeException OuterIterator OverflowException ParentIterator ParseError RangeException RecursiveArrayIterator RecursiveCachingIterator RecursiveCallbackFilterIterator RecursiveDirectoryIterator RecursiveFilterIterator RecursiveIterator RecursiveIteratorIterator RecursiveRegexIterator RecursiveTreeIterator RegexIterator RuntimeException SeekableIterator SplDoublyLinkedList SplFileInfo SplFileObject SplFixedArray SplHeap SplMaxHeap SplMinHeap SplObjectStorage SplObserver SplObserver SplPriorityQueue SplQueue SplStack SplSubject SplSubject SplTempFileObject TypeError UnderflowException UnexpectedValueException ArrayAccess Closure Generator Iterator IteratorAggregate Serializable Throwable Traversable WeakReference Directory __PHP_Incomplete_Class parent php_user_filter self static stdClass"};return{aliases:["php","php3","php4","php5","php6","php7"],case_insensitive:!0,keywords:i,contains:[e.HASH_COMMENT_MODE,e.COMMENT("//","$",{contains:[t]}),e.COMMENT("/\\*","\\*/",{contains:[{className:"doctag",begin:"@[A-Za-z]+"}]}),e.COMMENT("__halt_compiler.+?;",!1,{endsWithParent:!0,keywords:"__halt_compiler"}),{className:"string",begin:/<<<['"]?\w+['"]?$/,end:/^\w+;?$/,contains:[e.BACKSLASH_ESCAPE,{className:"subst",variants:[{begin:/\$\w+/},{begin:/\{\$/,end:/\}/}]}]},t,{className:"keyword",begin:/\$this\b/},r,{begin:/(::|->)+[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/},{className:"function",beginKeywords:"fn function",end:/[;{]/,excludeEnd:!0,illegal:"[$%\\[]",contains:[e.UNDERSCORE_TITLE_MODE,{className:"params",begin:"\\(",end:"\\)",excludeBegin:!0,excludeEnd:!0,keywords:i,contains:["self",r,e.C_BLOCK_COMMENT_MODE,a,n]}]},{className:"class",beginKeywords:"class interface",end:"{",excludeEnd:!0,illegal:/[:\(\$"]/,contains:[{beginKeywords:"extends implements"},e.UNDERSCORE_TITLE_MODE]},{beginKeywords:"namespace",end:";",illegal:/[\.']/,contains:[e.UNDERSCORE_TITLE_MODE]},{beginKeywords:"use",end:";",contains:[e.UNDERSCORE_TITLE_MODE]},{begin:"=>"},a,n]}}}());
-hljs.registerLanguage("php-template",function(){"use strict";return function(n){return{name:"PHP template",subLanguage:"xml",contains:[{begin:/<\?(php|=)?/,end:/\?>/,subLanguage:"php",contains:[{begin:"/\\*",end:"\\*/",skip:!0},{begin:'b"',end:'"',skip:!0},{begin:"b'",end:"'",skip:!0},n.inherit(n.APOS_STRING_MODE,{illegal:null,className:null,contains:null,skip:!0}),n.inherit(n.QUOTE_STRING_MODE,{illegal:null,className:null,contains:null,skip:!0})]}]}}}());
-hljs.registerLanguage("plaintext",function(){"use strict";return function(t){return{name:"Plain text",aliases:["text","txt"],disableAutodetect:!0}}}());
-hljs.registerLanguage("properties",function(){"use strict";return function(e){var n="[ \\t\\f]*",t="("+n+"[:=]"+n+"|[ \\t\\f]+)",a="([^\\\\:= \\t\\f\\n]|\\\\.)+",s={end:t,relevance:0,starts:{className:"string",end:/$/,relevance:0,contains:[{begin:"\\\\\\n"}]}};return{name:".properties",case_insensitive:!0,illegal:/\S/,contains:[e.COMMENT("^\\s*[!#]","$"),{begin:"([^\\\\\\W:= \\t\\f\\n]|\\\\.)+"+t,returnBegin:!0,contains:[{className:"attr",begin:"([^\\\\\\W:= \\t\\f\\n]|\\\\.)+",endsParent:!0,relevance:0}],starts:s},{begin:a+t,returnBegin:!0,relevance:0,contains:[{className:"meta",begin:a,endsParent:!0,relevance:0}],starts:s},{className:"attr",relevance:0,begin:a+n+"$"}]}}}());
-hljs.registerLanguage("python",function(){"use strict";return function(e){var n={keyword:"and elif is global as in if from raise for except finally print import pass return exec else break not with class assert yield try while continue del or def lambda async await nonlocal|10",built_in:"Ellipsis NotImplemented",literal:"False None True"},a={className:"meta",begin:/^(>>>|\.\.\.) /},i={className:"subst",begin:/\{/,end:/\}/,keywords:n,illegal:/#/},s={begin:/\{\{/,relevance:0},r={className:"string",contains:[e.BACKSLASH_ESCAPE],variants:[{begin:/(u|b)?r?'''/,end:/'''/,contains:[e.BACKSLASH_ESCAPE,a],relevance:10},{begin:/(u|b)?r?"""/,end:/"""/,contains:[e.BACKSLASH_ESCAPE,a],relevance:10},{begin:/(fr|rf|f)'''/,end:/'''/,contains:[e.BACKSLASH_ESCAPE,a,s,i]},{begin:/(fr|rf|f)"""/,end:/"""/,contains:[e.BACKSLASH_ESCAPE,a,s,i]},{begin:/(u|r|ur)'/,end:/'/,relevance:10},{begin:/(u|r|ur)"/,end:/"/,relevance:10},{begin:/(b|br)'/,end:/'/},{begin:/(b|br)"/,end:/"/},{begin:/(fr|rf|f)'/,end:/'/,contains:[e.BACKSLASH_ESCAPE,s,i]},{begin:/(fr|rf|f)"/,end:/"/,contains:[e.BACKSLASH_ESCAPE,s,i]},e.APOS_STRING_MODE,e.QUOTE_STRING_MODE]},l={className:"number",relevance:0,variants:[{begin:e.BINARY_NUMBER_RE+"[lLjJ]?"},{begin:"\\b(0o[0-7]+)[lLjJ]?"},{begin:e.C_NUMBER_RE+"[lLjJ]?"}]},t={className:"params",variants:[{begin:/\(\s*\)/,skip:!0,className:null},{begin:/\(/,end:/\)/,excludeBegin:!0,excludeEnd:!0,contains:["self",a,l,r,e.HASH_COMMENT_MODE]}]};return i.contains=[r,l,a],{name:"Python",aliases:["py","gyp","ipython"],keywords:n,illegal:/(<\/|->|\?)|=>/,contains:[a,l,{beginKeywords:"if",relevance:0},r,e.HASH_COMMENT_MODE,{variants:[{className:"function",beginKeywords:"def"},{className:"class",beginKeywords:"class"}],end:/:/,illegal:/[${=;\n,]/,contains:[e.UNDERSCORE_TITLE_MODE,t,{begin:/->/,endsWithParent:!0,keywords:"None"}]},{className:"meta",begin:/^[\t ]*@/,end:/$/},{begin:/\b(print|exec)\(/}]}}}());
-hljs.registerLanguage("python-repl",function(){"use strict";return function(n){return{aliases:["pycon"],contains:[{className:"meta",starts:{end:/ |$/,starts:{end:"$",subLanguage:"python"}},variants:[{begin:/^>>>(?=[ ]|$)/},{begin:/^\.\.\.(?=[ ]|$)/}]}]}}}());
-hljs.registerLanguage("ruby",function(){"use strict";return function(e){var n="[a-zA-Z_]\\w*[!?=]?|[-+~]\\@|<<|>>|=~|===?|<=>|[<>]=?|\\*\\*|[-/+%^&*~`|]|\\[\\]=?",a={keyword:"and then defined module in return redo if BEGIN retry end for self when next until do begin unless END rescue else break undef not super class case require yield alias while ensure elsif or include attr_reader attr_writer attr_accessor",literal:"true false nil"},s={className:"doctag",begin:"@[A-Za-z]+"},i={begin:"#<",end:">"},r=[e.COMMENT("#","$",{contains:[s]}),e.COMMENT("^\\=begin","^\\=end",{contains:[s],relevance:10}),e.COMMENT("^__END__","\\n$")],c={className:"subst",begin:"#\\{",end:"}",keywords:a},t={className:"string",contains:[e.BACKSLASH_ESCAPE,c],variants:[{begin:/'/,end:/'/},{begin:/"/,end:/"/},{begin:/`/,end:/`/},{begin:"%[qQwWx]?\\(",end:"\\)"},{begin:"%[qQwWx]?\\[",end:"\\]"},{begin:"%[qQwWx]?{",end:"}"},{begin:"%[qQwWx]?<",end:">"},{begin:"%[qQwWx]?/",end:"/"},{begin:"%[qQwWx]?%",end:"%"},{begin:"%[qQwWx]?-",end:"-"},{begin:"%[qQwWx]?\\|",end:"\\|"},{begin:/\B\?(\\\d{1,3}|\\x[A-Fa-f0-9]{1,2}|\\u[A-Fa-f0-9]{4}|\\?\S)\b/},{begin:/<<[-~]?'?(\w+)(?:.|\n)*?\n\s*\1\b/,returnBegin:!0,contains:[{begin:/<<[-~]?'?/},e.END_SAME_AS_BEGIN({begin:/(\w+)/,end:/(\w+)/,contains:[e.BACKSLASH_ESCAPE,c]})]}]},b={className:"params",begin:"\\(",end:"\\)",endsParent:!0,keywords:a},d=[t,i,{className:"class",beginKeywords:"class module",end:"$|;",illegal:/=/,contains:[e.inherit(e.TITLE_MODE,{begin:"[A-Za-z_]\\w*(::\\w+)*(\\?|\\!)?"}),{begin:"<\\s*",contains:[{begin:"("+e.IDENT_RE+"::)?"+e.IDENT_RE}]}].concat(r)},{className:"function",beginKeywords:"def",end:"$|;",contains:[e.inherit(e.TITLE_MODE,{begin:n}),b].concat(r)},{begin:e.IDENT_RE+"::"},{className:"symbol",begin:e.UNDERSCORE_IDENT_RE+"(\\!|\\?)?:",relevance:0},{className:"symbol",begin:":(?!\\s)",contains:[t,{begin:n}],relevance:0},{className:"number",begin:"(\\b0[0-7_]+)|(\\b0x[0-9a-fA-F_]+)|(\\b[1-9][0-9_]*(\\.[0-9_]+)?)|[0_]\\b",relevance:0},{begin:"(\\$\\W)|((\\$|\\@\\@?)(\\w+))"},{className:"params",begin:/\|/,end:/\|/,keywords:a},{begin:"("+e.RE_STARTERS_RE+"|unless)\\s*",keywords:"unless",contains:[i,{className:"regexp",contains:[e.BACKSLASH_ESCAPE,c],illegal:/\n/,variants:[{begin:"/",end:"/[a-z]*"},{begin:"%r{",end:"}[a-z]*"},{begin:"%r\\(",end:"\\)[a-z]*"},{begin:"%r!",end:"![a-z]*"},{begin:"%r\\[",end:"\\][a-z]*"}]}].concat(r),relevance:0}].concat(r);c.contains=d,b.contains=d;var g=[{begin:/^\s*=>/,starts:{end:"$",contains:d}},{className:"meta",begin:"^([>?]>|[\\w#]+\\(\\w+\\):\\d+:\\d+>|(\\w+-)?\\d+\\.\\d+\\.\\d(p\\d+)?[^>]+>)",starts:{end:"$",contains:d}}];return{name:"Ruby",aliases:["rb","gemspec","podspec","thor","irb"],keywords:a,illegal:/\/\*/,contains:r.concat(g).concat(d)}}}());
-hljs.registerLanguage("rust",function(){"use strict";return function(e){var n="([ui](8|16|32|64|128|size)|f(32|64))?",t="drop i8 i16 i32 i64 i128 isize u8 u16 u32 u64 u128 usize f32 f64 str char bool Box Option Result String Vec Copy Send Sized Sync Drop Fn FnMut FnOnce ToOwned Clone Debug PartialEq PartialOrd Eq Ord AsRef AsMut Into From Default Iterator Extend IntoIterator DoubleEndedIterator ExactSizeIterator SliceConcatExt ToString assert! assert_eq! bitflags! bytes! cfg! col! concat! concat_idents! debug_assert! debug_assert_eq! env! panic! file! format! format_args! include_bin! include_str! line! local_data_key! module_path! option_env! print! println! select! stringify! try! unimplemented! unreachable! vec! write! writeln! macro_rules! assert_ne! debug_assert_ne!";return{name:"Rust",aliases:["rs"],keywords:{$pattern:e.IDENT_RE+"!?",keyword:"abstract as async await become box break const continue crate do dyn else enum extern false final fn for if impl in let loop macro match mod move mut override priv pub ref return self Self static struct super trait true try type typeof unsafe unsized use virtual where while yield",literal:"true false Some None Ok Err",built_in:t},illegal:"</",contains:[e.C_LINE_COMMENT_MODE,e.COMMENT("/\\*","\\*/",{contains:["self"]}),e.inherit(e.QUOTE_STRING_MODE,{begin:/b?"/,illegal:null}),{className:"string",variants:[{begin:/r(#*)"(.|\n)*?"\1(?!#)/},{begin:/b?'\\?(x\w{2}|u\w{4}|U\w{8}|.)'/}]},{className:"symbol",begin:/'[a-zA-Z_][a-zA-Z0-9_]*/},{className:"number",variants:[{begin:"\\b0b([01_]+)"+n},{begin:"\\b0o([0-7_]+)"+n},{begin:"\\b0x([A-Fa-f0-9_]+)"+n},{begin:"\\b(\\d[\\d_]*(\\.[0-9_]+)?([eE][+-]?[0-9_]+)?)"+n}],relevance:0},{className:"function",beginKeywords:"fn",end:"(\\(|<)",excludeEnd:!0,contains:[e.UNDERSCORE_TITLE_MODE]},{className:"meta",begin:"#\\!?\\[",end:"\\]",contains:[{className:"meta-string",begin:/"/,end:/"/}]},{className:"class",beginKeywords:"type",end:";",contains:[e.inherit(e.UNDERSCORE_TITLE_MODE,{endsParent:!0})],illegal:"\\S"},{className:"class",beginKeywords:"trait enum struct union",end:"{",contains:[e.inherit(e.UNDERSCORE_TITLE_MODE,{endsParent:!0})],illegal:"[\\w\\d]"},{begin:e.IDENT_RE+"::",keywords:{built_in:t}},{begin:"->"}]}}}());
-hljs.registerLanguage("scss",function(){"use strict";return function(e){var t={className:"variable",begin:"(\\$[a-zA-Z-][a-zA-Z0-9_-]*)\\b"},i={className:"number",begin:"#[0-9A-Fa-f]+"};return e.CSS_NUMBER_MODE,e.QUOTE_STRING_MODE,e.APOS_STRING_MODE,e.C_BLOCK_COMMENT_MODE,{name:"SCSS",case_insensitive:!0,illegal:"[=/|']",contains:[e.C_LINE_COMMENT_MODE,e.C_BLOCK_COMMENT_MODE,{className:"selector-id",begin:"\\#[A-Za-z0-9_-]+",relevance:0},{className:"selector-class",begin:"\\.[A-Za-z0-9_-]+",relevance:0},{className:"selector-attr",begin:"\\[",end:"\\]",illegal:"$"},{className:"selector-tag",begin:"\\b(a|abbr|acronym|address|area|article|aside|audio|b|base|big|blockquote|body|br|button|canvas|caption|cite|code|col|colgroup|command|datalist|dd|del|details|dfn|div|dl|dt|em|embed|fieldset|figcaption|figure|footer|form|frame|frameset|(h[1-6])|head|header|hgroup|hr|html|i|iframe|img|input|ins|kbd|keygen|label|legend|li|link|map|mark|meta|meter|nav|noframes|noscript|object|ol|optgroup|option|output|p|param|pre|progress|q|rp|rt|ruby|samp|script|section|select|small|span|strike|strong|style|sub|sup|table|tbody|td|textarea|tfoot|th|thead|time|title|tr|tt|ul|var|video)\\b",relevance:0},{className:"selector-pseudo",begin:":(visited|valid|root|right|required|read-write|read-only|out-range|optional|only-of-type|only-child|nth-of-type|nth-last-of-type|nth-last-child|nth-child|not|link|left|last-of-type|last-child|lang|invalid|indeterminate|in-range|hover|focus|first-of-type|first-line|first-letter|first-child|first|enabled|empty|disabled|default|checked|before|after|active)"},{className:"selector-pseudo",begin:"::(after|before|choices|first-letter|first-line|repeat-index|repeat-item|selection|value)"},t,{className:"attribute",begin:"\\b(src|z-index|word-wrap|word-spacing|word-break|width|widows|white-space|visibility|vertical-align|unicode-bidi|transition-timing-function|transition-property|transition-duration|transition-delay|transition|transform-style|transform-origin|transform|top|text-underline-position|text-transform|text-shadow|text-rendering|text-overflow|text-indent|text-decoration-style|text-decoration-line|text-decoration-color|text-decoration|text-align-last|text-align|tab-size|table-layout|right|resize|quotes|position|pointer-events|perspective-origin|perspective|page-break-inside|page-break-before|page-break-after|padding-top|padding-right|padding-left|padding-bottom|padding|overflow-y|overflow-x|overflow-wrap|overflow|outline-width|outline-style|outline-offset|outline-color|outline|orphans|order|opacity|object-position|object-fit|normal|none|nav-up|nav-right|nav-left|nav-index|nav-down|min-width|min-height|max-width|max-height|mask|marks|margin-top|margin-right|margin-left|margin-bottom|margin|list-style-type|list-style-position|list-style-image|list-style|line-height|letter-spacing|left|justify-content|initial|inherit|ime-mode|image-orientation|image-resolution|image-rendering|icon|hyphens|height|font-weight|font-variant-ligatures|font-variant|font-style|font-stretch|font-size-adjust|font-size|font-language-override|font-kerning|font-feature-settings|font-family|font|float|flex-wrap|flex-shrink|flex-grow|flex-flow|flex-direction|flex-basis|flex|filter|empty-cells|display|direction|cursor|counter-reset|counter-increment|content|column-width|column-span|column-rule-width|column-rule-style|column-rule-color|column-rule|column-gap|column-fill|column-count|columns|color|clip-path|clip|clear|caption-side|break-inside|break-before|break-after|box-sizing|box-shadow|box-decoration-break|bottom|border-width|border-top-width|border-top-style|border-top-right-radius|border-top-left-radius|border-top-color|border-top|border-style|border-spacing|border-right-width|border-right-style|border-right-color|border-right|border-radius|border-left-width|border-left-style|border-left-color|border-left|border-image-width|border-image-source|border-image-slice|border-image-repeat|border-image-outset|border-image|border-color|border-collapse|border-bottom-width|border-bottom-style|border-bottom-right-radius|border-bottom-left-radius|border-bottom-color|border-bottom|border|background-size|background-repeat|background-position|background-origin|background-image|background-color|background-clip|background-attachment|background-blend-mode|background|backface-visibility|auto|animation-timing-function|animation-play-state|animation-name|animation-iteration-count|animation-fill-mode|animation-duration|animation-direction|animation-delay|animation|align-self|align-items|align-content)\\b",illegal:"[^\\s]"},{begin:"\\b(whitespace|wait|w-resize|visible|vertical-text|vertical-ideographic|uppercase|upper-roman|upper-alpha|underline|transparent|top|thin|thick|text|text-top|text-bottom|tb-rl|table-header-group|table-footer-group|sw-resize|super|strict|static|square|solid|small-caps|separate|se-resize|scroll|s-resize|rtl|row-resize|ridge|right|repeat|repeat-y|repeat-x|relative|progress|pointer|overline|outside|outset|oblique|nowrap|not-allowed|normal|none|nw-resize|no-repeat|no-drop|newspaper|ne-resize|n-resize|move|middle|medium|ltr|lr-tb|lowercase|lower-roman|lower-alpha|loose|list-item|line|line-through|line-edge|lighter|left|keep-all|justify|italic|inter-word|inter-ideograph|inside|inset|inline|inline-block|inherit|inactive|ideograph-space|ideograph-parenthesis|ideograph-numeric|ideograph-alpha|horizontal|hidden|help|hand|groove|fixed|ellipsis|e-resize|double|dotted|distribute|distribute-space|distribute-letter|distribute-all-lines|disc|disabled|default|decimal|dashed|crosshair|collapse|col-resize|circle|char|center|capitalize|break-word|break-all|bottom|both|bolder|bold|block|bidi-override|below|baseline|auto|always|all-scroll|absolute|table|table-cell)\\b"},{begin:":",end:";",contains:[t,i,e.CSS_NUMBER_MODE,e.QUOTE_STRING_MODE,e.APOS_STRING_MODE,{className:"meta",begin:"!important"}]},{begin:"@(page|font-face)",lexemes:"@[a-z-]+",keywords:"@page @font-face"},{begin:"@",end:"[{;]",returnBegin:!0,keywords:"and or not only",contains:[{begin:"@[a-z-]+",className:"keyword"},t,e.QUOTE_STRING_MODE,e.APOS_STRING_MODE,i,e.CSS_NUMBER_MODE]}]}}}());
-hljs.registerLanguage("shell",function(){"use strict";return function(s){return{name:"Shell Session",aliases:["console"],contains:[{className:"meta",begin:"^\\s{0,3}[/\\w\\d\\[\\]()@-]*[>%$#]",starts:{end:"$",subLanguage:"bash"}}]}}}());
-hljs.registerLanguage("sql",function(){"use strict";return function(e){var t=e.COMMENT("--","$");return{name:"SQL",case_insensitive:!0,illegal:/[<>{}*]/,contains:[{beginKeywords:"begin end start commit rollback savepoint lock alter create drop rename call delete do handler insert load replace select truncate update set show pragma grant merge describe use explain help declare prepare execute deallocate release unlock purge reset change stop analyze cache flush optimize repair kill install uninstall checksum restore check backup revoke comment values with",end:/;/,endsWithParent:!0,keywords:{$pattern:/[\w\.]+/,keyword:"as abort abs absolute acc acce accep accept access accessed accessible account acos action activate add addtime admin administer advanced advise aes_decrypt aes_encrypt after agent aggregate ali alia alias all allocate allow alter always analyze ancillary and anti any anydata anydataset anyschema anytype apply archive archived archivelog are as asc ascii asin assembly assertion associate asynchronous at atan atn2 attr attri attrib attribu attribut attribute attributes audit authenticated authentication authid authors auto autoallocate autodblink autoextend automatic availability avg backup badfile basicfile before begin beginning benchmark between bfile bfile_base big bigfile bin binary_double binary_float binlog bit_and bit_count bit_length bit_or bit_xor bitmap blob_base block blocksize body both bound bucket buffer_cache buffer_pool build bulk by byte byteordermark bytes cache caching call calling cancel capacity cascade cascaded case cast catalog category ceil ceiling chain change changed char_base char_length character_length characters characterset charindex charset charsetform charsetid check checksum checksum_agg child choose chr chunk class cleanup clear client clob clob_base clone close cluster_id cluster_probability cluster_set clustering coalesce coercibility col collate collation collect colu colum column column_value columns columns_updated comment commit compact compatibility compiled complete composite_limit compound compress compute concat concat_ws concurrent confirm conn connec connect connect_by_iscycle connect_by_isleaf connect_by_root connect_time connection consider consistent constant constraint constraints constructor container content contents context contributors controlfile conv convert convert_tz corr corr_k corr_s corresponding corruption cos cost count count_big counted covar_pop covar_samp cpu_per_call cpu_per_session crc32 create creation critical cross cube cume_dist curdate current current_date current_time current_timestamp current_user cursor curtime customdatum cycle data database databases datafile datafiles datalength date_add date_cache date_format date_sub dateadd datediff datefromparts datename datepart datetime2fromparts day day_to_second dayname dayofmonth dayofweek dayofyear days db_role_change dbtimezone ddl deallocate declare decode decompose decrement decrypt deduplicate def defa defau defaul default defaults deferred defi defin define degrees delayed delegate delete delete_all delimited demand dense_rank depth dequeue des_decrypt des_encrypt des_key_file desc descr descri describ describe descriptor deterministic diagnostics difference dimension direct_load directory disable disable_all disallow disassociate discardfile disconnect diskgroup distinct distinctrow distribute distributed div do document domain dotnet double downgrade drop dumpfile duplicate duration each edition editionable editions element ellipsis else elsif elt empty enable enable_all enclosed encode encoding encrypt end end-exec endian enforced engine engines enqueue enterprise entityescaping eomonth error errors escaped evalname evaluate event eventdata events except exception exceptions exchange exclude excluding execu execut execute exempt exists exit exp expire explain explode export export_set extended extent external external_1 external_2 externally extract failed failed_login_attempts failover failure far fast feature_set feature_value fetch field fields file file_name_convert filesystem_like_logging final finish first first_value fixed flash_cache flashback floor flush following follows for forall force foreign form forma format found found_rows freelist freelists freepools fresh from from_base64 from_days ftp full function general generated get get_format get_lock getdate getutcdate global global_name globally go goto grant grants greatest group group_concat group_id grouping grouping_id groups gtid_subtract guarantee guard handler hash hashkeys having hea head headi headin heading heap help hex hierarchy high high_priority hosts hour hours http id ident_current ident_incr ident_seed identified identity idle_time if ifnull ignore iif ilike ilm immediate import in include including increment index indexes indexing indextype indicator indices inet6_aton inet6_ntoa inet_aton inet_ntoa infile initial initialized initially initrans inmemory inner innodb input insert install instance instantiable instr interface interleaved intersect into invalidate invisible is is_free_lock is_ipv4 is_ipv4_compat is_not is_not_null is_used_lock isdate isnull isolation iterate java join json json_exists keep keep_duplicates key keys kill language large last last_day last_insert_id last_value lateral lax lcase lead leading least leaves left len lenght length less level levels library like like2 like4 likec limit lines link list listagg little ln load load_file lob lobs local localtime localtimestamp locate locator lock locked log log10 log2 logfile logfiles logging logical logical_reads_per_call logoff logon logs long loop low low_priority lower lpad lrtrim ltrim main make_set makedate maketime managed management manual map mapping mask master master_pos_wait match matched materialized max maxextents maximize maxinstances maxlen maxlogfiles maxloghistory maxlogmembers maxsize maxtrans md5 measures median medium member memcompress memory merge microsecond mid migration min minextents minimum mining minus minute minutes minvalue missing mod mode model modification modify module monitoring month months mount move movement multiset mutex name name_const names nan national native natural nav nchar nclob nested never new newline next nextval no no_write_to_binlog noarchivelog noaudit nobadfile nocheck nocompress nocopy nocycle nodelay nodiscardfile noentityescaping noguarantee nokeep nologfile nomapping nomaxvalue nominimize nominvalue nomonitoring none noneditionable nonschema noorder nopr nopro noprom nopromp noprompt norely noresetlogs noreverse normal norowdependencies noschemacheck noswitch not nothing notice notnull notrim novalidate now nowait nth_value nullif nulls num numb numbe nvarchar nvarchar2 object ocicoll ocidate ocidatetime ociduration ociinterval ociloblocator ocinumber ociref ocirefcursor ocirowid ocistring ocitype oct octet_length of off offline offset oid oidindex old on online only opaque open operations operator optimal optimize option optionally or oracle oracle_date oradata ord ordaudio orddicom orddoc order ordimage ordinality ordvideo organization orlany orlvary out outer outfile outline output over overflow overriding package pad parallel parallel_enable parameters parent parse partial partition partitions pascal passing password password_grace_time password_lock_time password_reuse_max password_reuse_time password_verify_function patch path patindex pctincrease pctthreshold pctused pctversion percent percent_rank percentile_cont percentile_disc performance period period_add period_diff permanent physical pi pipe pipelined pivot pluggable plugin policy position post_transaction pow power pragma prebuilt precedes preceding precision prediction prediction_cost prediction_details prediction_probability prediction_set prepare present preserve prior priority private private_sga privileges procedural procedure procedure_analyze processlist profiles project prompt protection public publishingservername purge quarter query quick quiesce quota quotename radians raise rand range rank raw read reads readsize rebuild record records recover recovery recursive recycle redo reduced ref reference referenced references referencing refresh regexp_like register regr_avgx regr_avgy regr_count regr_intercept regr_r2 regr_slope regr_sxx regr_sxy reject rekey relational relative relaylog release release_lock relies_on relocate rely rem remainder rename repair repeat replace replicate replication required reset resetlogs resize resource respect restore restricted result result_cache resumable resume retention return returning returns reuse reverse revoke right rlike role roles rollback rolling rollup round row row_count rowdependencies rowid rownum rows rtrim rules safe salt sample save savepoint sb1 sb2 sb4 scan schema schemacheck scn scope scroll sdo_georaster sdo_topo_geometry search sec_to_time second seconds section securefile security seed segment select self semi sequence sequential serializable server servererror session session_user sessions_per_user set sets settings sha sha1 sha2 share shared shared_pool short show shrink shutdown si_averagecolor si_colorhistogram si_featurelist si_positionalcolor si_stillimage si_texture siblings sid sign sin size size_t sizes skip slave sleep smalldatetimefromparts smallfile snapshot some soname sort soundex source space sparse spfile split sql sql_big_result sql_buffer_result sql_cache sql_calc_found_rows sql_small_result sql_variant_property sqlcode sqldata sqlerror sqlname sqlstate sqrt square standalone standby start starting startup statement static statistics stats_binomial_test stats_crosstab stats_ks_test stats_mode stats_mw_test stats_one_way_anova stats_t_test_ stats_t_test_indep stats_t_test_one stats_t_test_paired stats_wsr_test status std stddev stddev_pop stddev_samp stdev stop storage store stored str str_to_date straight_join strcmp strict string struct stuff style subdate subpartition subpartitions substitutable substr substring subtime subtring_index subtype success sum suspend switch switchoffset switchover sync synchronous synonym sys sys_xmlagg sysasm sysaux sysdate sysdatetimeoffset sysdba sysoper system system_user sysutcdatetime table tables tablespace tablesample tan tdo template temporary terminated tertiary_weights test than then thread through tier ties time time_format time_zone timediff timefromparts timeout timestamp timestampadd timestampdiff timezone_abbr timezone_minute timezone_region to to_base64 to_date to_days to_seconds todatetimeoffset trace tracking transaction transactional translate translation treat trigger trigger_nestlevel triggers trim truncate try_cast try_convert try_parse type ub1 ub2 ub4 ucase unarchived unbounded uncompress under undo unhex unicode uniform uninstall union unique unix_timestamp unknown unlimited unlock unnest unpivot unrecoverable unsafe unsigned until untrusted unusable unused update updated upgrade upped upper upsert url urowid usable usage use use_stored_outlines user user_data user_resources users using utc_date utc_timestamp uuid uuid_short validate validate_password_strength validation valist value values var var_samp varcharc vari varia variab variabl variable variables variance varp varraw varrawc varray verify version versions view virtual visible void wait wallet warning warnings week weekday weekofyear wellformed when whene whenev wheneve whenever where while whitespace window with within without work wrapped xdb xml xmlagg xmlattributes xmlcast xmlcolattval xmlelement xmlexists xmlforest xmlindex xmlnamespaces xmlpi xmlquery xmlroot xmlschema xmlserialize xmltable xmltype xor year year_to_month years yearweek",literal:"true false null unknown",built_in:"array bigint binary bit blob bool boolean char character date dec decimal float int int8 integer interval number numeric real record serial serial8 smallint text time timestamp tinyint varchar varchar2 varying void"},contains:[{className:"string",begin:"'",end:"'",contains:[{begin:"''"}]},{className:"string",begin:'"',end:'"',contains:[{begin:'""'}]},{className:"string",begin:"`",end:"`"},e.C_NUMBER_MODE,e.C_BLOCK_COMMENT_MODE,t,e.HASH_COMMENT_MODE]},e.C_BLOCK_COMMENT_MODE,t,e.HASH_COMMENT_MODE]}}}());
-hljs.registerLanguage("swift",function(){"use strict";return function(e){var i={keyword:"#available #colorLiteral #column #else #elseif #endif #file #fileLiteral #function #if #imageLiteral #line #selector #sourceLocation _ __COLUMN__ __FILE__ __FUNCTION__ __LINE__ Any as as! as? associatedtype associativity break case catch class continue convenience default defer deinit didSet do dynamic dynamicType else enum extension fallthrough false fileprivate final for func get guard if import in indirect infix init inout internal is lazy left let mutating nil none nonmutating open operator optional override postfix precedence prefix private protocol Protocol public repeat required rethrows return right self Self set static struct subscript super switch throw throws true try try! try? Type typealias unowned var weak where while willSet",literal:"true false nil",built_in:"abs advance alignof alignofValue anyGenerator assert assertionFailure bridgeFromObjectiveC bridgeFromObjectiveCUnconditional bridgeToObjectiveC bridgeToObjectiveCUnconditional c compactMap contains count countElements countLeadingZeros debugPrint debugPrintln distance dropFirst dropLast dump encodeBitsAsWords enumerate equal fatalError filter find getBridgedObjectiveCType getVaList indices insertionSort isBridgedToObjectiveC isBridgedVerbatimToObjectiveC isUniquelyReferenced isUniquelyReferencedNonObjC join lazy lexicographicalCompare map max maxElement min minElement numericCast overlaps partition posix precondition preconditionFailure print println quickSort readLine reduce reflect reinterpretCast reverse roundUpToAlignment sizeof sizeofValue sort split startsWith stride strideof strideofValue swap toString transcode underestimateCount unsafeAddressOf unsafeBitCast unsafeDowncast unsafeUnwrap unsafeReflect withExtendedLifetime withObjectAtPlusZero withUnsafePointer withUnsafePointerToObject withUnsafeMutablePointer withUnsafeMutablePointers withUnsafePointer withUnsafePointers withVaList zip"},n=e.COMMENT("/\\*","\\*/",{contains:["self"]}),t={className:"subst",begin:/\\\(/,end:"\\)",keywords:i,contains:[]},a={className:"string",contains:[e.BACKSLASH_ESCAPE,t],variants:[{begin:/"""/,end:/"""/},{begin:/"/,end:/"/}]},r={className:"number",begin:"\\b([\\d_]+(\\.[\\deE_]+)?|0x[a-fA-F0-9_]+(\\.[a-fA-F0-9p_]+)?|0b[01_]+|0o[0-7_]+)\\b",relevance:0};return t.contains=[r],{name:"Swift",keywords:i,contains:[a,e.C_LINE_COMMENT_MODE,n,{className:"type",begin:"\\b[A-Z][\\wÀ-ʸ']*[!?]"},{className:"type",begin:"\\b[A-Z][\\wÀ-ʸ']*",relevance:0},r,{className:"function",beginKeywords:"func",end:"{",excludeEnd:!0,contains:[e.inherit(e.TITLE_MODE,{begin:/[A-Za-z$_][0-9A-Za-z$_]*/}),{begin:/</,end:/>/},{className:"params",begin:/\(/,end:/\)/,endsParent:!0,keywords:i,contains:["self",r,a,e.C_BLOCK_COMMENT_MODE,{begin:":"}],illegal:/["']/}],illegal:/\[|%/},{className:"class",beginKeywords:"struct protocol class extension enum",keywords:i,end:"\\{",excludeEnd:!0,contains:[e.inherit(e.TITLE_MODE,{begin:/[A-Za-z$_][\u00C0-\u02B80-9A-Za-z$_]*/})]},{className:"meta",begin:"(@discardableResult|@warn_unused_result|@exported|@lazy|@noescape|@NSCopying|@NSManaged|@objc|@objcMembers|@convention|@required|@noreturn|@IBAction|@IBDesignable|@IBInspectable|@IBOutlet|@infix|@prefix|@postfix|@autoclosure|@testable|@available|@nonobjc|@NSApplicationMain|@UIApplicationMain|@dynamicMemberLookup|@propertyWrapper)\\b"},{beginKeywords:"import",end:/$/,contains:[e.C_LINE_COMMENT_MODE,n]}]}}}());
-hljs.registerLanguage("typescript",function(){"use strict";const e=["as","in","of","if","for","while","finally","var","new","function","do","return","void","else","break","catch","instanceof","with","throw","case","default","try","switch","continue","typeof","delete","let","yield","const","class","debugger","async","await","static","import","from","export","extends"],n=["true","false","null","undefined","NaN","Infinity"],a=[].concat(["setInterval","setTimeout","clearInterval","clearTimeout","require","exports","eval","isFinite","isNaN","parseFloat","parseInt","decodeURI","decodeURIComponent","encodeURI","encodeURIComponent","escape","unescape"],["arguments","this","super","console","window","document","localStorage","module","global"],["Intl","DataView","Number","Math","Date","String","RegExp","Object","Function","Boolean","Error","Symbol","Set","Map","WeakSet","WeakMap","Proxy","Reflect","JSON","Promise","Float64Array","Int16Array","Int32Array","Int8Array","Uint16Array","Uint32Array","Float32Array","Array","Uint8Array","Uint8ClampedArray","ArrayBuffer"],["EvalError","InternalError","RangeError","ReferenceError","SyntaxError","TypeError","URIError"]);return function(r){var t={$pattern:"[A-Za-z$_][0-9A-Za-z$_]*",keyword:e.concat(["type","namespace","typedef","interface","public","private","protected","implements","declare","abstract","readonly"]).join(" "),literal:n.join(" "),built_in:a.concat(["any","void","number","boolean","string","object","never","enum"]).join(" ")},s={className:"meta",begin:"@[A-Za-z$_][0-9A-Za-z$_]*"},i={className:"number",variants:[{begin:"\\b(0[bB][01]+)n?"},{begin:"\\b(0[oO][0-7]+)n?"},{begin:r.C_NUMBER_RE+"n?"}],relevance:0},o={className:"subst",begin:"\\$\\{",end:"\\}",keywords:t,contains:[]},c={begin:"html`",end:"",starts:{end:"`",returnEnd:!1,contains:[r.BACKSLASH_ESCAPE,o],subLanguage:"xml"}},l={begin:"css`",end:"",starts:{end:"`",returnEnd:!1,contains:[r.BACKSLASH_ESCAPE,o],subLanguage:"css"}},E={className:"string",begin:"`",end:"`",contains:[r.BACKSLASH_ESCAPE,o]};o.contains=[r.APOS_STRING_MODE,r.QUOTE_STRING_MODE,c,l,E,i,r.REGEXP_MODE];var d={begin:"\\(",end:/\)/,keywords:t,contains:["self",r.QUOTE_STRING_MODE,r.APOS_STRING_MODE,r.NUMBER_MODE]},u={className:"params",begin:/\(/,end:/\)/,excludeBegin:!0,excludeEnd:!0,keywords:t,contains:[r.C_LINE_COMMENT_MODE,r.C_BLOCK_COMMENT_MODE,s,d]};return{name:"TypeScript",aliases:["ts"],keywords:t,contains:[r.SHEBANG(),{className:"meta",begin:/^\s*['"]use strict['"]/},r.APOS_STRING_MODE,r.QUOTE_STRING_MODE,c,l,E,r.C_LINE_COMMENT_MODE,r.C_BLOCK_COMMENT_MODE,i,{begin:"("+r.RE_STARTERS_RE+"|\\b(case|return|throw)\\b)\\s*",keywords:"return throw case",contains:[r.C_LINE_COMMENT_MODE,r.C_BLOCK_COMMENT_MODE,r.REGEXP_MODE,{className:"function",begin:"(\\([^(]*(\\([^(]*(\\([^(]*\\))?\\))?\\)|"+r.UNDERSCORE_IDENT_RE+")\\s*=>",returnBegin:!0,end:"\\s*=>",contains:[{className:"params",variants:[{begin:r.UNDERSCORE_IDENT_RE},{className:null,begin:/\(\s*\)/,skip:!0},{begin:/\(/,end:/\)/,excludeBegin:!0,excludeEnd:!0,keywords:t,contains:d.contains}]}]}],relevance:0},{className:"function",beginKeywords:"function",end:/[\{;]/,excludeEnd:!0,keywords:t,contains:["self",r.inherit(r.TITLE_MODE,{begin:"[A-Za-z$_][0-9A-Za-z$_]*"}),u],illegal:/%/,relevance:0},{beginKeywords:"constructor",end:/[\{;]/,excludeEnd:!0,contains:["self",u]},{begin:/module\./,keywords:{built_in:"module"},relevance:0},{beginKeywords:"module",end:/\{/,excludeEnd:!0},{beginKeywords:"interface",end:/\{/,excludeEnd:!0,keywords:"interface extends"},{begin:/\$[(.]/},{begin:"\\."+r.IDENT_RE,relevance:0},s,d]}}}());
-hljs.registerLanguage("yaml",function(){"use strict";return function(e){var n="true false yes no null",a="[\\w#;/?:@&=+$,.~*\\'()[\\]]+",s={className:"string",relevance:0,variants:[{begin:/'/,end:/'/},{begin:/"/,end:/"/},{begin:/\S+/}],contains:[e.BACKSLASH_ESCAPE,{className:"template-variable",variants:[{begin:"{{",end:"}}"},{begin:"%{",end:"}"}]}]},i=e.inherit(s,{variants:[{begin:/'/,end:/'/},{begin:/"/,end:/"/},{begin:/[^\s,{}[\]]+/}]}),l={end:",",endsWithParent:!0,excludeEnd:!0,contains:[],keywords:n,relevance:0},t={begin:"{",end:"}",contains:[l],illegal:"\\n",relevance:0},g={begin:"\\[",end:"\\]",contains:[l],illegal:"\\n",relevance:0},b=[{className:"attr",variants:[{begin:"\\w[\\w :\\/.-]*:(?=[ \t]|$)"},{begin:'"\\w[\\w :\\/.-]*":(?=[ \t]|$)'},{begin:"'\\w[\\w :\\/.-]*':(?=[ \t]|$)"}]},{className:"meta",begin:"^---s*$",relevance:10},{className:"string",begin:"[\\|>]([0-9]?[+-])?[ ]*\\n( *)[\\S ]+\\n(\\2[\\S ]+\\n?)*"},{begin:"<%[%=-]?",end:"[%-]?%>",subLanguage:"ruby",excludeBegin:!0,excludeEnd:!0,relevance:0},{className:"type",begin:"!\\w+!"+a},{className:"type",begin:"!<"+a+">"},{className:"type",begin:"!"+a},{className:"type",begin:"!!"+a},{className:"meta",begin:"&"+e.UNDERSCORE_IDENT_RE+"$"},{className:"meta",begin:"\\*"+e.UNDERSCORE_IDENT_RE+"$"},{className:"bullet",begin:"\\-(?=[ ]|$)",relevance:0},e.HASH_COMMENT_MODE,{beginKeywords:n,keywords:{literal:n}},{className:"number",begin:"\\b[0-9]{4}(-[0-9][0-9]){0,2}([Tt \\t][0-9][0-9]?(:[0-9][0-9]){2})?(\\.[0-9]*)?([ \\t])*(Z|[-+][0-9][0-9]?(:[0-9][0-9])?)?\\b"},{className:"number",begin:e.C_NUMBER_RE+"\\b"},t,g,s],c=[...b];return c.pop(),c.push(i),l.contains=c,{name:"YAML",case_insensitive:!0,aliases:["yml","YAML"],contains:b}}}());
-hljs.registerLanguage("armasm",function(){"use strict";return function(s){const e={variants:[s.COMMENT("^[ \\t]*(?=#)","$",{relevance:0,excludeBegin:!0}),s.COMMENT("[;@]","$",{relevance:0}),s.C_LINE_COMMENT_MODE,s.C_BLOCK_COMMENT_MODE]};return{name:"ARM Assembly",case_insensitive:!0,aliases:["arm"],keywords:{$pattern:"\\.?"+s.IDENT_RE,meta:".2byte .4byte .align .ascii .asciz .balign .byte .code .data .else .end .endif .endm .endr .equ .err .exitm .extern .global .hword .if .ifdef .ifndef .include .irp .long .macro .rept .req .section .set .skip .space .text .word .arm .thumb .code16 .code32 .force_thumb .thumb_func .ltorg ALIAS ALIGN ARM AREA ASSERT ATTR CN CODE CODE16 CODE32 COMMON CP DATA DCB DCD DCDU DCDO DCFD DCFDU DCI DCQ DCQU DCW DCWU DN ELIF ELSE END ENDFUNC ENDIF ENDP ENTRY EQU EXPORT EXPORTAS EXTERN FIELD FILL FUNCTION GBLA GBLL GBLS GET GLOBAL IF IMPORT INCBIN INCLUDE INFO KEEP LCLA LCLL LCLS LTORG MACRO MAP MEND MEXIT NOFP OPT PRESERVE8 PROC QN READONLY RELOC REQUIRE REQUIRE8 RLIST FN ROUT SETA SETL SETS SN SPACE SUBT THUMB THUMBX TTL WHILE WEND ",built_in:"r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14 r15 pc lr sp ip sl sb fp a1 a2 a3 a4 v1 v2 v3 v4 v5 v6 v7 v8 f0 f1 f2 f3 f4 f5 f6 f7 p0 p1 p2 p3 p4 p5 p6 p7 p8 p9 p10 p11 p12 p13 p14 p15 c0 c1 c2 c3 c4 c5 c6 c7 c8 c9 c10 c11 c12 c13 c14 c15 q0 q1 q2 q3 q4 q5 q6 q7 q8 q9 q10 q11 q12 q13 q14 q15 cpsr_c cpsr_x cpsr_s cpsr_f cpsr_cx cpsr_cxs cpsr_xs cpsr_xsf cpsr_sf cpsr_cxsf spsr_c spsr_x spsr_s spsr_f spsr_cx spsr_cxs spsr_xs spsr_xsf spsr_sf spsr_cxsf s0 s1 s2 s3 s4 s5 s6 s7 s8 s9 s10 s11 s12 s13 s14 s15 s16 s17 s18 s19 s20 s21 s22 s23 s24 s25 s26 s27 s28 s29 s30 s31 d0 d1 d2 d3 d4 d5 d6 d7 d8 d9 d10 d11 d12 d13 d14 d15 d16 d17 d18 d19 d20 d21 d22 d23 d24 d25 d26 d27 d28 d29 d30 d31 {PC} {VAR} {TRUE} {FALSE} {OPT} {CONFIG} {ENDIAN} {CODESIZE} {CPU} {FPU} {ARCHITECTURE} {PCSTOREOFFSET} {ARMASM_VERSION} {INTER} {ROPI} {RWPI} {SWST} {NOSWST} . @"},contains:[{className:"keyword",begin:"\\b(adc|(qd?|sh?|u[qh]?)?add(8|16)?|usada?8|(q|sh?|u[qh]?)?(as|sa)x|and|adrl?|sbc|rs[bc]|asr|b[lx]?|blx|bxj|cbn?z|tb[bh]|bic|bfc|bfi|[su]bfx|bkpt|cdp2?|clz|clrex|cmp|cmn|cpsi[ed]|cps|setend|dbg|dmb|dsb|eor|isb|it[te]{0,3}|lsl|lsr|ror|rrx|ldm(([id][ab])|f[ds])?|ldr((s|ex)?[bhd])?|movt?|mvn|mra|mar|mul|[us]mull|smul[bwt][bt]|smu[as]d|smmul|smmla|mla|umlaal|smlal?([wbt][bt]|d)|mls|smlsl?[ds]|smc|svc|sev|mia([bt]{2}|ph)?|mrr?c2?|mcrr2?|mrs|msr|orr|orn|pkh(tb|bt)|rbit|rev(16|sh)?|sel|[su]sat(16)?|nop|pop|push|rfe([id][ab])?|stm([id][ab])?|str(ex)?[bhd]?|(qd?)?sub|(sh?|q|u[qh]?)?sub(8|16)|[su]xt(a?h|a?b(16)?)|srs([id][ab])?|swpb?|swi|smi|tst|teq|wfe|wfi|yield)(eq|ne|cs|cc|mi|pl|vs|vc|hi|ls|ge|lt|gt|le|al|hs|lo)?[sptrx]?(?=\\s)"},e,s.QUOTE_STRING_MODE,{className:"string",begin:"'",end:"[^\\\\]'",relevance:0},{className:"title",begin:"\\|",end:"\\|",illegal:"\\n",relevance:0},{className:"number",variants:[{begin:"[#$=]?0x[0-9a-f]+"},{begin:"[#$=]?0b[01]+"},{begin:"[#$=]\\d+"},{begin:"\\b\\d+"}],relevance:0},{className:"symbol",variants:[{begin:"^[ \\t]*[a-z_\\.\\$][a-z0-9_\\.\\$]+:"},{begin:"^[a-z_\\.\\$][a-z0-9_\\.\\$]+"},{begin:"[=#]\\w+"}],relevance:0}]}}}());
-hljs.registerLanguage("d",function(){"use strict";return function(e){var a={$pattern:e.UNDERSCORE_IDENT_RE,keyword:"abstract alias align asm assert auto body break byte case cast catch class const continue debug default delete deprecated do else enum export extern final finally for foreach foreach_reverse|10 goto if immutable import in inout int interface invariant is lazy macro mixin module new nothrow out override package pragma private protected public pure ref return scope shared static struct super switch synchronized template this throw try typedef typeid typeof union unittest version void volatile while with __FILE__ __LINE__ __gshared|10 __thread __traits __DATE__ __EOF__ __TIME__ __TIMESTAMP__ __VENDOR__ __VERSION__",built_in:"bool cdouble cent cfloat char creal dchar delegate double dstring float function idouble ifloat ireal long real short string ubyte ucent uint ulong ushort wchar wstring",literal:"false null true"},d="((0|[1-9][\\d_]*)|0[bB][01_]+|0[xX]([\\da-fA-F][\\da-fA-F_]*|_[\\da-fA-F][\\da-fA-F_]*))",n="\\\\(['\"\\?\\\\abfnrtv]|u[\\dA-Fa-f]{4}|[0-7]{1,3}|x[\\dA-Fa-f]{2}|U[\\dA-Fa-f]{8})|&[a-zA-Z\\d]{2,};",t={className:"number",begin:"\\b"+d+"(L|u|U|Lu|LU|uL|UL)?",relevance:0},_={className:"number",begin:"\\b(((0[xX](([\\da-fA-F][\\da-fA-F_]*|_[\\da-fA-F][\\da-fA-F_]*)\\.([\\da-fA-F][\\da-fA-F_]*|_[\\da-fA-F][\\da-fA-F_]*)|\\.?([\\da-fA-F][\\da-fA-F_]*|_[\\da-fA-F][\\da-fA-F_]*))[pP][+-]?(0|[1-9][\\d_]*|\\d[\\d_]*|[\\d_]+?\\d))|((0|[1-9][\\d_]*|\\d[\\d_]*|[\\d_]+?\\d)(\\.\\d*|([eE][+-]?(0|[1-9][\\d_]*|\\d[\\d_]*|[\\d_]+?\\d)))|\\d+\\.(0|[1-9][\\d_]*|\\d[\\d_]*|[\\d_]+?\\d)(0|[1-9][\\d_]*|\\d[\\d_]*|[\\d_]+?\\d)|\\.(0|[1-9][\\d_]*)([eE][+-]?(0|[1-9][\\d_]*|\\d[\\d_]*|[\\d_]+?\\d))?))([fF]|L|i|[fF]i|Li)?|"+d+"(i|[fF]i|Li))",relevance:0},r={className:"string",begin:"'("+n+"|.)",end:"'",illegal:"."},i={className:"string",begin:'"',contains:[{begin:n,relevance:0}],end:'"[cwd]?'},s=e.COMMENT("\\/\\+","\\+\\/",{contains:["self"],relevance:10});return{name:"D",keywords:a,contains:[e.C_LINE_COMMENT_MODE,e.C_BLOCK_COMMENT_MODE,s,{className:"string",begin:'x"[\\da-fA-F\\s\\n\\r]*"[cwd]?',relevance:10},i,{className:"string",begin:'[rq]"',end:'"[cwd]?',relevance:5},{className:"string",begin:"`",end:"`[cwd]?"},{className:"string",begin:'q"\\{',end:'\\}"'},_,t,r,{className:"meta",begin:"^#!",end:"$",relevance:5},{className:"meta",begin:"#(line)",end:"$",relevance:5},{className:"keyword",begin:"@[a-zA-Z_][a-zA-Z_\\d]*"}]}}}());
-hljs.registerLanguage("handlebars",function(){"use strict";function e(...e){return e.map(e=>(function(e){return e?"string"==typeof e?e:e.source:null})(e)).join("")}return function(n){const a={"builtin-name":"action bindattr collection component concat debugger each each-in get hash if in input link-to loc log lookup mut outlet partial query-params render template textarea unbound unless view with yield"},t=/\[.*?\]/,s=/[^\s!"#%&'()*+,.\/;<=>@\[\\\]^`{|}~]+/,i=e("(",/'.*?'/,"|",/".*?"/,"|",t,"|",s,"|",/\.|\//,")+"),r=e("(",t,"|",s,")(?==)"),l={begin:i,lexemes:/[\w.\/]+/},c=n.inherit(l,{keywords:{literal:"true false undefined null"}}),o={begin:/\(/,end:/\)/},m={className:"attr",begin:r,relevance:0,starts:{begin:/=/,end:/=/,starts:{contains:[n.NUMBER_MODE,n.QUOTE_STRING_MODE,n.APOS_STRING_MODE,c,o]}}},d={contains:[n.NUMBER_MODE,n.QUOTE_STRING_MODE,n.APOS_STRING_MODE,{begin:/as\s+\|/,keywords:{keyword:"as"},end:/\|/,contains:[{begin:/\w+/}]},m,c,o],returnEnd:!0},g=n.inherit(l,{className:"name",keywords:a,starts:n.inherit(d,{end:/\)/})});o.contains=[g];const u=n.inherit(l,{keywords:a,className:"name",starts:n.inherit(d,{end:/}}/})}),b=n.inherit(l,{keywords:a,className:"name"}),h=n.inherit(l,{className:"name",keywords:a,starts:n.inherit(d,{end:/}}/})});return{name:"Handlebars",aliases:["hbs","html.hbs","html.handlebars","htmlbars"],case_insensitive:!0,subLanguage:"xml",contains:[{begin:/\\\{\{/,skip:!0},{begin:/\\\\(?=\{\{)/,skip:!0},n.COMMENT(/\{\{!--/,/--\}\}/),n.COMMENT(/\{\{!/,/\}\}/),{className:"template-tag",begin:/\{\{\{\{(?!\/)/,end:/\}\}\}\}/,contains:[u],starts:{end:/\{\{\{\{\//,returnEnd:!0,subLanguage:"xml"}},{className:"template-tag",begin:/\{\{\{\{\//,end:/\}\}\}\}/,contains:[b]},{className:"template-tag",begin:/\{\{#/,end:/\}\}/,contains:[u]},{className:"template-tag",begin:/\{\{(?=else\}\})/,end:/\}\}/,keywords:"else"},{className:"template-tag",begin:/\{\{\//,end:/\}\}/,contains:[b]},{className:"template-variable",begin:/\{\{\{/,end:/\}\}\}/,contains:[h]},{className:"template-variable",begin:/\{\{/,end:/\}\}/,contains:[h]}]}}}());
-hljs.registerLanguage("haskell",function(){"use strict";return function(e){var n={variants:[e.COMMENT("--","$"),e.COMMENT("{-","-}",{contains:["self"]})]},i={className:"meta",begin:"{-#",end:"#-}"},a={className:"meta",begin:"^#",end:"$"},s={className:"type",begin:"\\b[A-Z][\\w']*",relevance:0},l={begin:"\\(",end:"\\)",illegal:'"',contains:[i,a,{className:"type",begin:"\\b[A-Z][\\w]*(\\((\\.\\.|,|\\w+)\\))?"},e.inherit(e.TITLE_MODE,{begin:"[_a-z][\\w']*"}),n]};return{name:"Haskell",aliases:["hs"],keywords:"let in if then else case of where do module import hiding qualified type data newtype deriving class instance as default infix infixl infixr foreign export ccall stdcall cplusplus jvm dotnet safe unsafe family forall mdo proc rec",contains:[{beginKeywords:"module",end:"where",keywords:"module where",contains:[l,n],illegal:"\\W\\.|;"},{begin:"\\bimport\\b",end:"$",keywords:"import qualified as hiding",contains:[l,n],illegal:"\\W\\.|;"},{className:"class",begin:"^(\\s*)?(class|instance)\\b",end:"where",keywords:"class family instance where",contains:[s,l,n]},{className:"class",begin:"\\b(data|(new)?type)\\b",end:"$",keywords:"data family type newtype deriving",contains:[i,s,l,{begin:"{",end:"}",contains:l.contains},n]},{beginKeywords:"default",end:"$",contains:[s,l,n]},{beginKeywords:"infix infixl infixr",end:"$",contains:[e.C_NUMBER_MODE,n]},{begin:"\\bforeign\\b",end:"$",keywords:"foreign import export ccall stdcall cplusplus jvm dotnet safe unsafe",contains:[s,e.QUOTE_STRING_MODE,n]},{className:"meta",begin:"#!\\/usr\\/bin\\/env runhaskell",end:"$"},i,a,e.QUOTE_STRING_MODE,e.C_NUMBER_MODE,s,e.inherit(e.TITLE_MODE,{begin:"^[_a-z][\\w']*"}),n,{begin:"->|<-"}]}}}());
-hljs.registerLanguage("julia",function(){"use strict";return function(e){var r="[A-Za-z_\\u00A1-\\uFFFF][A-Za-z_0-9\\u00A1-\\uFFFF]*",t={$pattern:r,keyword:"in isa where baremodule begin break catch ccall const continue do else elseif end export false finally for function global if import importall let local macro module quote return true try using while type immutable abstract bitstype typealias ",literal:"true false ARGS C_NULL DevNull ENDIAN_BOM ENV I Inf Inf16 Inf32 Inf64 InsertionSort JULIA_HOME LOAD_PATH MergeSort NaN NaN16 NaN32 NaN64 PROGRAM_FILE QuickSort RoundDown RoundFromZero RoundNearest RoundNearestTiesAway RoundNearestTiesUp RoundToZero RoundUp STDERR STDIN STDOUT VERSION catalan e|0 eu|0 eulergamma golden im nothing pi γ π φ ",built_in:"ANY AbstractArray AbstractChannel AbstractFloat AbstractMatrix AbstractRNG AbstractSerializer AbstractSet AbstractSparseArray AbstractSparseMatrix AbstractSparseVector AbstractString AbstractUnitRange AbstractVecOrMat AbstractVector Any ArgumentError Array AssertionError Associative Base64DecodePipe Base64EncodePipe Bidiagonal BigFloat BigInt BitArray BitMatrix BitVector Bool BoundsError BufferStream CachingPool CapturedException CartesianIndex CartesianRange Cchar Cdouble Cfloat Channel Char Cint Cintmax_t Clong Clonglong ClusterManager Cmd CodeInfo Colon Complex Complex128 Complex32 Complex64 CompositeException Condition ConjArray ConjMatrix ConjVector Cptrdiff_t Cshort Csize_t Cssize_t Cstring Cuchar Cuint Cuintmax_t Culong Culonglong Cushort Cwchar_t Cwstring DataType Date DateFormat DateTime DenseArray DenseMatrix DenseVecOrMat DenseVector Diagonal Dict DimensionMismatch Dims DirectIndexString Display DivideError DomainError EOFError EachLine Enum Enumerate ErrorException Exception ExponentialBackOff Expr Factorization FileMonitor Float16 Float32 Float64 Function Future GlobalRef GotoNode HTML Hermitian IO IOBuffer IOContext IOStream IPAddr IPv4 IPv6 IndexCartesian IndexLinear IndexStyle InexactError InitError Int Int128 Int16 Int32 Int64 Int8 IntSet Integer InterruptException InvalidStateException Irrational KeyError LabelNode LinSpace LineNumberNode LoadError LowerTriangular MIME Matrix MersenneTwister Method MethodError MethodTable Module NTuple NewvarNode NullException Nullable Number ObjectIdDict OrdinalRange OutOfMemoryError OverflowError Pair ParseError PartialQuickSort PermutedDimsArray Pipe PollingFileWatcher ProcessExitedException Ptr QuoteNode RandomDevice Range RangeIndex Rational RawFD ReadOnlyMemoryError Real ReentrantLock Ref Regex RegexMatch RemoteChannel RemoteException RevString RoundingMode RowVector SSAValue SegmentationFault SerializationState Set SharedArray SharedMatrix SharedVector Signed SimpleVector Slot SlotNumber SparseMatrixCSC SparseVector StackFrame StackOverflowError StackTrace StepRange StepRangeLen StridedArray StridedMatrix StridedVecOrMat StridedVector String SubArray SubString SymTridiagonal Symbol Symmetric SystemError TCPSocket Task Text TextDisplay Timer Tridiagonal Tuple Type TypeError TypeMapEntry TypeMapLevel TypeName TypeVar TypedSlot UDPSocket UInt UInt128 UInt16 UInt32 UInt64 UInt8 UndefRefError UndefVarError UnicodeError UniformScaling Union UnionAll UnitRange Unsigned UpperTriangular Val Vararg VecElement VecOrMat Vector VersionNumber Void WeakKeyDict WeakRef WorkerConfig WorkerPool "},a={keywords:t,illegal:/<\//},n={className:"subst",begin:/\$\(/,end:/\)/,keywords:t},o={className:"variable",begin:"\\$"+r},i={className:"string",contains:[e.BACKSLASH_ESCAPE,n,o],variants:[{begin:/\w*"""/,end:/"""\w*/,relevance:10},{begin:/\w*"/,end:/"\w*/}]},l={className:"string",contains:[e.BACKSLASH_ESCAPE,n,o],begin:"`",end:"`"},s={className:"meta",begin:"@"+r};return a.name="Julia",a.contains=[{className:"number",begin:/(\b0x[\d_]*(\.[\d_]*)?|0x\.\d[\d_]*)p[-+]?\d+|\b0[box][a-fA-F0-9][a-fA-F0-9_]*|(\b\d[\d_]*(\.[\d_]*)?|\.\d[\d_]*)([eEfF][-+]?\d+)?/,relevance:0},{className:"string",begin:/'(.|\\[xXuU][a-zA-Z0-9]+)'/},i,l,s,{className:"comment",variants:[{begin:"#=",end:"=#",relevance:10},{begin:"#",end:"$"}]},e.HASH_COMMENT_MODE,{className:"keyword",begin:"\\b(((abstract|primitive)\\s+)type|(mutable\\s+)?struct)\\b"},{begin:/<:/}],n.contains=a.contains,a}}());
-hljs.registerLanguage("nim",function(){"use strict";return function(e){return{name:"Nim",aliases:["nim"],keywords:{keyword:"addr and as asm bind block break case cast const continue converter discard distinct div do elif else end enum except export finally for from func generic if import in include interface is isnot iterator let macro method mixin mod nil not notin object of or out proc ptr raise ref return shl shr static template try tuple type using var when while with without xor yield",literal:"shared guarded stdin stdout stderr result true false",built_in:"int int8 int16 int32 int64 uint uint8 uint16 uint32 uint64 float float32 float64 bool char string cstring pointer expr stmt void auto any range array openarray varargs seq set clong culong cchar cschar cshort cint csize clonglong cfloat cdouble clongdouble cuchar cushort cuint culonglong cstringarray semistatic"},contains:[{className:"meta",begin:/{\./,end:/\.}/,relevance:10},{className:"string",begin:/[a-zA-Z]\w*"/,end:/"/,contains:[{begin:/""/}]},{className:"string",begin:/([a-zA-Z]\w*)?"""/,end:/"""/},e.QUOTE_STRING_MODE,{className:"type",begin:/\b[A-Z]\w+\b/,relevance:0},{className:"number",relevance:0,variants:[{begin:/\b(0[xX][0-9a-fA-F][_0-9a-fA-F]*)('?[iIuU](8|16|32|64))?/},{begin:/\b(0o[0-7][_0-7]*)('?[iIuUfF](8|16|32|64))?/},{begin:/\b(0(b|B)[01][_01]*)('?[iIuUfF](8|16|32|64))?/},{begin:/\b(\d[_\d]*)('?[iIuUfF](8|16|32|64))?/}]},e.HASH_COMMENT_MODE]}}}());
-hljs.registerLanguage("r",function(){"use strict";return function(e){var n="([a-zA-Z]|\\.[a-zA-Z.])[a-zA-Z0-9._]*";return{name:"R",contains:[e.HASH_COMMENT_MODE,{begin:n,keywords:{$pattern:n,keyword:"function if in break next repeat else for return switch while try tryCatch stop warning require library attach detach source setMethod setGeneric setGroupGeneric setClass ...",literal:"NULL NA TRUE FALSE T F Inf NaN NA_integer_|10 NA_real_|10 NA_character_|10 NA_complex_|10"},relevance:0},{className:"number",begin:"0[xX][0-9a-fA-F]+[Li]?\\b",relevance:0},{className:"number",begin:"\\d+(?:[eE][+\\-]?\\d*)?L\\b",relevance:0},{className:"number",begin:"\\d+\\.(?!\\d)(?:i\\b)?",relevance:0},{className:"number",begin:"\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",relevance:0},{className:"number",begin:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",relevance:0},{begin:"`",end:"`",relevance:0},{className:"string",contains:[e.BACKSLASH_ESCAPE],variants:[{begin:'"',end:'"'},{begin:"'",end:"'"}]}]}}}());
-hljs.registerLanguage("scala",function(){"use strict";return function(e){var n={className:"subst",variants:[{begin:"\\$[A-Za-z0-9_]+"},{begin:"\\${",end:"}"}]},a={className:"string",variants:[{begin:'"',end:'"',illegal:"\\n",contains:[e.BACKSLASH_ESCAPE]},{begin:'"""',end:'"""',relevance:10},{begin:'[a-z]+"',end:'"',illegal:"\\n",contains:[e.BACKSLASH_ESCAPE,n]},{className:"string",begin:'[a-z]+"""',end:'"""',contains:[n],relevance:10}]},s={className:"type",begin:"\\b[A-Z][A-Za-z0-9_]*",relevance:0},t={className:"title",begin:/[^0-9\n\t "'(),.`{}\[\]:;][^\n\t "'(),.`{}\[\]:;]+|[^0-9\n\t "'(),.`{}\[\]:;=]/,relevance:0},i={className:"class",beginKeywords:"class object trait type",end:/[:={\[\n;]/,excludeEnd:!0,contains:[{beginKeywords:"extends with",relevance:10},{begin:/\[/,end:/\]/,excludeBegin:!0,excludeEnd:!0,relevance:0,contains:[s]},{className:"params",begin:/\(/,end:/\)/,excludeBegin:!0,excludeEnd:!0,relevance:0,contains:[s]},t]},l={className:"function",beginKeywords:"def",end:/[:={\[(\n;]/,excludeEnd:!0,contains:[t]};return{name:"Scala",keywords:{literal:"true false null",keyword:"type yield lazy override def with val var sealed abstract private trait object if forSome for while throw finally protected extends import final return else break new catch super class case package default try this match continue throws implicit"},contains:[e.C_LINE_COMMENT_MODE,e.C_BLOCK_COMMENT_MODE,a,{className:"symbol",begin:"'\\w[\\w\\d_]*(?!')"},s,l,i,e.C_NUMBER_MODE,{className:"meta",begin:"@[A-Za-z]+"}]}}}());
-hljs.registerLanguage("x86asm",function(){"use strict";return function(s){return{name:"Intel x86 Assembly",case_insensitive:!0,keywords:{$pattern:"[.%]?"+s.IDENT_RE,keyword:"lock rep repe repz repne repnz xaquire xrelease bnd nobnd aaa aad aam aas adc add and arpl bb0_reset bb1_reset bound bsf bsr bswap bt btc btr bts call cbw cdq cdqe clc cld cli clts cmc cmp cmpsb cmpsd cmpsq cmpsw cmpxchg cmpxchg486 cmpxchg8b cmpxchg16b cpuid cpu_read cpu_write cqo cwd cwde daa das dec div dmint emms enter equ f2xm1 fabs fadd faddp fbld fbstp fchs fclex fcmovb fcmovbe fcmove fcmovnb fcmovnbe fcmovne fcmovnu fcmovu fcom fcomi fcomip fcomp fcompp fcos fdecstp fdisi fdiv fdivp fdivr fdivrp femms feni ffree ffreep fiadd ficom ficomp fidiv fidivr fild fimul fincstp finit fist fistp fisttp fisub fisubr fld fld1 fldcw fldenv fldl2e fldl2t fldlg2 fldln2 fldpi fldz fmul fmulp fnclex fndisi fneni fninit fnop fnsave fnstcw fnstenv fnstsw fpatan fprem fprem1 fptan frndint frstor fsave fscale fsetpm fsin fsincos fsqrt fst fstcw fstenv fstp fstsw fsub fsubp fsubr fsubrp ftst fucom fucomi fucomip fucomp fucompp fxam fxch fxtract fyl2x fyl2xp1 hlt ibts icebp idiv imul in inc incbin insb insd insw int int01 int1 int03 int3 into invd invpcid invlpg invlpga iret iretd iretq iretw jcxz jecxz jrcxz jmp jmpe lahf lar lds lea leave les lfence lfs lgdt lgs lidt lldt lmsw loadall loadall286 lodsb lodsd lodsq lodsw loop loope loopne loopnz loopz lsl lss ltr mfence monitor mov movd movq movsb movsd movsq movsw movsx movsxd movzx mul mwait neg nop not or out outsb outsd outsw packssdw packsswb packuswb paddb paddd paddsb paddsiw paddsw paddusb paddusw paddw pand pandn pause paveb pavgusb pcmpeqb pcmpeqd pcmpeqw pcmpgtb pcmpgtd pcmpgtw pdistib pf2id pfacc pfadd pfcmpeq pfcmpge pfcmpgt pfmax pfmin pfmul pfrcp pfrcpit1 pfrcpit2 pfrsqit1 pfrsqrt pfsub pfsubr pi2fd pmachriw pmaddwd pmagw pmulhriw pmulhrwa pmulhrwc pmulhw pmullw pmvgezb pmvlzb pmvnzb pmvzb pop popa popad popaw popf popfd popfq popfw por prefetch prefetchw pslld psllq psllw psrad psraw psrld psrlq psrlw psubb psubd psubsb psubsiw psubsw psubusb psubusw psubw punpckhbw punpckhdq punpckhwd punpcklbw punpckldq punpcklwd push pusha pushad pushaw pushf pushfd pushfq pushfw pxor rcl rcr rdshr rdmsr rdpmc rdtsc rdtscp ret retf retn rol ror rdm rsdc rsldt rsm rsts sahf sal salc sar sbb scasb scasd scasq scasw sfence sgdt shl shld shr shrd sidt sldt skinit smi smint smintold smsw stc std sti stosb stosd stosq stosw str sub svdc svldt svts swapgs syscall sysenter sysexit sysret test ud0 ud1 ud2b ud2 ud2a umov verr verw fwait wbinvd wrshr wrmsr xadd xbts xchg xlatb xlat xor cmove cmovz cmovne cmovnz cmova cmovnbe cmovae cmovnb cmovb cmovnae cmovbe cmovna cmovg cmovnle cmovge cmovnl cmovl cmovnge cmovle cmovng cmovc cmovnc cmovo cmovno cmovs cmovns cmovp cmovpe cmovnp cmovpo je jz jne jnz ja jnbe jae jnb jb jnae jbe jna jg jnle jge jnl jl jnge jle jng jc jnc jo jno js jns jpo jnp jpe jp sete setz setne setnz seta setnbe setae setnb setnc setb setnae setcset setbe setna setg setnle setge setnl setl setnge setle setng sets setns seto setno setpe setp setpo setnp addps addss andnps andps cmpeqps cmpeqss cmpleps cmpless cmpltps cmpltss cmpneqps cmpneqss cmpnleps cmpnless cmpnltps cmpnltss cmpordps cmpordss cmpunordps cmpunordss cmpps cmpss comiss cvtpi2ps cvtps2pi cvtsi2ss cvtss2si cvttps2pi cvttss2si divps divss ldmxcsr maxps maxss minps minss movaps movhps movlhps movlps movhlps movmskps movntps movss movups mulps mulss orps rcpps rcpss rsqrtps rsqrtss shufps sqrtps sqrtss stmxcsr subps subss ucomiss unpckhps unpcklps xorps fxrstor fxrstor64 fxsave fxsave64 xgetbv xsetbv xsave xsave64 xsaveopt xsaveopt64 xrstor xrstor64 prefetchnta prefetcht0 prefetcht1 prefetcht2 maskmovq movntq pavgb pavgw pextrw pinsrw pmaxsw pmaxub pminsw pminub pmovmskb pmulhuw psadbw pshufw pf2iw pfnacc pfpnacc pi2fw pswapd maskmovdqu clflush movntdq movnti movntpd movdqa movdqu movdq2q movq2dq paddq pmuludq pshufd pshufhw pshuflw pslldq psrldq psubq punpckhqdq punpcklqdq addpd addsd andnpd andpd cmpeqpd cmpeqsd cmplepd cmplesd cmpltpd cmpltsd cmpneqpd cmpneqsd cmpnlepd cmpnlesd cmpnltpd cmpnltsd cmpordpd cmpordsd cmpunordpd cmpunordsd cmppd comisd cvtdq2pd cvtdq2ps cvtpd2dq cvtpd2pi cvtpd2ps cvtpi2pd cvtps2dq cvtps2pd cvtsd2si cvtsd2ss cvtsi2sd cvtss2sd cvttpd2pi cvttpd2dq cvttps2dq cvttsd2si divpd divsd maxpd maxsd minpd minsd movapd movhpd movlpd movmskpd movupd mulpd mulsd orpd shufpd sqrtpd sqrtsd subpd subsd ucomisd unpckhpd unpcklpd xorpd addsubpd addsubps haddpd haddps hsubpd hsubps lddqu movddup movshdup movsldup clgi stgi vmcall vmclear vmfunc vmlaunch vmload vmmcall vmptrld vmptrst vmread vmresume vmrun vmsave vmwrite vmxoff vmxon invept invvpid pabsb pabsw pabsd palignr phaddw phaddd phaddsw phsubw phsubd phsubsw pmaddubsw pmulhrsw pshufb psignb psignw psignd extrq insertq movntsd movntss lzcnt blendpd blendps blendvpd blendvps dppd dpps extractps insertps movntdqa mpsadbw packusdw pblendvb pblendw pcmpeqq pextrb pextrd pextrq phminposuw pinsrb pinsrd pinsrq pmaxsb pmaxsd pmaxud pmaxuw pminsb pminsd pminud pminuw pmovsxbw pmovsxbd pmovsxbq pmovsxwd pmovsxwq pmovsxdq pmovzxbw pmovzxbd pmovzxbq pmovzxwd pmovzxwq pmovzxdq pmuldq pmulld ptest roundpd roundps roundsd roundss crc32 pcmpestri pcmpestrm pcmpistri pcmpistrm pcmpgtq popcnt getsec pfrcpv pfrsqrtv movbe aesenc aesenclast aesdec aesdeclast aesimc aeskeygenassist vaesenc vaesenclast vaesdec vaesdeclast vaesimc vaeskeygenassist vaddpd vaddps vaddsd vaddss vaddsubpd vaddsubps vandpd vandps vandnpd vandnps vblendpd vblendps vblendvpd vblendvps vbroadcastss vbroadcastsd vbroadcastf128 vcmpeq_ospd vcmpeqpd vcmplt_ospd vcmpltpd vcmple_ospd vcmplepd vcmpunord_qpd vcmpunordpd vcmpneq_uqpd vcmpneqpd vcmpnlt_uspd vcmpnltpd vcmpnle_uspd vcmpnlepd vcmpord_qpd vcmpordpd vcmpeq_uqpd vcmpnge_uspd vcmpngepd vcmpngt_uspd vcmpngtpd vcmpfalse_oqpd vcmpfalsepd vcmpneq_oqpd vcmpge_ospd vcmpgepd vcmpgt_ospd vcmpgtpd vcmptrue_uqpd vcmptruepd vcmplt_oqpd vcmple_oqpd vcmpunord_spd vcmpneq_uspd vcmpnlt_uqpd vcmpnle_uqpd vcmpord_spd vcmpeq_uspd vcmpnge_uqpd vcmpngt_uqpd vcmpfalse_ospd vcmpneq_ospd vcmpge_oqpd vcmpgt_oqpd vcmptrue_uspd vcmppd vcmpeq_osps vcmpeqps vcmplt_osps vcmpltps vcmple_osps vcmpleps vcmpunord_qps vcmpunordps vcmpneq_uqps vcmpneqps vcmpnlt_usps vcmpnltps vcmpnle_usps vcmpnleps vcmpord_qps vcmpordps vcmpeq_uqps vcmpnge_usps vcmpngeps vcmpngt_usps vcmpngtps vcmpfalse_oqps vcmpfalseps vcmpneq_oqps vcmpge_osps vcmpgeps vcmpgt_osps vcmpgtps vcmptrue_uqps vcmptrueps vcmplt_oqps vcmple_oqps vcmpunord_sps vcmpneq_usps vcmpnlt_uqps vcmpnle_uqps vcmpord_sps vcmpeq_usps vcmpnge_uqps vcmpngt_uqps vcmpfalse_osps vcmpneq_osps vcmpge_oqps vcmpgt_oqps vcmptrue_usps vcmpps vcmpeq_ossd vcmpeqsd vcmplt_ossd vcmpltsd vcmple_ossd vcmplesd vcmpunord_qsd vcmpunordsd vcmpneq_uqsd vcmpneqsd vcmpnlt_ussd vcmpnltsd vcmpnle_ussd vcmpnlesd vcmpord_qsd vcmpordsd vcmpeq_uqsd vcmpnge_ussd vcmpngesd vcmpngt_ussd vcmpngtsd vcmpfalse_oqsd vcmpfalsesd vcmpneq_oqsd vcmpge_ossd vcmpgesd vcmpgt_ossd vcmpgtsd vcmptrue_uqsd vcmptruesd vcmplt_oqsd vcmple_oqsd vcmpunord_ssd vcmpneq_ussd vcmpnlt_uqsd vcmpnle_uqsd vcmpord_ssd vcmpeq_ussd vcmpnge_uqsd vcmpngt_uqsd vcmpfalse_ossd vcmpneq_ossd vcmpge_oqsd vcmpgt_oqsd vcmptrue_ussd vcmpsd vcmpeq_osss vcmpeqss vcmplt_osss vcmpltss vcmple_osss vcmpless vcmpunord_qss vcmpunordss vcmpneq_uqss vcmpneqss vcmpnlt_usss vcmpnltss vcmpnle_usss vcmpnless vcmpord_qss vcmpordss vcmpeq_uqss vcmpnge_usss vcmpngess vcmpngt_usss vcmpngtss vcmpfalse_oqss vcmpfalsess vcmpneq_oqss vcmpge_osss vcmpgess vcmpgt_osss vcmpgtss vcmptrue_uqss vcmptruess vcmplt_oqss vcmple_oqss vcmpunord_sss vcmpneq_usss vcmpnlt_uqss vcmpnle_uqss vcmpord_sss vcmpeq_usss vcmpnge_uqss vcmpngt_uqss vcmpfalse_osss vcmpneq_osss vcmpge_oqss vcmpgt_oqss vcmptrue_usss vcmpss vcomisd vcomiss vcvtdq2pd vcvtdq2ps vcvtpd2dq vcvtpd2ps vcvtps2dq vcvtps2pd vcvtsd2si vcvtsd2ss vcvtsi2sd vcvtsi2ss vcvtss2sd vcvtss2si vcvttpd2dq vcvttps2dq vcvttsd2si vcvttss2si vdivpd vdivps vdivsd vdivss vdppd vdpps vextractf128 vextractps vhaddpd vhaddps vhsubpd vhsubps vinsertf128 vinsertps vlddqu vldqqu vldmxcsr vmaskmovdqu vmaskmovps vmaskmovpd vmaxpd vmaxps vmaxsd vmaxss vminpd vminps vminsd vminss vmovapd vmovaps vmovd vmovq vmovddup vmovdqa vmovqqa vmovdqu vmovqqu vmovhlps vmovhpd vmovhps vmovlhps vmovlpd vmovlps vmovmskpd vmovmskps vmovntdq vmovntqq vmovntdqa vmovntpd vmovntps vmovsd vmovshdup vmovsldup vmovss vmovupd vmovups vmpsadbw vmulpd vmulps vmulsd vmulss vorpd vorps vpabsb vpabsw vpabsd vpacksswb vpackssdw vpackuswb vpackusdw vpaddb vpaddw vpaddd vpaddq vpaddsb vpaddsw vpaddusb vpaddusw vpalignr vpand vpandn vpavgb vpavgw vpblendvb vpblendw vpcmpestri vpcmpestrm vpcmpistri vpcmpistrm vpcmpeqb vpcmpeqw vpcmpeqd vpcmpeqq vpcmpgtb vpcmpgtw vpcmpgtd vpcmpgtq vpermilpd vpermilps vperm2f128 vpextrb vpextrw vpextrd vpextrq vphaddw vphaddd vphaddsw vphminposuw vphsubw vphsubd vphsubsw vpinsrb vpinsrw vpinsrd vpinsrq vpmaddwd vpmaddubsw vpmaxsb vpmaxsw vpmaxsd vpmaxub vpmaxuw vpmaxud vpminsb vpminsw vpminsd vpminub vpminuw vpminud vpmovmskb vpmovsxbw vpmovsxbd vpmovsxbq vpmovsxwd vpmovsxwq vpmovsxdq vpmovzxbw vpmovzxbd vpmovzxbq vpmovzxwd vpmovzxwq vpmovzxdq vpmulhuw vpmulhrsw vpmulhw vpmullw vpmulld vpmuludq vpmuldq vpor vpsadbw vpshufb vpshufd vpshufhw vpshuflw vpsignb vpsignw vpsignd vpslldq vpsrldq vpsllw vpslld vpsllq vpsraw vpsrad vpsrlw vpsrld vpsrlq vptest vpsubb vpsubw vpsubd vpsubq vpsubsb vpsubsw vpsubusb vpsubusw vpunpckhbw vpunpckhwd vpunpckhdq vpunpckhqdq vpunpcklbw vpunpcklwd vpunpckldq vpunpcklqdq vpxor vrcpps vrcpss vrsqrtps vrsqrtss vroundpd vroundps vroundsd vroundss vshufpd vshufps vsqrtpd vsqrtps vsqrtsd vsqrtss vstmxcsr vsubpd vsubps vsubsd vsubss vtestps vtestpd vucomisd vucomiss vunpckhpd vunpckhps vunpcklpd vunpcklps vxorpd vxorps vzeroall vzeroupper pclmullqlqdq pclmulhqlqdq pclmullqhqdq pclmulhqhqdq pclmulqdq vpclmullqlqdq vpclmulhqlqdq vpclmullqhqdq vpclmulhqhqdq vpclmulqdq vfmadd132ps vfmadd132pd vfmadd312ps vfmadd312pd vfmadd213ps vfmadd213pd vfmadd123ps vfmadd123pd vfmadd231ps vfmadd231pd vfmadd321ps vfmadd321pd vfmaddsub132ps vfmaddsub132pd vfmaddsub312ps vfmaddsub312pd vfmaddsub213ps vfmaddsub213pd vfmaddsub123ps vfmaddsub123pd vfmaddsub231ps vfmaddsub231pd vfmaddsub321ps vfmaddsub321pd vfmsub132ps vfmsub132pd vfmsub312ps vfmsub312pd vfmsub213ps vfmsub213pd vfmsub123ps vfmsub123pd vfmsub231ps vfmsub231pd vfmsub321ps vfmsub321pd vfmsubadd132ps vfmsubadd132pd vfmsubadd312ps vfmsubadd312pd vfmsubadd213ps vfmsubadd213pd vfmsubadd123ps vfmsubadd123pd vfmsubadd231ps vfmsubadd231pd vfmsubadd321ps vfmsubadd321pd vfnmadd132ps vfnmadd132pd vfnmadd312ps vfnmadd312pd vfnmadd213ps vfnmadd213pd vfnmadd123ps vfnmadd123pd vfnmadd231ps vfnmadd231pd vfnmadd321ps vfnmadd321pd vfnmsub132ps vfnmsub132pd vfnmsub312ps vfnmsub312pd vfnmsub213ps vfnmsub213pd vfnmsub123ps vfnmsub123pd vfnmsub231ps vfnmsub231pd vfnmsub321ps vfnmsub321pd vfmadd132ss vfmadd132sd vfmadd312ss vfmadd312sd vfmadd213ss vfmadd213sd vfmadd123ss vfmadd123sd vfmadd231ss vfmadd231sd vfmadd321ss vfmadd321sd vfmsub132ss vfmsub132sd vfmsub312ss vfmsub312sd vfmsub213ss vfmsub213sd vfmsub123ss vfmsub123sd vfmsub231ss vfmsub231sd vfmsub321ss vfmsub321sd vfnmadd132ss vfnmadd132sd vfnmadd312ss vfnmadd312sd vfnmadd213ss vfnmadd213sd vfnmadd123ss vfnmadd123sd vfnmadd231ss vfnmadd231sd vfnmadd321ss vfnmadd321sd vfnmsub132ss vfnmsub132sd vfnmsub312ss vfnmsub312sd vfnmsub213ss vfnmsub213sd vfnmsub123ss vfnmsub123sd vfnmsub231ss vfnmsub231sd vfnmsub321ss vfnmsub321sd rdfsbase rdgsbase rdrand wrfsbase wrgsbase vcvtph2ps vcvtps2ph adcx adox rdseed clac stac xstore xcryptecb xcryptcbc xcryptctr xcryptcfb xcryptofb montmul xsha1 xsha256 llwpcb slwpcb lwpval lwpins vfmaddpd vfmaddps vfmaddsd vfmaddss vfmaddsubpd vfmaddsubps vfmsubaddpd vfmsubaddps vfmsubpd vfmsubps vfmsubsd vfmsubss vfnmaddpd vfnmaddps vfnmaddsd vfnmaddss vfnmsubpd vfnmsubps vfnmsubsd vfnmsubss vfrczpd vfrczps vfrczsd vfrczss vpcmov vpcomb vpcomd vpcomq vpcomub vpcomud vpcomuq vpcomuw vpcomw vphaddbd vphaddbq vphaddbw vphadddq vphaddubd vphaddubq vphaddubw vphaddudq vphadduwd vphadduwq vphaddwd vphaddwq vphsubbw vphsubdq vphsubwd vpmacsdd vpmacsdqh vpmacsdql vpmacssdd vpmacssdqh vpmacssdql vpmacsswd vpmacssww vpmacswd vpmacsww vpmadcsswd vpmadcswd vpperm vprotb vprotd vprotq vprotw vpshab vpshad vpshaq vpshaw vpshlb vpshld vpshlq vpshlw vbroadcasti128 vpblendd vpbroadcastb vpbroadcastw vpbroadcastd vpbroadcastq vpermd vpermpd vpermps vpermq vperm2i128 vextracti128 vinserti128 vpmaskmovd vpmaskmovq vpsllvd vpsllvq vpsravd vpsrlvd vpsrlvq vgatherdpd vgatherqpd vgatherdps vgatherqps vpgatherdd vpgatherqd vpgatherdq vpgatherqq xabort xbegin xend xtest andn bextr blci blcic blsi blsic blcfill blsfill blcmsk blsmsk blsr blcs bzhi mulx pdep pext rorx sarx shlx shrx tzcnt tzmsk t1mskc valignd valignq vblendmpd vblendmps vbroadcastf32x4 vbroadcastf64x4 vbroadcasti32x4 vbroadcasti64x4 vcompresspd vcompressps vcvtpd2udq vcvtps2udq vcvtsd2usi vcvtss2usi vcvttpd2udq vcvttps2udq vcvttsd2usi vcvttss2usi vcvtudq2pd vcvtudq2ps vcvtusi2sd vcvtusi2ss vexpandpd vexpandps vextractf32x4 vextractf64x4 vextracti32x4 vextracti64x4 vfixupimmpd vfixupimmps vfixupimmsd vfixupimmss vgetexppd vgetexpps vgetexpsd vgetexpss vgetmantpd vgetmantps vgetmantsd vgetmantss vinsertf32x4 vinsertf64x4 vinserti32x4 vinserti64x4 vmovdqa32 vmovdqa64 vmovdqu32 vmovdqu64 vpabsq vpandd vpandnd vpandnq vpandq vpblendmd vpblendmq vpcmpltd vpcmpled vpcmpneqd vpcmpnltd vpcmpnled vpcmpd vpcmpltq vpcmpleq vpcmpneqq vpcmpnltq vpcmpnleq vpcmpq vpcmpequd vpcmpltud vpcmpleud vpcmpnequd vpcmpnltud vpcmpnleud vpcmpud vpcmpequq vpcmpltuq vpcmpleuq vpcmpnequq vpcmpnltuq vpcmpnleuq vpcmpuq vpcompressd vpcompressq vpermi2d vpermi2pd vpermi2ps vpermi2q vpermt2d vpermt2pd vpermt2ps vpermt2q vpexpandd vpexpandq vpmaxsq vpmaxuq vpminsq vpminuq vpmovdb vpmovdw vpmovqb vpmovqd vpmovqw vpmovsdb vpmovsdw vpmovsqb vpmovsqd vpmovsqw vpmovusdb vpmovusdw vpmovusqb vpmovusqd vpmovusqw vpord vporq vprold vprolq vprolvd vprolvq vprord vprorq vprorvd vprorvq vpscatterdd vpscatterdq vpscatterqd vpscatterqq vpsraq vpsravq vpternlogd vpternlogq vptestmd vptestmq vptestnmd vptestnmq vpxord vpxorq vrcp14pd vrcp14ps vrcp14sd vrcp14ss vrndscalepd vrndscaleps vrndscalesd vrndscaless vrsqrt14pd vrsqrt14ps vrsqrt14sd vrsqrt14ss vscalefpd vscalefps vscalefsd vscalefss vscatterdpd vscatterdps vscatterqpd vscatterqps vshuff32x4 vshuff64x2 vshufi32x4 vshufi64x2 kandnw kandw kmovw knotw kortestw korw kshiftlw kshiftrw kunpckbw kxnorw kxorw vpbroadcastmb2q vpbroadcastmw2d vpconflictd vpconflictq vplzcntd vplzcntq vexp2pd vexp2ps vrcp28pd vrcp28ps vrcp28sd vrcp28ss vrsqrt28pd vrsqrt28ps vrsqrt28sd vrsqrt28ss vgatherpf0dpd vgatherpf0dps vgatherpf0qpd vgatherpf0qps vgatherpf1dpd vgatherpf1dps vgatherpf1qpd vgatherpf1qps vscatterpf0dpd vscatterpf0dps vscatterpf0qpd vscatterpf0qps vscatterpf1dpd vscatterpf1dps vscatterpf1qpd vscatterpf1qps prefetchwt1 bndmk bndcl bndcu bndcn bndmov bndldx bndstx sha1rnds4 sha1nexte sha1msg1 sha1msg2 sha256rnds2 sha256msg1 sha256msg2 hint_nop0 hint_nop1 hint_nop2 hint_nop3 hint_nop4 hint_nop5 hint_nop6 hint_nop7 hint_nop8 hint_nop9 hint_nop10 hint_nop11 hint_nop12 hint_nop13 hint_nop14 hint_nop15 hint_nop16 hint_nop17 hint_nop18 hint_nop19 hint_nop20 hint_nop21 hint_nop22 hint_nop23 hint_nop24 hint_nop25 hint_nop26 hint_nop27 hint_nop28 hint_nop29 hint_nop30 hint_nop31 hint_nop32 hint_nop33 hint_nop34 hint_nop35 hint_nop36 hint_nop37 hint_nop38 hint_nop39 hint_nop40 hint_nop41 hint_nop42 hint_nop43 hint_nop44 hint_nop45 hint_nop46 hint_nop47 hint_nop48 hint_nop49 hint_nop50 hint_nop51 hint_nop52 hint_nop53 hint_nop54 hint_nop55 hint_nop56 hint_nop57 hint_nop58 hint_nop59 hint_nop60 hint_nop61 hint_nop62 hint_nop63",built_in:"ip eip rip al ah bl bh cl ch dl dh sil dil bpl spl r8b r9b r10b r11b r12b r13b r14b r15b ax bx cx dx si di bp sp r8w r9w r10w r11w r12w r13w r14w r15w eax ebx ecx edx esi edi ebp esp eip r8d r9d r10d r11d r12d r13d r14d r15d rax rbx rcx rdx rsi rdi rbp rsp r8 r9 r10 r11 r12 r13 r14 r15 cs ds es fs gs ss st st0 st1 st2 st3 st4 st5 st6 st7 mm0 mm1 mm2 mm3 mm4 mm5 mm6 mm7 xmm0  xmm1  xmm2  xmm3  xmm4  xmm5  xmm6  xmm7  xmm8  xmm9 xmm10  xmm11 xmm12 xmm13 xmm14 xmm15 xmm16 xmm17 xmm18 xmm19 xmm20 xmm21 xmm22 xmm23 xmm24 xmm25 xmm26 xmm27 xmm28 xmm29 xmm30 xmm31 ymm0  ymm1  ymm2  ymm3  ymm4  ymm5  ymm6  ymm7  ymm8  ymm9 ymm10  ymm11 ymm12 ymm13 ymm14 ymm15 ymm16 ymm17 ymm18 ymm19 ymm20 ymm21 ymm22 ymm23 ymm24 ymm25 ymm26 ymm27 ymm28 ymm29 ymm30 ymm31 zmm0  zmm1  zmm2  zmm3  zmm4  zmm5  zmm6  zmm7  zmm8  zmm9 zmm10  zmm11 zmm12 zmm13 zmm14 zmm15 zmm16 zmm17 zmm18 zmm19 zmm20 zmm21 zmm22 zmm23 zmm24 zmm25 zmm26 zmm27 zmm28 zmm29 zmm30 zmm31 k0 k1 k2 k3 k4 k5 k6 k7 bnd0 bnd1 bnd2 bnd3 cr0 cr1 cr2 cr3 cr4 cr8 dr0 dr1 dr2 dr3 dr8 tr3 tr4 tr5 tr6 tr7 r0 r1 r2 r3 r4 r5 r6 r7 r0b r1b r2b r3b r4b r5b r6b r7b r0w r1w r2w r3w r4w r5w r6w r7w r0d r1d r2d r3d r4d r5d r6d r7d r0h r1h r2h r3h r0l r1l r2l r3l r4l r5l r6l r7l r8l r9l r10l r11l r12l r13l r14l r15l db dw dd dq dt ddq do dy dz resb resw resd resq rest resdq reso resy resz incbin equ times byte word dword qword nosplit rel abs seg wrt strict near far a32 ptr",meta:"%define %xdefine %+ %undef %defstr %deftok %assign %strcat %strlen %substr %rotate %elif %else %endif %if %ifmacro %ifctx %ifidn %ifidni %ifid %ifnum %ifstr %iftoken %ifempty %ifenv %error %warning %fatal %rep %endrep %include %push %pop %repl %pathsearch %depend %use %arg %stacksize %local %line %comment %endcomment .nolist __FILE__ __LINE__ __SECT__  __BITS__ __OUTPUT_FORMAT__ __DATE__ __TIME__ __DATE_NUM__ __TIME_NUM__ __UTC_DATE__ __UTC_TIME__ __UTC_DATE_NUM__ __UTC_TIME_NUM__  __PASS__ struc endstruc istruc at iend align alignb sectalign daz nodaz up down zero default option assume public bits use16 use32 use64 default section segment absolute extern global common cpu float __utf16__ __utf16le__ __utf16be__ __utf32__ __utf32le__ __utf32be__ __float8__ __float16__ __float32__ __float64__ __float80m__ __float80e__ __float128l__ __float128h__ __Infinity__ __QNaN__ __SNaN__ Inf NaN QNaN SNaN float8 float16 float32 float64 float80m float80e float128l float128h __FLOAT_DAZ__ __FLOAT_ROUND__ __FLOAT__"},contains:[s.COMMENT(";","$",{relevance:0}),{className:"number",variants:[{begin:"\\b(?:([0-9][0-9_]*)?\\.[0-9_]*(?:[eE][+-]?[0-9_]+)?|(0[Xx])?[0-9][0-9_]*\\.?[0-9_]*(?:[pP](?:[+-]?[0-9_]+)?)?)\\b",relevance:0},{begin:"\\$[0-9][0-9A-Fa-f]*",relevance:0},{begin:"\\b(?:[0-9A-Fa-f][0-9A-Fa-f_]*[Hh]|[0-9][0-9_]*[DdTt]?|[0-7][0-7_]*[QqOo]|[0-1][0-1_]*[BbYy])\\b"},{begin:"\\b(?:0[Xx][0-9A-Fa-f_]+|0[DdTt][0-9_]+|0[QqOo][0-7_]+|0[BbYy][0-1_]+)\\b"}]},s.QUOTE_STRING_MODE,{className:"string",variants:[{begin:"'",end:"[^\\\\]'"},{begin:"`",end:"[^\\\\]`"}],relevance:0},{className:"symbol",variants:[{begin:"^\\s*[A-Za-z._?][A-Za-z0-9_$#@~.?]*(:|\\s+label)"},{begin:"^\\s*%%[A-Za-z0-9_$#@~.?]*:"}],relevance:0},{className:"subst",begin:"%[0-9]+",relevance:0},{className:"subst",begin:"%!S+",relevance:0},{className:"meta",begin:/^\s*\.[\w_-]+/}]}}}());
+ */
+var hljs = (function () {
+  'use strict';
+
+  /* eslint-disable no-multi-assign */
+
+  function deepFreeze(obj) {
+    if (obj instanceof Map) {
+      obj.clear =
+        obj.delete =
+        obj.set =
+          function () {
+            throw new Error('map is read-only');
+          };
+    } else if (obj instanceof Set) {
+      obj.add =
+        obj.clear =
+        obj.delete =
+          function () {
+            throw new Error('set is read-only');
+          };
+    }
+
+    // Freeze self
+    Object.freeze(obj);
+
+    Object.getOwnPropertyNames(obj).forEach((name) => {
+      const prop = obj[name];
+      const type = typeof prop;
+
+      // Freeze prop if it is an object or function and also not already frozen
+      if ((type === 'object' || type === 'function') && !Object.isFrozen(prop)) {
+        deepFreeze(prop);
+      }
+    });
+
+    return obj;
+  }
+
+  /** @typedef {import('highlight.js').CallbackResponse} CallbackResponse */
+  /** @typedef {import('highlight.js').CompiledMode} CompiledMode */
+  /** @implements CallbackResponse */
+
+  class Response {
+    /**
+     * @param {CompiledMode} mode
+     */
+    constructor(mode) {
+      // eslint-disable-next-line no-undefined
+      if (mode.data === undefined) mode.data = {};
+
+      this.data = mode.data;
+      this.isMatchIgnored = false;
+    }
+
+    ignoreMatch() {
+      this.isMatchIgnored = true;
+    }
+  }
+
+  /**
+   * @param {string} value
+   * @returns {string}
+   */
+  function escapeHTML(value) {
+    return value
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#x27;');
+  }
+
+  /**
+   * performs a shallow merge of multiple objects into one
+   *
+   * @template T
+   * @param {T} original
+   * @param {Record<string,any>[]} objects
+   * @returns {T} a single new object
+   */
+  function inherit$1(original, ...objects) {
+    /** @type Record<string,any> */
+    const result = Object.create(null);
+
+    for (const key in original) {
+      result[key] = original[key];
+    }
+    objects.forEach(function(obj) {
+      for (const key in obj) {
+        result[key] = obj[key];
+      }
+    });
+    return /** @type {T} */ (result);
+  }
+
+  /**
+   * @typedef {object} Renderer
+   * @property {(text: string) => void} addText
+   * @property {(node: Node) => void} openNode
+   * @property {(node: Node) => void} closeNode
+   * @property {() => string} value
+   */
+
+  /** @typedef {{scope?: string, language?: string, sublanguage?: boolean}} Node */
+  /** @typedef {{walk: (r: Renderer) => void}} Tree */
+  /** */
+
+  const SPAN_CLOSE = '</span>';
+
+  /**
+   * Determines if a node needs to be wrapped in <span>
+   *
+   * @param {Node} node */
+  const emitsWrappingTags = (node) => {
+    // rarely we can have a sublanguage where language is undefined
+    // TODO: track down why
+    return !!node.scope;
+  };
+
+  /**
+   *
+   * @param {string} name
+   * @param {{prefix:string}} options
+   */
+  const scopeToCSSClass = (name, { prefix }) => {
+    // sub-language
+    if (name.startsWith("language:")) {
+      return name.replace("language:", "language-");
+    }
+    // tiered scope: comment.line
+    if (name.includes(".")) {
+      const pieces = name.split(".");
+      return [
+        `${prefix}${pieces.shift()}`,
+        ...(pieces.map((x, i) => `${x}${"_".repeat(i + 1)}`))
+      ].join(" ");
+    }
+    // simple scope
+    return `${prefix}${name}`;
+  };
+
+  /** @type {Renderer} */
+  class HTMLRenderer {
+    /**
+     * Creates a new HTMLRenderer
+     *
+     * @param {Tree} parseTree - the parse tree (must support `walk` API)
+     * @param {{classPrefix: string}} options
+     */
+    constructor(parseTree, options) {
+      this.buffer = "";
+      this.classPrefix = options.classPrefix;
+      parseTree.walk(this);
+    }
+
+    /**
+     * Adds texts to the output stream
+     *
+     * @param {string} text */
+    addText(text) {
+      this.buffer += escapeHTML(text);
+    }
+
+    /**
+     * Adds a node open to the output stream (if needed)
+     *
+     * @param {Node} node */
+    openNode(node) {
+      if (!emitsWrappingTags(node)) return;
+
+      const className = scopeToCSSClass(node.scope,
+        { prefix: this.classPrefix });
+      this.span(className);
+    }
+
+    /**
+     * Adds a node close to the output stream (if needed)
+     *
+     * @param {Node} node */
+    closeNode(node) {
+      if (!emitsWrappingTags(node)) return;
+
+      this.buffer += SPAN_CLOSE;
+    }
+
+    /**
+     * returns the accumulated buffer
+    */
+    value() {
+      return this.buffer;
+    }
+
+    // helpers
+
+    /**
+     * Builds a span element
+     *
+     * @param {string} className */
+    span(className) {
+      this.buffer += `<span class="${className}">`;
+    }
+  }
+
+  /** @typedef {{scope?: string, language?: string, children: Node[]} | string} Node */
+  /** @typedef {{scope?: string, language?: string, children: Node[]} } DataNode */
+  /** @typedef {import('highlight.js').Emitter} Emitter */
+  /**  */
+
+  /** @returns {DataNode} */
+  const newNode = (opts = {}) => {
+    /** @type DataNode */
+    const result = { children: [] };
+    Object.assign(result, opts);
+    return result;
+  };
+
+  class TokenTree {
+    constructor() {
+      /** @type DataNode */
+      this.rootNode = newNode();
+      this.stack = [this.rootNode];
+    }
+
+    get top() {
+      return this.stack[this.stack.length - 1];
+    }
+
+    get root() { return this.rootNode; }
+
+    /** @param {Node} node */
+    add(node) {
+      this.top.children.push(node);
+    }
+
+    /** @param {string} scope */
+    openNode(scope) {
+      /** @type Node */
+      const node = newNode({ scope });
+      this.add(node);
+      this.stack.push(node);
+    }
+
+    closeNode() {
+      if (this.stack.length > 1) {
+        return this.stack.pop();
+      }
+      // eslint-disable-next-line no-undefined
+      return undefined;
+    }
+
+    closeAllNodes() {
+      while (this.closeNode());
+    }
+
+    toJSON() {
+      return JSON.stringify(this.rootNode, null, 4);
+    }
+
+    /**
+     * @typedef { import("./html_renderer").Renderer } Renderer
+     * @param {Renderer} builder
+     */
+    walk(builder) {
+      // this does not
+      return this.constructor._walk(builder, this.rootNode);
+      // this works
+      // return TokenTree._walk(builder, this.rootNode);
+    }
+
+    /**
+     * @param {Renderer} builder
+     * @param {Node} node
+     */
+    static _walk(builder, node) {
+      if (typeof node === "string") {
+        builder.addText(node);
+      } else if (node.children) {
+        builder.openNode(node);
+        node.children.forEach((child) => this._walk(builder, child));
+        builder.closeNode(node);
+      }
+      return builder;
+    }
+
+    /**
+     * @param {Node} node
+     */
+    static _collapse(node) {
+      if (typeof node === "string") return;
+      if (!node.children) return;
+
+      if (node.children.every(el => typeof el === "string")) {
+        // node.text = node.children.join("");
+        // delete node.children;
+        node.children = [node.children.join("")];
+      } else {
+        node.children.forEach((child) => {
+          TokenTree._collapse(child);
+        });
+      }
+    }
+  }
+
+  /**
+    Currently this is all private API, but this is the minimal API necessary
+    that an Emitter must implement to fully support the parser.
+
+    Minimal interface:
+
+    - addText(text)
+    - __addSublanguage(emitter, subLanguageName)
+    - startScope(scope)
+    - endScope()
+    - finalize()
+    - toHTML()
+
+  */
+
+  /**
+   * @implements {Emitter}
+   */
+  class TokenTreeEmitter extends TokenTree {
+    /**
+     * @param {*} options
+     */
+    constructor(options) {
+      super();
+      this.options = options;
+    }
+
+    /**
+     * @param {string} text
+     */
+    addText(text) {
+      if (text === "") { return; }
+
+      this.add(text);
+    }
+
+    /** @param {string} scope */
+    startScope(scope) {
+      this.openNode(scope);
+    }
+
+    endScope() {
+      this.closeNode();
+    }
+
+    /**
+     * @param {Emitter & {root: DataNode}} emitter
+     * @param {string} name
+     */
+    __addSublanguage(emitter, name) {
+      /** @type DataNode */
+      const node = emitter.root;
+      if (name) node.scope = `language:${name}`;
+
+      this.add(node);
+    }
+
+    toHTML() {
+      const renderer = new HTMLRenderer(this, this.options);
+      return renderer.value();
+    }
+
+    finalize() {
+      this.closeAllNodes();
+      return true;
+    }
+  }
+
+  /**
+   * @param {string} value
+   * @returns {RegExp}
+   * */
+
+  /**
+   * @param {RegExp | string } re
+   * @returns {string}
+   */
+  function source(re) {
+    if (!re) return null;
+    if (typeof re === "string") return re;
+
+    return re.source;
+  }
+
+  /**
+   * @param {RegExp | string } re
+   * @returns {string}
+   */
+  function lookahead(re) {
+    return concat('(?=', re, ')');
+  }
+
+  /**
+   * @param {RegExp | string } re
+   * @returns {string}
+   */
+  function anyNumberOfTimes(re) {
+    return concat('(?:', re, ')*');
+  }
+
+  /**
+   * @param {RegExp | string } re
+   * @returns {string}
+   */
+  function optional(re) {
+    return concat('(?:', re, ')?');
+  }
+
+  /**
+   * @param {...(RegExp | string) } args
+   * @returns {string}
+   */
+  function concat(...args) {
+    const joined = args.map((x) => source(x)).join("");
+    return joined;
+  }
+
+  /**
+   * @param { Array<string | RegExp | Object> } args
+   * @returns {object}
+   */
+  function stripOptionsFromArgs(args) {
+    const opts = args[args.length - 1];
+
+    if (typeof opts === 'object' && opts.constructor === Object) {
+      args.splice(args.length - 1, 1);
+      return opts;
+    } else {
+      return {};
+    }
+  }
+
+  /** @typedef { {capture?: boolean} } RegexEitherOptions */
+
+  /**
+   * Any of the passed expresssions may match
+   *
+   * Creates a huge this | this | that | that match
+   * @param {(RegExp | string)[] | [...(RegExp | string)[], RegexEitherOptions]} args
+   * @returns {string}
+   */
+  function either(...args) {
+    /** @type { object & {capture?: boolean} }  */
+    const opts = stripOptionsFromArgs(args);
+    const joined = '('
+      + (opts.capture ? "" : "?:")
+      + args.map((x) => source(x)).join("|") + ")";
+    return joined;
+  }
+
+  /**
+   * @param {RegExp | string} re
+   * @returns {number}
+   */
+  function countMatchGroups(re) {
+    return (new RegExp(re.toString() + '|')).exec('').length - 1;
+  }
+
+  /**
+   * Does lexeme start with a regular expression match at the beginning
+   * @param {RegExp} re
+   * @param {string} lexeme
+   */
+  function startsWith(re, lexeme) {
+    const match = re && re.exec(lexeme);
+    return match && match.index === 0;
+  }
+
+  // BACKREF_RE matches an open parenthesis or backreference. To avoid
+  // an incorrect parse, it additionally matches the following:
+  // - [...] elements, where the meaning of parentheses and escapes change
+  // - other escape sequences, so we do not misparse escape sequences as
+  //   interesting elements
+  // - non-matching or lookahead parentheses, which do not capture. These
+  //   follow the '(' with a '?'.
+  const BACKREF_RE = /\[(?:[^\\\]]|\\.)*\]|\(\??|\\([1-9][0-9]*)|\\./;
+
+  // **INTERNAL** Not intended for outside usage
+  // join logically computes regexps.join(separator), but fixes the
+  // backreferences so they continue to match.
+  // it also places each individual regular expression into it's own
+  // match group, keeping track of the sequencing of those match groups
+  // is currently an exercise for the caller. :-)
+  /**
+   * @param {(string | RegExp)[]} regexps
+   * @param {{joinWith: string}} opts
+   * @returns {string}
+   */
+  function _rewriteBackreferences(regexps, { joinWith }) {
+    let numCaptures = 0;
+
+    return regexps.map((regex) => {
+      numCaptures += 1;
+      const offset = numCaptures;
+      let re = source(regex);
+      let out = '';
+
+      while (re.length > 0) {
+        const match = BACKREF_RE.exec(re);
+        if (!match) {
+          out += re;
+          break;
+        }
+        out += re.substring(0, match.index);
+        re = re.substring(match.index + match[0].length);
+        if (match[0][0] === '\\' && match[1]) {
+          // Adjust the backreference.
+          out += '\\' + String(Number(match[1]) + offset);
+        } else {
+          out += match[0];
+          if (match[0] === '(') {
+            numCaptures++;
+          }
+        }
+      }
+      return out;
+    }).map(re => `(${re})`).join(joinWith);
+  }
+
+  /** @typedef {import('highlight.js').Mode} Mode */
+  /** @typedef {import('highlight.js').ModeCallback} ModeCallback */
+
+  // Common regexps
+  const MATCH_NOTHING_RE = /\b\B/;
+  const IDENT_RE = '[a-zA-Z]\\w*';
+  const UNDERSCORE_IDENT_RE = '[a-zA-Z_]\\w*';
+  const NUMBER_RE = '\\b\\d+(\\.\\d+)?';
+  const C_NUMBER_RE = '(-?)(\\b0[xX][a-fA-F0-9]+|(\\b\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)'; // 0x..., 0..., decimal, float
+  const BINARY_NUMBER_RE = '\\b(0b[01]+)'; // 0b...
+  const RE_STARTERS_RE = '!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|-|-=|/=|/|:|;|<<|<<=|<=|<|===|==|=|>>>=|>>=|>=|>>>|>>|>|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~';
+
+  /**
+  * @param { Partial<Mode> & {binary?: string | RegExp} } opts
+  */
+  const SHEBANG = (opts = {}) => {
+    const beginShebang = /^#![ ]*\//;
+    if (opts.binary) {
+      opts.begin = concat(
+        beginShebang,
+        /.*\b/,
+        opts.binary,
+        /\b.*/);
+    }
+    return inherit$1({
+      scope: 'meta',
+      begin: beginShebang,
+      end: /$/,
+      relevance: 0,
+      /** @type {ModeCallback} */
+      "on:begin": (m, resp) => {
+        if (m.index !== 0) resp.ignoreMatch();
+      }
+    }, opts);
+  };
+
+  // Common modes
+  const BACKSLASH_ESCAPE = {
+    begin: '\\\\[\\s\\S]', relevance: 0
+  };
+  const APOS_STRING_MODE = {
+    scope: 'string',
+    begin: '\'',
+    end: '\'',
+    illegal: '\\n',
+    contains: [BACKSLASH_ESCAPE]
+  };
+  const QUOTE_STRING_MODE = {
+    scope: 'string',
+    begin: '"',
+    end: '"',
+    illegal: '\\n',
+    contains: [BACKSLASH_ESCAPE]
+  };
+  const PHRASAL_WORDS_MODE = {
+    begin: /\b(a|an|the|are|I'm|isn't|don't|doesn't|won't|but|just|should|pretty|simply|enough|gonna|going|wtf|so|such|will|you|your|they|like|more)\b/
+  };
+  /**
+   * Creates a comment mode
+   *
+   * @param {string | RegExp} begin
+   * @param {string | RegExp} end
+   * @param {Mode | {}} [modeOptions]
+   * @returns {Partial<Mode>}
+   */
+  const COMMENT = function(begin, end, modeOptions = {}) {
+    const mode = inherit$1(
+      {
+        scope: 'comment',
+        begin,
+        end,
+        contains: []
+      },
+      modeOptions
+    );
+    mode.contains.push({
+      scope: 'doctag',
+      // hack to avoid the space from being included. the space is necessary to
+      // match here to prevent the plain text rule below from gobbling up doctags
+      begin: '[ ]*(?=(TODO|FIXME|NOTE|BUG|OPTIMIZE|HACK|XXX):)',
+      end: /(TODO|FIXME|NOTE|BUG|OPTIMIZE|HACK|XXX):/,
+      excludeBegin: true,
+      relevance: 0
+    });
+    const ENGLISH_WORD = either(
+      // list of common 1 and 2 letter words in English
+      "I",
+      "a",
+      "is",
+      "so",
+      "us",
+      "to",
+      "at",
+      "if",
+      "in",
+      "it",
+      "on",
+      // note: this is not an exhaustive list of contractions, just popular ones
+      /[A-Za-z]+['](d|ve|re|ll|t|s|n)/, // contractions - can't we'd they're let's, etc
+      /[A-Za-z]+[-][a-z]+/, // `no-way`, etc.
+      /[A-Za-z][a-z]{2,}/ // allow capitalized words at beginning of sentences
+    );
+    // looking like plain text, more likely to be a comment
+    mode.contains.push(
+      {
+        // TODO: how to include ", (, ) without breaking grammars that use these for
+        // comment delimiters?
+        // begin: /[ ]+([()"]?([A-Za-z'-]{3,}|is|a|I|so|us|[tT][oO]|at|if|in|it|on)[.]?[()":]?([.][ ]|[ ]|\))){3}/
+        // ---
+
+        // this tries to find sequences of 3 english words in a row (without any
+        // "programming" type syntax) this gives us a strong signal that we've
+        // TRULY found a comment - vs perhaps scanning with the wrong language.
+        // It's possible to find something that LOOKS like the start of the
+        // comment - but then if there is no readable text - good chance it is a
+        // false match and not a comment.
+        //
+        // for a visual example please see:
+        // https://github.com/highlightjs/highlight.js/issues/2827
+
+        begin: concat(
+          /[ ]+/, // necessary to prevent us gobbling up doctags like /* @author Bob Mcgill */
+          '(',
+          ENGLISH_WORD,
+          /[.]?[:]?([.][ ]|[ ])/,
+          '){3}') // look for 3 words in a row
+      }
+    );
+    return mode;
+  };
+  const C_LINE_COMMENT_MODE = COMMENT('//', '$');
+  const C_BLOCK_COMMENT_MODE = COMMENT('/\\*', '\\*/');
+  const HASH_COMMENT_MODE = COMMENT('#', '$');
+  const NUMBER_MODE = {
+    scope: 'number',
+    begin: NUMBER_RE,
+    relevance: 0
+  };
+  const C_NUMBER_MODE = {
+    scope: 'number',
+    begin: C_NUMBER_RE,
+    relevance: 0
+  };
+  const BINARY_NUMBER_MODE = {
+    scope: 'number',
+    begin: BINARY_NUMBER_RE,
+    relevance: 0
+  };
+  const REGEXP_MODE = {
+    scope: "regexp",
+    begin: /\/(?=[^/\n]*\/)/,
+    end: /\/[gimuy]*/,
+    contains: [
+      BACKSLASH_ESCAPE,
+      {
+        begin: /\[/,
+        end: /\]/,
+        relevance: 0,
+        contains: [BACKSLASH_ESCAPE]
+      }
+    ]
+  };
+  const TITLE_MODE = {
+    scope: 'title',
+    begin: IDENT_RE,
+    relevance: 0
+  };
+  const UNDERSCORE_TITLE_MODE = {
+    scope: 'title',
+    begin: UNDERSCORE_IDENT_RE,
+    relevance: 0
+  };
+  const METHOD_GUARD = {
+    // excludes method names from keyword processing
+    begin: '\\.\\s*' + UNDERSCORE_IDENT_RE,
+    relevance: 0
+  };
+
+  /**
+   * Adds end same as begin mechanics to a mode
+   *
+   * Your mode must include at least a single () match group as that first match
+   * group is what is used for comparison
+   * @param {Partial<Mode>} mode
+   */
+  const END_SAME_AS_BEGIN = function(mode) {
+    return Object.assign(mode,
+      {
+        /** @type {ModeCallback} */
+        'on:begin': (m, resp) => { resp.data._beginMatch = m[1]; },
+        /** @type {ModeCallback} */
+        'on:end': (m, resp) => { if (resp.data._beginMatch !== m[1]) resp.ignoreMatch(); }
+      });
+  };
+
+  var MODES = /*#__PURE__*/Object.freeze({
+    __proto__: null,
+    APOS_STRING_MODE: APOS_STRING_MODE,
+    BACKSLASH_ESCAPE: BACKSLASH_ESCAPE,
+    BINARY_NUMBER_MODE: BINARY_NUMBER_MODE,
+    BINARY_NUMBER_RE: BINARY_NUMBER_RE,
+    COMMENT: COMMENT,
+    C_BLOCK_COMMENT_MODE: C_BLOCK_COMMENT_MODE,
+    C_LINE_COMMENT_MODE: C_LINE_COMMENT_MODE,
+    C_NUMBER_MODE: C_NUMBER_MODE,
+    C_NUMBER_RE: C_NUMBER_RE,
+    END_SAME_AS_BEGIN: END_SAME_AS_BEGIN,
+    HASH_COMMENT_MODE: HASH_COMMENT_MODE,
+    IDENT_RE: IDENT_RE,
+    MATCH_NOTHING_RE: MATCH_NOTHING_RE,
+    METHOD_GUARD: METHOD_GUARD,
+    NUMBER_MODE: NUMBER_MODE,
+    NUMBER_RE: NUMBER_RE,
+    PHRASAL_WORDS_MODE: PHRASAL_WORDS_MODE,
+    QUOTE_STRING_MODE: QUOTE_STRING_MODE,
+    REGEXP_MODE: REGEXP_MODE,
+    RE_STARTERS_RE: RE_STARTERS_RE,
+    SHEBANG: SHEBANG,
+    TITLE_MODE: TITLE_MODE,
+    UNDERSCORE_IDENT_RE: UNDERSCORE_IDENT_RE,
+    UNDERSCORE_TITLE_MODE: UNDERSCORE_TITLE_MODE
+  });
+
+  /**
+  @typedef {import('highlight.js').CallbackResponse} CallbackResponse
+  @typedef {import('highlight.js').CompilerExt} CompilerExt
+  */
+
+  // Grammar extensions / plugins
+  // See: https://github.com/highlightjs/highlight.js/issues/2833
+
+  // Grammar extensions allow "syntactic sugar" to be added to the grammar modes
+  // without requiring any underlying changes to the compiler internals.
+
+  // `compileMatch` being the perfect small example of now allowing a grammar
+  // author to write `match` when they desire to match a single expression rather
+  // than being forced to use `begin`.  The extension then just moves `match` into
+  // `begin` when it runs.  Ie, no features have been added, but we've just made
+  // the experience of writing (and reading grammars) a little bit nicer.
+
+  // ------
+
+  // TODO: We need negative look-behind support to do this properly
+  /**
+   * Skip a match if it has a preceding dot
+   *
+   * This is used for `beginKeywords` to prevent matching expressions such as
+   * `bob.keyword.do()`. The mode compiler automatically wires this up as a
+   * special _internal_ 'on:begin' callback for modes with `beginKeywords`
+   * @param {RegExpMatchArray} match
+   * @param {CallbackResponse} response
+   */
+  function skipIfHasPrecedingDot(match, response) {
+    const before = match.input[match.index - 1];
+    if (before === ".") {
+      response.ignoreMatch();
+    }
+  }
+
+  /**
+   *
+   * @type {CompilerExt}
+   */
+  function scopeClassName(mode, _parent) {
+    // eslint-disable-next-line no-undefined
+    if (mode.className !== undefined) {
+      mode.scope = mode.className;
+      delete mode.className;
+    }
+  }
+
+  /**
+   * `beginKeywords` syntactic sugar
+   * @type {CompilerExt}
+   */
+  function beginKeywords(mode, parent) {
+    if (!parent) return;
+    if (!mode.beginKeywords) return;
+
+    // for languages with keywords that include non-word characters checking for
+    // a word boundary is not sufficient, so instead we check for a word boundary
+    // or whitespace - this does no harm in any case since our keyword engine
+    // doesn't allow spaces in keywords anyways and we still check for the boundary
+    // first
+    mode.begin = '\\b(' + mode.beginKeywords.split(' ').join('|') + ')(?!\\.)(?=\\b|\\s)';
+    mode.__beforeBegin = skipIfHasPrecedingDot;
+    mode.keywords = mode.keywords || mode.beginKeywords;
+    delete mode.beginKeywords;
+
+    // prevents double relevance, the keywords themselves provide
+    // relevance, the mode doesn't need to double it
+    // eslint-disable-next-line no-undefined
+    if (mode.relevance === undefined) mode.relevance = 0;
+  }
+
+  /**
+   * Allow `illegal` to contain an array of illegal values
+   * @type {CompilerExt}
+   */
+  function compileIllegal(mode, _parent) {
+    if (!Array.isArray(mode.illegal)) return;
+
+    mode.illegal = either(...mode.illegal);
+  }
+
+  /**
+   * `match` to match a single expression for readability
+   * @type {CompilerExt}
+   */
+  function compileMatch(mode, _parent) {
+    if (!mode.match) return;
+    if (mode.begin || mode.end) throw new Error("begin & end are not supported with match");
+
+    mode.begin = mode.match;
+    delete mode.match;
+  }
+
+  /**
+   * provides the default 1 relevance to all modes
+   * @type {CompilerExt}
+   */
+  function compileRelevance(mode, _parent) {
+    // eslint-disable-next-line no-undefined
+    if (mode.relevance === undefined) mode.relevance = 1;
+  }
+
+  // allow beforeMatch to act as a "qualifier" for the match
+  // the full match begin must be [beforeMatch][begin]
+  const beforeMatchExt = (mode, parent) => {
+    if (!mode.beforeMatch) return;
+    // starts conflicts with endsParent which we need to make sure the child
+    // rule is not matched multiple times
+    if (mode.starts) throw new Error("beforeMatch cannot be used with starts");
+
+    const originalMode = Object.assign({}, mode);
+    Object.keys(mode).forEach((key) => { delete mode[key]; });
+
+    mode.keywords = originalMode.keywords;
+    mode.begin = concat(originalMode.beforeMatch, lookahead(originalMode.begin));
+    mode.starts = {
+      relevance: 0,
+      contains: [
+        Object.assign(originalMode, { endsParent: true })
+      ]
+    };
+    mode.relevance = 0;
+
+    delete originalMode.beforeMatch;
+  };
+
+  // keywords that should have no default relevance value
+  const COMMON_KEYWORDS = [
+    'of',
+    'and',
+    'for',
+    'in',
+    'not',
+    'or',
+    'if',
+    'then',
+    'parent', // common variable name
+    'list', // common variable name
+    'value' // common variable name
+  ];
+
+  const DEFAULT_KEYWORD_SCOPE = "keyword";
+
+  /**
+   * Given raw keywords from a language definition, compile them.
+   *
+   * @param {string | Record<string,string|string[]> | Array<string>} rawKeywords
+   * @param {boolean} caseInsensitive
+   */
+  function compileKeywords(rawKeywords, caseInsensitive, scopeName = DEFAULT_KEYWORD_SCOPE) {
+    /** @type {import("highlight.js/private").KeywordDict} */
+    const compiledKeywords = Object.create(null);
+
+    // input can be a string of keywords, an array of keywords, or a object with
+    // named keys representing scopeName (which can then point to a string or array)
+    if (typeof rawKeywords === 'string') {
+      compileList(scopeName, rawKeywords.split(" "));
+    } else if (Array.isArray(rawKeywords)) {
+      compileList(scopeName, rawKeywords);
+    } else {
+      Object.keys(rawKeywords).forEach(function(scopeName) {
+        // collapse all our objects back into the parent object
+        Object.assign(
+          compiledKeywords,
+          compileKeywords(rawKeywords[scopeName], caseInsensitive, scopeName)
+        );
+      });
+    }
+    return compiledKeywords;
+
+    // ---
+
+    /**
+     * Compiles an individual list of keywords
+     *
+     * Ex: "for if when while|5"
+     *
+     * @param {string} scopeName
+     * @param {Array<string>} keywordList
+     */
+    function compileList(scopeName, keywordList) {
+      if (caseInsensitive) {
+        keywordList = keywordList.map(x => x.toLowerCase());
+      }
+      keywordList.forEach(function(keyword) {
+        const pair = keyword.split('|');
+        compiledKeywords[pair[0]] = [scopeName, scoreForKeyword(pair[0], pair[1])];
+      });
+    }
+  }
+
+  /**
+   * Returns the proper score for a given keyword
+   *
+   * Also takes into account comment keywords, which will be scored 0 UNLESS
+   * another score has been manually assigned.
+   * @param {string} keyword
+   * @param {string} [providedScore]
+   */
+  function scoreForKeyword(keyword, providedScore) {
+    // manual scores always win over common keywords
+    // so you can force a score of 1 if you really insist
+    if (providedScore) {
+      return Number(providedScore);
+    }
+
+    return commonKeyword(keyword) ? 0 : 1;
+  }
+
+  /**
+   * Determines if a given keyword is common or not
+   *
+   * @param {string} keyword */
+  function commonKeyword(keyword) {
+    return COMMON_KEYWORDS.includes(keyword.toLowerCase());
+  }
+
+  /*
+
+  For the reasoning behind this please see:
+  https://github.com/highlightjs/highlight.js/issues/2880#issuecomment-747275419
+
+  */
+
+  /**
+   * @type {Record<string, boolean>}
+   */
+  const seenDeprecations = {};
+
+  /**
+   * @param {string} message
+   */
+  const error = (message) => {
+    console.error(message);
+  };
+
+  /**
+   * @param {string} message
+   * @param {any} args
+   */
+  const warn = (message, ...args) => {
+    console.log(`WARN: ${message}`, ...args);
+  };
+
+  /**
+   * @param {string} version
+   * @param {string} message
+   */
+  const deprecated = (version, message) => {
+    if (seenDeprecations[`${version}/${message}`]) return;
+
+    console.log(`Deprecated as of ${version}. ${message}`);
+    seenDeprecations[`${version}/${message}`] = true;
+  };
+
+  /* eslint-disable no-throw-literal */
+
+  /**
+  @typedef {import('highlight.js').CompiledMode} CompiledMode
+  */
+
+  const MultiClassError = new Error();
+
+  /**
+   * Renumbers labeled scope names to account for additional inner match
+   * groups that otherwise would break everything.
+   *
+   * Lets say we 3 match scopes:
+   *
+   *   { 1 => ..., 2 => ..., 3 => ... }
+   *
+   * So what we need is a clean match like this:
+   *
+   *   (a)(b)(c) => [ "a", "b", "c" ]
+   *
+   * But this falls apart with inner match groups:
+   *
+   * (a)(((b)))(c) => ["a", "b", "b", "b", "c" ]
+   *
+   * Our scopes are now "out of alignment" and we're repeating `b` 3 times.
+   * What needs to happen is the numbers are remapped:
+   *
+   *   { 1 => ..., 2 => ..., 5 => ... }
+   *
+   * We also need to know that the ONLY groups that should be output
+   * are 1, 2, and 5.  This function handles this behavior.
+   *
+   * @param {CompiledMode} mode
+   * @param {Array<RegExp | string>} regexes
+   * @param {{key: "beginScope"|"endScope"}} opts
+   */
+  function remapScopeNames(mode, regexes, { key }) {
+    let offset = 0;
+    const scopeNames = mode[key];
+    /** @type Record<number,boolean> */
+    const emit = {};
+    /** @type Record<number,string> */
+    const positions = {};
+
+    for (let i = 1; i <= regexes.length; i++) {
+      positions[i + offset] = scopeNames[i];
+      emit[i + offset] = true;
+      offset += countMatchGroups(regexes[i - 1]);
+    }
+    // we use _emit to keep track of which match groups are "top-level" to avoid double
+    // output from inside match groups
+    mode[key] = positions;
+    mode[key]._emit = emit;
+    mode[key]._multi = true;
+  }
+
+  /**
+   * @param {CompiledMode} mode
+   */
+  function beginMultiClass(mode) {
+    if (!Array.isArray(mode.begin)) return;
+
+    if (mode.skip || mode.excludeBegin || mode.returnBegin) {
+      error("skip, excludeBegin, returnBegin not compatible with beginScope: {}");
+      throw MultiClassError;
+    }
+
+    if (typeof mode.beginScope !== "object" || mode.beginScope === null) {
+      error("beginScope must be object");
+      throw MultiClassError;
+    }
+
+    remapScopeNames(mode, mode.begin, { key: "beginScope" });
+    mode.begin = _rewriteBackreferences(mode.begin, { joinWith: "" });
+  }
+
+  /**
+   * @param {CompiledMode} mode
+   */
+  function endMultiClass(mode) {
+    if (!Array.isArray(mode.end)) return;
+
+    if (mode.skip || mode.excludeEnd || mode.returnEnd) {
+      error("skip, excludeEnd, returnEnd not compatible with endScope: {}");
+      throw MultiClassError;
+    }
+
+    if (typeof mode.endScope !== "object" || mode.endScope === null) {
+      error("endScope must be object");
+      throw MultiClassError;
+    }
+
+    remapScopeNames(mode, mode.end, { key: "endScope" });
+    mode.end = _rewriteBackreferences(mode.end, { joinWith: "" });
+  }
+
+  /**
+   * this exists only to allow `scope: {}` to be used beside `match:`
+   * Otherwise `beginScope` would necessary and that would look weird
+
+    {
+      match: [ /def/, /\w+/ ]
+      scope: { 1: "keyword" , 2: "title" }
+    }
+
+   * @param {CompiledMode} mode
+   */
+  function scopeSugar(mode) {
+    if (mode.scope && typeof mode.scope === "object" && mode.scope !== null) {
+      mode.beginScope = mode.scope;
+      delete mode.scope;
+    }
+  }
+
+  /**
+   * @param {CompiledMode} mode
+   */
+  function MultiClass(mode) {
+    scopeSugar(mode);
+
+    if (typeof mode.beginScope === "string") {
+      mode.beginScope = { _wrap: mode.beginScope };
+    }
+    if (typeof mode.endScope === "string") {
+      mode.endScope = { _wrap: mode.endScope };
+    }
+
+    beginMultiClass(mode);
+    endMultiClass(mode);
+  }
+
+  /**
+  @typedef {import('highlight.js').Mode} Mode
+  @typedef {import('highlight.js').CompiledMode} CompiledMode
+  @typedef {import('highlight.js').Language} Language
+  @typedef {import('highlight.js').HLJSPlugin} HLJSPlugin
+  @typedef {import('highlight.js').CompiledLanguage} CompiledLanguage
+  */
+
+  // compilation
+
+  /**
+   * Compiles a language definition result
+   *
+   * Given the raw result of a language definition (Language), compiles this so
+   * that it is ready for highlighting code.
+   * @param {Language} language
+   * @returns {CompiledLanguage}
+   */
+  function compileLanguage(language) {
+    /**
+     * Builds a regex with the case sensitivity of the current language
+     *
+     * @param {RegExp | string} value
+     * @param {boolean} [global]
+     */
+    function langRe(value, global) {
+      return new RegExp(
+        source(value),
+        'm'
+        + (language.case_insensitive ? 'i' : '')
+        + (language.unicodeRegex ? 'u' : '')
+        + (global ? 'g' : '')
+      );
+    }
+
+    /**
+      Stores multiple regular expressions and allows you to quickly search for
+      them all in a string simultaneously - returning the first match.  It does
+      this by creating a huge (a|b|c) regex - each individual item wrapped with ()
+      and joined by `|` - using match groups to track position.  When a match is
+      found checking which position in the array has content allows us to figure
+      out which of the original regexes / match groups triggered the match.
+
+      The match object itself (the result of `Regex.exec`) is returned but also
+      enhanced by merging in any meta-data that was registered with the regex.
+      This is how we keep track of which mode matched, and what type of rule
+      (`illegal`, `begin`, end, etc).
+    */
+    class MultiRegex {
+      constructor() {
+        this.matchIndexes = {};
+        // @ts-ignore
+        this.regexes = [];
+        this.matchAt = 1;
+        this.position = 0;
+      }
+
+      // @ts-ignore
+      addRule(re, opts) {
+        opts.position = this.position++;
+        // @ts-ignore
+        this.matchIndexes[this.matchAt] = opts;
+        this.regexes.push([opts, re]);
+        this.matchAt += countMatchGroups(re) + 1;
+      }
+
+      compile() {
+        if (this.regexes.length === 0) {
+          // avoids the need to check length every time exec is called
+          // @ts-ignore
+          this.exec = () => null;
+        }
+        const terminators = this.regexes.map(el => el[1]);
+        this.matcherRe = langRe(_rewriteBackreferences(terminators, { joinWith: '|' }), true);
+        this.lastIndex = 0;
+      }
+
+      /** @param {string} s */
+      exec(s) {
+        this.matcherRe.lastIndex = this.lastIndex;
+        const match = this.matcherRe.exec(s);
+        if (!match) { return null; }
+
+        // eslint-disable-next-line no-undefined
+        const i = match.findIndex((el, i) => i > 0 && el !== undefined);
+        // @ts-ignore
+        const matchData = this.matchIndexes[i];
+        // trim off any earlier non-relevant match groups (ie, the other regex
+        // match groups that make up the multi-matcher)
+        match.splice(0, i);
+
+        return Object.assign(match, matchData);
+      }
+    }
+
+    /*
+      Created to solve the key deficiently with MultiRegex - there is no way to
+      test for multiple matches at a single location.  Why would we need to do
+      that?  In the future a more dynamic engine will allow certain matches to be
+      ignored.  An example: if we matched say the 3rd regex in a large group but
+      decided to ignore it - we'd need to started testing again at the 4th
+      regex... but MultiRegex itself gives us no real way to do that.
+
+      So what this class creates MultiRegexs on the fly for whatever search
+      position they are needed.
+
+      NOTE: These additional MultiRegex objects are created dynamically.  For most
+      grammars most of the time we will never actually need anything more than the
+      first MultiRegex - so this shouldn't have too much overhead.
+
+      Say this is our search group, and we match regex3, but wish to ignore it.
+
+        regex1 | regex2 | regex3 | regex4 | regex5    ' ie, startAt = 0
+
+      What we need is a new MultiRegex that only includes the remaining
+      possibilities:
+
+        regex4 | regex5                               ' ie, startAt = 3
+
+      This class wraps all that complexity up in a simple API... `startAt` decides
+      where in the array of expressions to start doing the matching. It
+      auto-increments, so if a match is found at position 2, then startAt will be
+      set to 3.  If the end is reached startAt will return to 0.
+
+      MOST of the time the parser will be setting startAt manually to 0.
+    */
+    class ResumableMultiRegex {
+      constructor() {
+        // @ts-ignore
+        this.rules = [];
+        // @ts-ignore
+        this.multiRegexes = [];
+        this.count = 0;
+
+        this.lastIndex = 0;
+        this.regexIndex = 0;
+      }
+
+      // @ts-ignore
+      getMatcher(index) {
+        if (this.multiRegexes[index]) return this.multiRegexes[index];
+
+        const matcher = new MultiRegex();
+        this.rules.slice(index).forEach(([re, opts]) => matcher.addRule(re, opts));
+        matcher.compile();
+        this.multiRegexes[index] = matcher;
+        return matcher;
+      }
+
+      resumingScanAtSamePosition() {
+        return this.regexIndex !== 0;
+      }
+
+      considerAll() {
+        this.regexIndex = 0;
+      }
+
+      // @ts-ignore
+      addRule(re, opts) {
+        this.rules.push([re, opts]);
+        if (opts.type === "begin") this.count++;
+      }
+
+      /** @param {string} s */
+      exec(s) {
+        const m = this.getMatcher(this.regexIndex);
+        m.lastIndex = this.lastIndex;
+        let result = m.exec(s);
+
+        // The following is because we have no easy way to say "resume scanning at the
+        // existing position but also skip the current rule ONLY". What happens is
+        // all prior rules are also skipped which can result in matching the wrong
+        // thing. Example of matching "booger":
+
+        // our matcher is [string, "booger", number]
+        //
+        // ....booger....
+
+        // if "booger" is ignored then we'd really need a regex to scan from the
+        // SAME position for only: [string, number] but ignoring "booger" (if it
+        // was the first match), a simple resume would scan ahead who knows how
+        // far looking only for "number", ignoring potential string matches (or
+        // future "booger" matches that might be valid.)
+
+        // So what we do: We execute two matchers, one resuming at the same
+        // position, but the second full matcher starting at the position after:
+
+        //     /--- resume first regex match here (for [number])
+        //     |/---- full match here for [string, "booger", number]
+        //     vv
+        // ....booger....
+
+        // Which ever results in a match first is then used. So this 3-4 step
+        // process essentially allows us to say "match at this position, excluding
+        // a prior rule that was ignored".
+        //
+        // 1. Match "booger" first, ignore. Also proves that [string] does non match.
+        // 2. Resume matching for [number]
+        // 3. Match at index + 1 for [string, "booger", number]
+        // 4. If #2 and #3 result in matches, which came first?
+        if (this.resumingScanAtSamePosition()) {
+          if (result && result.index === this.lastIndex) ; else { // use the second matcher result
+            const m2 = this.getMatcher(0);
+            m2.lastIndex = this.lastIndex + 1;
+            result = m2.exec(s);
+          }
+        }
+
+        if (result) {
+          this.regexIndex += result.position + 1;
+          if (this.regexIndex === this.count) {
+            // wrap-around to considering all matches again
+            this.considerAll();
+          }
+        }
+
+        return result;
+      }
+    }
+
+    /**
+     * Given a mode, builds a huge ResumableMultiRegex that can be used to walk
+     * the content and find matches.
+     *
+     * @param {CompiledMode} mode
+     * @returns {ResumableMultiRegex}
+     */
+    function buildModeRegex(mode) {
+      const mm = new ResumableMultiRegex();
+
+      mode.contains.forEach(term => mm.addRule(term.begin, { rule: term, type: "begin" }));
+
+      if (mode.terminatorEnd) {
+        mm.addRule(mode.terminatorEnd, { type: "end" });
+      }
+      if (mode.illegal) {
+        mm.addRule(mode.illegal, { type: "illegal" });
+      }
+
+      return mm;
+    }
+
+    /** skip vs abort vs ignore
+     *
+     * @skip   - The mode is still entered and exited normally (and contains rules apply),
+     *           but all content is held and added to the parent buffer rather than being
+     *           output when the mode ends.  Mostly used with `sublanguage` to build up
+     *           a single large buffer than can be parsed by sublanguage.
+     *
+     *             - The mode begin ands ends normally.
+     *             - Content matched is added to the parent mode buffer.
+     *             - The parser cursor is moved forward normally.
+     *
+     * @abort  - A hack placeholder until we have ignore.  Aborts the mode (as if it
+     *           never matched) but DOES NOT continue to match subsequent `contains`
+     *           modes.  Abort is bad/suboptimal because it can result in modes
+     *           farther down not getting applied because an earlier rule eats the
+     *           content but then aborts.
+     *
+     *             - The mode does not begin.
+     *             - Content matched by `begin` is added to the mode buffer.
+     *             - The parser cursor is moved forward accordingly.
+     *
+     * @ignore - Ignores the mode (as if it never matched) and continues to match any
+     *           subsequent `contains` modes.  Ignore isn't technically possible with
+     *           the current parser implementation.
+     *
+     *             - The mode does not begin.
+     *             - Content matched by `begin` is ignored.
+     *             - The parser cursor is not moved forward.
+     */
+
+    /**
+     * Compiles an individual mode
+     *
+     * This can raise an error if the mode contains certain detectable known logic
+     * issues.
+     * @param {Mode} mode
+     * @param {CompiledMode | null} [parent]
+     * @returns {CompiledMode | never}
+     */
+    function compileMode(mode, parent) {
+      const cmode = /** @type CompiledMode */ (mode);
+      if (mode.isCompiled) return cmode;
+
+      [
+        scopeClassName,
+        // do this early so compiler extensions generally don't have to worry about
+        // the distinction between match/begin
+        compileMatch,
+        MultiClass,
+        beforeMatchExt
+      ].forEach(ext => ext(mode, parent));
+
+      language.compilerExtensions.forEach(ext => ext(mode, parent));
+
+      // __beforeBegin is considered private API, internal use only
+      mode.__beforeBegin = null;
+
+      [
+        beginKeywords,
+        // do this later so compiler extensions that come earlier have access to the
+        // raw array if they wanted to perhaps manipulate it, etc.
+        compileIllegal,
+        // default to 1 relevance if not specified
+        compileRelevance
+      ].forEach(ext => ext(mode, parent));
+
+      mode.isCompiled = true;
+
+      let keywordPattern = null;
+      if (typeof mode.keywords === "object" && mode.keywords.$pattern) {
+        // we need a copy because keywords might be compiled multiple times
+        // so we can't go deleting $pattern from the original on the first
+        // pass
+        mode.keywords = Object.assign({}, mode.keywords);
+        keywordPattern = mode.keywords.$pattern;
+        delete mode.keywords.$pattern;
+      }
+      keywordPattern = keywordPattern || /\w+/;
+
+      if (mode.keywords) {
+        mode.keywords = compileKeywords(mode.keywords, language.case_insensitive);
+      }
+
+      cmode.keywordPatternRe = langRe(keywordPattern, true);
+
+      if (parent) {
+        if (!mode.begin) mode.begin = /\B|\b/;
+        cmode.beginRe = langRe(cmode.begin);
+        if (!mode.end && !mode.endsWithParent) mode.end = /\B|\b/;
+        if (mode.end) cmode.endRe = langRe(cmode.end);
+        cmode.terminatorEnd = source(cmode.end) || '';
+        if (mode.endsWithParent && parent.terminatorEnd) {
+          cmode.terminatorEnd += (mode.end ? '|' : '') + parent.terminatorEnd;
+        }
+      }
+      if (mode.illegal) cmode.illegalRe = langRe(/** @type {RegExp | string} */ (mode.illegal));
+      if (!mode.contains) mode.contains = [];
+
+      mode.contains = [].concat(...mode.contains.map(function(c) {
+        return expandOrCloneMode(c === 'self' ? mode : c);
+      }));
+      mode.contains.forEach(function(c) { compileMode(/** @type Mode */ (c), cmode); });
+
+      if (mode.starts) {
+        compileMode(mode.starts, parent);
+      }
+
+      cmode.matcher = buildModeRegex(cmode);
+      return cmode;
+    }
+
+    if (!language.compilerExtensions) language.compilerExtensions = [];
+
+    // self is not valid at the top-level
+    if (language.contains && language.contains.includes('self')) {
+      throw new Error("ERR: contains `self` is not supported at the top-level of a language.  See documentation.");
+    }
+
+    // we need a null object, which inherit will guarantee
+    language.classNameAliases = inherit$1(language.classNameAliases || {});
+
+    return compileMode(/** @type Mode */ (language));
+  }
+
+  /**
+   * Determines if a mode has a dependency on it's parent or not
+   *
+   * If a mode does have a parent dependency then often we need to clone it if
+   * it's used in multiple places so that each copy points to the correct parent,
+   * where-as modes without a parent can often safely be re-used at the bottom of
+   * a mode chain.
+   *
+   * @param {Mode | null} mode
+   * @returns {boolean} - is there a dependency on the parent?
+   * */
+  function dependencyOnParent(mode) {
+    if (!mode) return false;
+
+    return mode.endsWithParent || dependencyOnParent(mode.starts);
+  }
+
+  /**
+   * Expands a mode or clones it if necessary
+   *
+   * This is necessary for modes with parental dependenceis (see notes on
+   * `dependencyOnParent`) and for nodes that have `variants` - which must then be
+   * exploded into their own individual modes at compile time.
+   *
+   * @param {Mode} mode
+   * @returns {Mode | Mode[]}
+   * */
+  function expandOrCloneMode(mode) {
+    if (mode.variants && !mode.cachedVariants) {
+      mode.cachedVariants = mode.variants.map(function(variant) {
+        return inherit$1(mode, { variants: null }, variant);
+      });
+    }
+
+    // EXPAND
+    // if we have variants then essentially "replace" the mode with the variants
+    // this happens in compileMode, where this function is called from
+    if (mode.cachedVariants) {
+      return mode.cachedVariants;
+    }
+
+    // CLONE
+    // if we have dependencies on parents then we need a unique
+    // instance of ourselves, so we can be reused with many
+    // different parents without issue
+    if (dependencyOnParent(mode)) {
+      return inherit$1(mode, { starts: mode.starts ? inherit$1(mode.starts) : null });
+    }
+
+    if (Object.isFrozen(mode)) {
+      return inherit$1(mode);
+    }
+
+    // no special dependency issues, just return ourselves
+    return mode;
+  }
+
+  var version = "11.9.0";
+
+  class HTMLInjectionError extends Error {
+    constructor(reason, html) {
+      super(reason);
+      this.name = "HTMLInjectionError";
+      this.html = html;
+    }
+  }
+
+  /*
+  Syntax highlighting with language autodetection.
+  https://highlightjs.org/
+  */
+
+
+
+  /**
+  @typedef {import('highlight.js').Mode} Mode
+  @typedef {import('highlight.js').CompiledMode} CompiledMode
+  @typedef {import('highlight.js').CompiledScope} CompiledScope
+  @typedef {import('highlight.js').Language} Language
+  @typedef {import('highlight.js').HLJSApi} HLJSApi
+  @typedef {import('highlight.js').HLJSPlugin} HLJSPlugin
+  @typedef {import('highlight.js').PluginEvent} PluginEvent
+  @typedef {import('highlight.js').HLJSOptions} HLJSOptions
+  @typedef {import('highlight.js').LanguageFn} LanguageFn
+  @typedef {import('highlight.js').HighlightedHTMLElement} HighlightedHTMLElement
+  @typedef {import('highlight.js').BeforeHighlightContext} BeforeHighlightContext
+  @typedef {import('highlight.js/private').MatchType} MatchType
+  @typedef {import('highlight.js/private').KeywordData} KeywordData
+  @typedef {import('highlight.js/private').EnhancedMatch} EnhancedMatch
+  @typedef {import('highlight.js/private').AnnotatedError} AnnotatedError
+  @typedef {import('highlight.js').AutoHighlightResult} AutoHighlightResult
+  @typedef {import('highlight.js').HighlightOptions} HighlightOptions
+  @typedef {import('highlight.js').HighlightResult} HighlightResult
+  */
+
+
+  const escape = escapeHTML;
+  const inherit = inherit$1;
+  const NO_MATCH = Symbol("nomatch");
+  const MAX_KEYWORD_HITS = 7;
+
+  /**
+   * @param {any} hljs - object that is extended (legacy)
+   * @returns {HLJSApi}
+   */
+  const HLJS = function(hljs) {
+    // Global internal variables used within the highlight.js library.
+    /** @type {Record<string, Language>} */
+    const languages = Object.create(null);
+    /** @type {Record<string, string>} */
+    const aliases = Object.create(null);
+    /** @type {HLJSPlugin[]} */
+    const plugins = [];
+
+    // safe/production mode - swallows more errors, tries to keep running
+    // even if a single syntax or parse hits a fatal error
+    let SAFE_MODE = true;
+    const LANGUAGE_NOT_FOUND = "Could not find the language '{}', did you forget to load/include a language module?";
+    /** @type {Language} */
+    const PLAINTEXT_LANGUAGE = { disableAutodetect: true, name: 'Plain text', contains: [] };
+
+    // Global options used when within external APIs. This is modified when
+    // calling the `hljs.configure` function.
+    /** @type HLJSOptions */
+    let options = {
+      ignoreUnescapedHTML: false,
+      throwUnescapedHTML: false,
+      noHighlightRe: /^(no-?highlight)$/i,
+      languageDetectRe: /\blang(?:uage)?-([\w-]+)\b/i,
+      classPrefix: 'hljs-',
+      cssSelector: 'pre code',
+      languages: null,
+      // beta configuration options, subject to change, welcome to discuss
+      // https://github.com/highlightjs/highlight.js/issues/1086
+      __emitter: TokenTreeEmitter
+    };
+
+    /* Utility functions */
+
+    /**
+     * Tests a language name to see if highlighting should be skipped
+     * @param {string} languageName
+     */
+    function shouldNotHighlight(languageName) {
+      return options.noHighlightRe.test(languageName);
+    }
+
+    /**
+     * @param {HighlightedHTMLElement} block - the HTML element to determine language for
+     */
+    function blockLanguage(block) {
+      let classes = block.className + ' ';
+
+      classes += block.parentNode ? block.parentNode.className : '';
+
+      // language-* takes precedence over non-prefixed class names.
+      const match = options.languageDetectRe.exec(classes);
+      if (match) {
+        const language = getLanguage(match[1]);
+        if (!language) {
+          warn(LANGUAGE_NOT_FOUND.replace("{}", match[1]));
+          warn("Falling back to no-highlight mode for this block.", block);
+        }
+        return language ? match[1] : 'no-highlight';
+      }
+
+      return classes
+        .split(/\s+/)
+        .find((_class) => shouldNotHighlight(_class) || getLanguage(_class));
+    }
+
+    /**
+     * Core highlighting function.
+     *
+     * OLD API
+     * highlight(lang, code, ignoreIllegals, continuation)
+     *
+     * NEW API
+     * highlight(code, {lang, ignoreIllegals})
+     *
+     * @param {string} codeOrLanguageName - the language to use for highlighting
+     * @param {string | HighlightOptions} optionsOrCode - the code to highlight
+     * @param {boolean} [ignoreIllegals] - whether to ignore illegal matches, default is to bail
+     *
+     * @returns {HighlightResult} Result - an object that represents the result
+     * @property {string} language - the language name
+     * @property {number} relevance - the relevance score
+     * @property {string} value - the highlighted HTML code
+     * @property {string} code - the original raw code
+     * @property {CompiledMode} top - top of the current mode stack
+     * @property {boolean} illegal - indicates whether any illegal matches were found
+    */
+    function highlight(codeOrLanguageName, optionsOrCode, ignoreIllegals) {
+      let code = "";
+      let languageName = "";
+      if (typeof optionsOrCode === "object") {
+        code = codeOrLanguageName;
+        ignoreIllegals = optionsOrCode.ignoreIllegals;
+        languageName = optionsOrCode.language;
+      } else {
+        // old API
+        deprecated("10.7.0", "highlight(lang, code, ...args) has been deprecated.");
+        deprecated("10.7.0", "Please use highlight(code, options) instead.\nhttps://github.com/highlightjs/highlight.js/issues/2277");
+        languageName = codeOrLanguageName;
+        code = optionsOrCode;
+      }
+
+      // https://github.com/highlightjs/highlight.js/issues/3149
+      // eslint-disable-next-line no-undefined
+      if (ignoreIllegals === undefined) { ignoreIllegals = true; }
+
+      /** @type {BeforeHighlightContext} */
+      const context = {
+        code,
+        language: languageName
+      };
+      // the plugin can change the desired language or the code to be highlighted
+      // just be changing the object it was passed
+      fire("before:highlight", context);
+
+      // a before plugin can usurp the result completely by providing it's own
+      // in which case we don't even need to call highlight
+      const result = context.result
+        ? context.result
+        : _highlight(context.language, context.code, ignoreIllegals);
+
+      result.code = context.code;
+      // the plugin can change anything in result to suite it
+      fire("after:highlight", result);
+
+      return result;
+    }
+
+    /**
+     * private highlight that's used internally and does not fire callbacks
+     *
+     * @param {string} languageName - the language to use for highlighting
+     * @param {string} codeToHighlight - the code to highlight
+     * @param {boolean?} [ignoreIllegals] - whether to ignore illegal matches, default is to bail
+     * @param {CompiledMode?} [continuation] - current continuation mode, if any
+     * @returns {HighlightResult} - result of the highlight operation
+    */
+    function _highlight(languageName, codeToHighlight, ignoreIllegals, continuation) {
+      const keywordHits = Object.create(null);
+
+      /**
+       * Return keyword data if a match is a keyword
+       * @param {CompiledMode} mode - current mode
+       * @param {string} matchText - the textual match
+       * @returns {KeywordData | false}
+       */
+      function keywordData(mode, matchText) {
+        return mode.keywords[matchText];
+      }
+
+      function processKeywords() {
+        if (!top.keywords) {
+          emitter.addText(modeBuffer);
+          return;
+        }
+
+        let lastIndex = 0;
+        top.keywordPatternRe.lastIndex = 0;
+        let match = top.keywordPatternRe.exec(modeBuffer);
+        let buf = "";
+
+        while (match) {
+          buf += modeBuffer.substring(lastIndex, match.index);
+          const word = language.case_insensitive ? match[0].toLowerCase() : match[0];
+          const data = keywordData(top, word);
+          if (data) {
+            const [kind, keywordRelevance] = data;
+            emitter.addText(buf);
+            buf = "";
+
+            keywordHits[word] = (keywordHits[word] || 0) + 1;
+            if (keywordHits[word] <= MAX_KEYWORD_HITS) relevance += keywordRelevance;
+            if (kind.startsWith("_")) {
+              // _ implied for relevance only, do not highlight
+              // by applying a class name
+              buf += match[0];
+            } else {
+              const cssClass = language.classNameAliases[kind] || kind;
+              emitKeyword(match[0], cssClass);
+            }
+          } else {
+            buf += match[0];
+          }
+          lastIndex = top.keywordPatternRe.lastIndex;
+          match = top.keywordPatternRe.exec(modeBuffer);
+        }
+        buf += modeBuffer.substring(lastIndex);
+        emitter.addText(buf);
+      }
+
+      function processSubLanguage() {
+        if (modeBuffer === "") return;
+        /** @type HighlightResult */
+        let result = null;
+
+        if (typeof top.subLanguage === 'string') {
+          if (!languages[top.subLanguage]) {
+            emitter.addText(modeBuffer);
+            return;
+          }
+          result = _highlight(top.subLanguage, modeBuffer, true, continuations[top.subLanguage]);
+          continuations[top.subLanguage] = /** @type {CompiledMode} */ (result._top);
+        } else {
+          result = highlightAuto(modeBuffer, top.subLanguage.length ? top.subLanguage : null);
+        }
+
+        // Counting embedded language score towards the host language may be disabled
+        // with zeroing the containing mode relevance. Use case in point is Markdown that
+        // allows XML everywhere and makes every XML snippet to have a much larger Markdown
+        // score.
+        if (top.relevance > 0) {
+          relevance += result.relevance;
+        }
+        emitter.__addSublanguage(result._emitter, result.language);
+      }
+
+      function processBuffer() {
+        if (top.subLanguage != null) {
+          processSubLanguage();
+        } else {
+          processKeywords();
+        }
+        modeBuffer = '';
+      }
+
+      /**
+       * @param {string} text
+       * @param {string} scope
+       */
+      function emitKeyword(keyword, scope) {
+        if (keyword === "") return;
+
+        emitter.startScope(scope);
+        emitter.addText(keyword);
+        emitter.endScope();
+      }
+
+      /**
+       * @param {CompiledScope} scope
+       * @param {RegExpMatchArray} match
+       */
+      function emitMultiClass(scope, match) {
+        let i = 1;
+        const max = match.length - 1;
+        while (i <= max) {
+          if (!scope._emit[i]) { i++; continue; }
+          const klass = language.classNameAliases[scope[i]] || scope[i];
+          const text = match[i];
+          if (klass) {
+            emitKeyword(text, klass);
+          } else {
+            modeBuffer = text;
+            processKeywords();
+            modeBuffer = "";
+          }
+          i++;
+        }
+      }
+
+      /**
+       * @param {CompiledMode} mode - new mode to start
+       * @param {RegExpMatchArray} match
+       */
+      function startNewMode(mode, match) {
+        if (mode.scope && typeof mode.scope === "string") {
+          emitter.openNode(language.classNameAliases[mode.scope] || mode.scope);
+        }
+        if (mode.beginScope) {
+          // beginScope just wraps the begin match itself in a scope
+          if (mode.beginScope._wrap) {
+            emitKeyword(modeBuffer, language.classNameAliases[mode.beginScope._wrap] || mode.beginScope._wrap);
+            modeBuffer = "";
+          } else if (mode.beginScope._multi) {
+            // at this point modeBuffer should just be the match
+            emitMultiClass(mode.beginScope, match);
+            modeBuffer = "";
+          }
+        }
+
+        top = Object.create(mode, { parent: { value: top } });
+        return top;
+      }
+
+      /**
+       * @param {CompiledMode } mode - the mode to potentially end
+       * @param {RegExpMatchArray} match - the latest match
+       * @param {string} matchPlusRemainder - match plus remainder of content
+       * @returns {CompiledMode | void} - the next mode, or if void continue on in current mode
+       */
+      function endOfMode(mode, match, matchPlusRemainder) {
+        let matched = startsWith(mode.endRe, matchPlusRemainder);
+
+        if (matched) {
+          if (mode["on:end"]) {
+            const resp = new Response(mode);
+            mode["on:end"](match, resp);
+            if (resp.isMatchIgnored) matched = false;
+          }
+
+          if (matched) {
+            while (mode.endsParent && mode.parent) {
+              mode = mode.parent;
+            }
+            return mode;
+          }
+        }
+        // even if on:end fires an `ignore` it's still possible
+        // that we might trigger the end node because of a parent mode
+        if (mode.endsWithParent) {
+          return endOfMode(mode.parent, match, matchPlusRemainder);
+        }
+      }
+
+      /**
+       * Handle matching but then ignoring a sequence of text
+       *
+       * @param {string} lexeme - string containing full match text
+       */
+      function doIgnore(lexeme) {
+        if (top.matcher.regexIndex === 0) {
+          // no more regexes to potentially match here, so we move the cursor forward one
+          // space
+          modeBuffer += lexeme[0];
+          return 1;
+        } else {
+          // no need to move the cursor, we still have additional regexes to try and
+          // match at this very spot
+          resumeScanAtSamePosition = true;
+          return 0;
+        }
+      }
+
+      /**
+       * Handle the start of a new potential mode match
+       *
+       * @param {EnhancedMatch} match - the current match
+       * @returns {number} how far to advance the parse cursor
+       */
+      function doBeginMatch(match) {
+        const lexeme = match[0];
+        const newMode = match.rule;
+
+        const resp = new Response(newMode);
+        // first internal before callbacks, then the public ones
+        const beforeCallbacks = [newMode.__beforeBegin, newMode["on:begin"]];
+        for (const cb of beforeCallbacks) {
+          if (!cb) continue;
+          cb(match, resp);
+          if (resp.isMatchIgnored) return doIgnore(lexeme);
+        }
+
+        if (newMode.skip) {
+          modeBuffer += lexeme;
+        } else {
+          if (newMode.excludeBegin) {
+            modeBuffer += lexeme;
+          }
+          processBuffer();
+          if (!newMode.returnBegin && !newMode.excludeBegin) {
+            modeBuffer = lexeme;
+          }
+        }
+        startNewMode(newMode, match);
+        return newMode.returnBegin ? 0 : lexeme.length;
+      }
+
+      /**
+       * Handle the potential end of mode
+       *
+       * @param {RegExpMatchArray} match - the current match
+       */
+      function doEndMatch(match) {
+        const lexeme = match[0];
+        const matchPlusRemainder = codeToHighlight.substring(match.index);
+
+        const endMode = endOfMode(top, match, matchPlusRemainder);
+        if (!endMode) { return NO_MATCH; }
+
+        const origin = top;
+        if (top.endScope && top.endScope._wrap) {
+          processBuffer();
+          emitKeyword(lexeme, top.endScope._wrap);
+        } else if (top.endScope && top.endScope._multi) {
+          processBuffer();
+          emitMultiClass(top.endScope, match);
+        } else if (origin.skip) {
+          modeBuffer += lexeme;
+        } else {
+          if (!(origin.returnEnd || origin.excludeEnd)) {
+            modeBuffer += lexeme;
+          }
+          processBuffer();
+          if (origin.excludeEnd) {
+            modeBuffer = lexeme;
+          }
+        }
+        do {
+          if (top.scope) {
+            emitter.closeNode();
+          }
+          if (!top.skip && !top.subLanguage) {
+            relevance += top.relevance;
+          }
+          top = top.parent;
+        } while (top !== endMode.parent);
+        if (endMode.starts) {
+          startNewMode(endMode.starts, match);
+        }
+        return origin.returnEnd ? 0 : lexeme.length;
+      }
+
+      function processContinuations() {
+        const list = [];
+        for (let current = top; current !== language; current = current.parent) {
+          if (current.scope) {
+            list.unshift(current.scope);
+          }
+        }
+        list.forEach(item => emitter.openNode(item));
+      }
+
+      /** @type {{type?: MatchType, index?: number, rule?: Mode}}} */
+      let lastMatch = {};
+
+      /**
+       *  Process an individual match
+       *
+       * @param {string} textBeforeMatch - text preceding the match (since the last match)
+       * @param {EnhancedMatch} [match] - the match itself
+       */
+      function processLexeme(textBeforeMatch, match) {
+        const lexeme = match && match[0];
+
+        // add non-matched text to the current mode buffer
+        modeBuffer += textBeforeMatch;
+
+        if (lexeme == null) {
+          processBuffer();
+          return 0;
+        }
+
+        // we've found a 0 width match and we're stuck, so we need to advance
+        // this happens when we have badly behaved rules that have optional matchers to the degree that
+        // sometimes they can end up matching nothing at all
+        // Ref: https://github.com/highlightjs/highlight.js/issues/2140
+        if (lastMatch.type === "begin" && match.type === "end" && lastMatch.index === match.index && lexeme === "") {
+          // spit the "skipped" character that our regex choked on back into the output sequence
+          modeBuffer += codeToHighlight.slice(match.index, match.index + 1);
+          if (!SAFE_MODE) {
+            /** @type {AnnotatedError} */
+            const err = new Error(`0 width match regex (${languageName})`);
+            err.languageName = languageName;
+            err.badRule = lastMatch.rule;
+            throw err;
+          }
+          return 1;
+        }
+        lastMatch = match;
+
+        if (match.type === "begin") {
+          return doBeginMatch(match);
+        } else if (match.type === "illegal" && !ignoreIllegals) {
+          // illegal match, we do not continue processing
+          /** @type {AnnotatedError} */
+          const err = new Error('Illegal lexeme "' + lexeme + '" for mode "' + (top.scope || '<unnamed>') + '"');
+          err.mode = top;
+          throw err;
+        } else if (match.type === "end") {
+          const processed = doEndMatch(match);
+          if (processed !== NO_MATCH) {
+            return processed;
+          }
+        }
+
+        // edge case for when illegal matches $ (end of line) which is technically
+        // a 0 width match but not a begin/end match so it's not caught by the
+        // first handler (when ignoreIllegals is true)
+        if (match.type === "illegal" && lexeme === "") {
+          // advance so we aren't stuck in an infinite loop
+          return 1;
+        }
+
+        // infinite loops are BAD, this is a last ditch catch all. if we have a
+        // decent number of iterations yet our index (cursor position in our
+        // parsing) still 3x behind our index then something is very wrong
+        // so we bail
+        if (iterations > 100000 && iterations > match.index * 3) {
+          const err = new Error('potential infinite loop, way more iterations than matches');
+          throw err;
+        }
+
+        /*
+        Why might be find ourselves here?  An potential end match that was
+        triggered but could not be completed.  IE, `doEndMatch` returned NO_MATCH.
+        (this could be because a callback requests the match be ignored, etc)
+
+        This causes no real harm other than stopping a few times too many.
+        */
+
+        modeBuffer += lexeme;
+        return lexeme.length;
+      }
+
+      const language = getLanguage(languageName);
+      if (!language) {
+        error(LANGUAGE_NOT_FOUND.replace("{}", languageName));
+        throw new Error('Unknown language: "' + languageName + '"');
+      }
+
+      const md = compileLanguage(language);
+      let result = '';
+      /** @type {CompiledMode} */
+      let top = continuation || md;
+      /** @type Record<string,CompiledMode> */
+      const continuations = {}; // keep continuations for sub-languages
+      const emitter = new options.__emitter(options);
+      processContinuations();
+      let modeBuffer = '';
+      let relevance = 0;
+      let index = 0;
+      let iterations = 0;
+      let resumeScanAtSamePosition = false;
+
+      try {
+        if (!language.__emitTokens) {
+          top.matcher.considerAll();
+
+          for (;;) {
+            iterations++;
+            if (resumeScanAtSamePosition) {
+              // only regexes not matched previously will now be
+              // considered for a potential match
+              resumeScanAtSamePosition = false;
+            } else {
+              top.matcher.considerAll();
+            }
+            top.matcher.lastIndex = index;
+
+            const match = top.matcher.exec(codeToHighlight);
+            // console.log("match", match[0], match.rule && match.rule.begin)
+
+            if (!match) break;
+
+            const beforeMatch = codeToHighlight.substring(index, match.index);
+            const processedCount = processLexeme(beforeMatch, match);
+            index = match.index + processedCount;
+          }
+          processLexeme(codeToHighlight.substring(index));
+        } else {
+          language.__emitTokens(codeToHighlight, emitter);
+        }
+
+        emitter.finalize();
+        result = emitter.toHTML();
+
+        return {
+          language: languageName,
+          value: result,
+          relevance,
+          illegal: false,
+          _emitter: emitter,
+          _top: top
+        };
+      } catch (err) {
+        if (err.message && err.message.includes('Illegal')) {
+          return {
+            language: languageName,
+            value: escape(codeToHighlight),
+            illegal: true,
+            relevance: 0,
+            _illegalBy: {
+              message: err.message,
+              index,
+              context: codeToHighlight.slice(index - 100, index + 100),
+              mode: err.mode,
+              resultSoFar: result
+            },
+            _emitter: emitter
+          };
+        } else if (SAFE_MODE) {
+          return {
+            language: languageName,
+            value: escape(codeToHighlight),
+            illegal: false,
+            relevance: 0,
+            errorRaised: err,
+            _emitter: emitter,
+            _top: top
+          };
+        } else {
+          throw err;
+        }
+      }
+    }
+
+    /**
+     * returns a valid highlight result, without actually doing any actual work,
+     * auto highlight starts with this and it's possible for small snippets that
+     * auto-detection may not find a better match
+     * @param {string} code
+     * @returns {HighlightResult}
+     */
+    function justTextHighlightResult(code) {
+      const result = {
+        value: escape(code),
+        illegal: false,
+        relevance: 0,
+        _top: PLAINTEXT_LANGUAGE,
+        _emitter: new options.__emitter(options)
+      };
+      result._emitter.addText(code);
+      return result;
+    }
+
+    /**
+    Highlighting with language detection. Accepts a string with the code to
+    highlight. Returns an object with the following properties:
+
+    - language (detected language)
+    - relevance (int)
+    - value (an HTML string with highlighting markup)
+    - secondBest (object with the same structure for second-best heuristically
+      detected language, may be absent)
+
+      @param {string} code
+      @param {Array<string>} [languageSubset]
+      @returns {AutoHighlightResult}
+    */
+    function highlightAuto(code, languageSubset) {
+      languageSubset = languageSubset || options.languages || Object.keys(languages);
+      const plaintext = justTextHighlightResult(code);
+
+      const results = languageSubset.filter(getLanguage).filter(autoDetection).map(name =>
+        _highlight(name, code, false)
+      );
+      results.unshift(plaintext); // plaintext is always an option
+
+      const sorted = results.sort((a, b) => {
+        // sort base on relevance
+        if (a.relevance !== b.relevance) return b.relevance - a.relevance;
+
+        // always award the tie to the base language
+        // ie if C++ and Arduino are tied, it's more likely to be C++
+        if (a.language && b.language) {
+          if (getLanguage(a.language).supersetOf === b.language) {
+            return 1;
+          } else if (getLanguage(b.language).supersetOf === a.language) {
+            return -1;
+          }
+        }
+
+        // otherwise say they are equal, which has the effect of sorting on
+        // relevance while preserving the original ordering - which is how ties
+        // have historically been settled, ie the language that comes first always
+        // wins in the case of a tie
+        return 0;
+      });
+
+      const [best, secondBest] = sorted;
+
+      /** @type {AutoHighlightResult} */
+      const result = best;
+      result.secondBest = secondBest;
+
+      return result;
+    }
+
+    /**
+     * Builds new class name for block given the language name
+     *
+     * @param {HTMLElement} element
+     * @param {string} [currentLang]
+     * @param {string} [resultLang]
+     */
+    function updateClassName(element, currentLang, resultLang) {
+      const language = (currentLang && aliases[currentLang]) || resultLang;
+
+      element.classList.add("hljs");
+      element.classList.add(`language-${language}`);
+    }
+
+    /**
+     * Applies highlighting to a DOM node containing code.
+     *
+     * @param {HighlightedHTMLElement} element - the HTML element to highlight
+    */
+    function highlightElement(element) {
+      /** @type HTMLElement */
+      let node = null;
+      const language = blockLanguage(element);
+
+      if (shouldNotHighlight(language)) return;
+
+      fire("before:highlightElement",
+        { el: element, language });
+
+      if (element.dataset.highlighted) {
+        console.log("Element previously highlighted. To highlight again, first unset `dataset.highlighted`.", element);
+        return;
+      }
+
+      // we should be all text, no child nodes (unescaped HTML) - this is possibly
+      // an HTML injection attack - it's likely too late if this is already in
+      // production (the code has likely already done its damage by the time
+      // we're seeing it)... but we yell loudly about this so that hopefully it's
+      // more likely to be caught in development before making it to production
+      if (element.children.length > 0) {
+        if (!options.ignoreUnescapedHTML) {
+          console.warn("One of your code blocks includes unescaped HTML. This is a potentially serious security risk.");
+          console.warn("https://github.com/highlightjs/highlight.js/wiki/security");
+          console.warn("The element with unescaped HTML:");
+          console.warn(element);
+        }
+        if (options.throwUnescapedHTML) {
+          const err = new HTMLInjectionError(
+            "One of your code blocks includes unescaped HTML.",
+            element.innerHTML
+          );
+          throw err;
+        }
+      }
+
+      node = element;
+      const text = node.textContent;
+      const result = language ? highlight(text, { language, ignoreIllegals: true }) : highlightAuto(text);
+
+      element.innerHTML = result.value;
+      element.dataset.highlighted = "yes";
+      updateClassName(element, language, result.language);
+      element.result = {
+        language: result.language,
+        // TODO: remove with version 11.0
+        re: result.relevance,
+        relevance: result.relevance
+      };
+      if (result.secondBest) {
+        element.secondBest = {
+          language: result.secondBest.language,
+          relevance: result.secondBest.relevance
+        };
+      }
+
+      fire("after:highlightElement", { el: element, result, text });
+    }
+
+    /**
+     * Updates highlight.js global options with the passed options
+     *
+     * @param {Partial<HLJSOptions>} userOptions
+     */
+    function configure(userOptions) {
+      options = inherit(options, userOptions);
+    }
+
+    // TODO: remove v12, deprecated
+    const initHighlighting = () => {
+      highlightAll();
+      deprecated("10.6.0", "initHighlighting() deprecated.  Use highlightAll() now.");
+    };
+
+    // TODO: remove v12, deprecated
+    function initHighlightingOnLoad() {
+      highlightAll();
+      deprecated("10.6.0", "initHighlightingOnLoad() deprecated.  Use highlightAll() now.");
+    }
+
+    let wantsHighlight = false;
+
+    /**
+     * auto-highlights all pre>code elements on the page
+     */
+    function highlightAll() {
+      // if we are called too early in the loading process
+      if (document.readyState === "loading") {
+        wantsHighlight = true;
+        return;
+      }
+
+      const blocks = document.querySelectorAll(options.cssSelector);
+      blocks.forEach(highlightElement);
+    }
+
+    function boot() {
+      // if a highlight was requested before DOM was loaded, do now
+      if (wantsHighlight) highlightAll();
+    }
+
+    // make sure we are in the browser environment
+    if (typeof window !== 'undefined' && window.addEventListener) {
+      window.addEventListener('DOMContentLoaded', boot, false);
+    }
+
+    /**
+     * Register a language grammar module
+     *
+     * @param {string} languageName
+     * @param {LanguageFn} languageDefinition
+     */
+    function registerLanguage(languageName, languageDefinition) {
+      let lang = null;
+      try {
+        lang = languageDefinition(hljs);
+      } catch (error$1) {
+        error("Language definition for '{}' could not be registered.".replace("{}", languageName));
+        // hard or soft error
+        if (!SAFE_MODE) { throw error$1; } else { error(error$1); }
+        // languages that have serious errors are replaced with essentially a
+        // "plaintext" stand-in so that the code blocks will still get normal
+        // css classes applied to them - and one bad language won't break the
+        // entire highlighter
+        lang = PLAINTEXT_LANGUAGE;
+      }
+      // give it a temporary name if it doesn't have one in the meta-data
+      if (!lang.name) lang.name = languageName;
+      languages[languageName] = lang;
+      lang.rawDefinition = languageDefinition.bind(null, hljs);
+
+      if (lang.aliases) {
+        registerAliases(lang.aliases, { languageName });
+      }
+    }
+
+    /**
+     * Remove a language grammar module
+     *
+     * @param {string} languageName
+     */
+    function unregisterLanguage(languageName) {
+      delete languages[languageName];
+      for (const alias of Object.keys(aliases)) {
+        if (aliases[alias] === languageName) {
+          delete aliases[alias];
+        }
+      }
+    }
+
+    /**
+     * @returns {string[]} List of language internal names
+     */
+    function listLanguages() {
+      return Object.keys(languages);
+    }
+
+    /**
+     * @param {string} name - name of the language to retrieve
+     * @returns {Language | undefined}
+     */
+    function getLanguage(name) {
+      name = (name || '').toLowerCase();
+      return languages[name] || languages[aliases[name]];
+    }
+
+    /**
+     *
+     * @param {string|string[]} aliasList - single alias or list of aliases
+     * @param {{languageName: string}} opts
+     */
+    function registerAliases(aliasList, { languageName }) {
+      if (typeof aliasList === 'string') {
+        aliasList = [aliasList];
+      }
+      aliasList.forEach(alias => { aliases[alias.toLowerCase()] = languageName; });
+    }
+
+    /**
+     * Determines if a given language has auto-detection enabled
+     * @param {string} name - name of the language
+     */
+    function autoDetection(name) {
+      const lang = getLanguage(name);
+      return lang && !lang.disableAutodetect;
+    }
+
+    /**
+     * Upgrades the old highlightBlock plugins to the new
+     * highlightElement API
+     * @param {HLJSPlugin} plugin
+     */
+    function upgradePluginAPI(plugin) {
+      // TODO: remove with v12
+      if (plugin["before:highlightBlock"] && !plugin["before:highlightElement"]) {
+        plugin["before:highlightElement"] = (data) => {
+          plugin["before:highlightBlock"](
+            Object.assign({ block: data.el }, data)
+          );
+        };
+      }
+      if (plugin["after:highlightBlock"] && !plugin["after:highlightElement"]) {
+        plugin["after:highlightElement"] = (data) => {
+          plugin["after:highlightBlock"](
+            Object.assign({ block: data.el }, data)
+          );
+        };
+      }
+    }
+
+    /**
+     * @param {HLJSPlugin} plugin
+     */
+    function addPlugin(plugin) {
+      upgradePluginAPI(plugin);
+      plugins.push(plugin);
+    }
+
+    /**
+     * @param {HLJSPlugin} plugin
+     */
+    function removePlugin(plugin) {
+      const index = plugins.indexOf(plugin);
+      if (index !== -1) {
+        plugins.splice(index, 1);
+      }
+    }
+
+    /**
+     *
+     * @param {PluginEvent} event
+     * @param {any} args
+     */
+    function fire(event, args) {
+      const cb = event;
+      plugins.forEach(function(plugin) {
+        if (plugin[cb]) {
+          plugin[cb](args);
+        }
+      });
+    }
+
+    /**
+     * DEPRECATED
+     * @param {HighlightedHTMLElement} el
+     */
+    function deprecateHighlightBlock(el) {
+      deprecated("10.7.0", "highlightBlock will be removed entirely in v12.0");
+      deprecated("10.7.0", "Please use highlightElement now.");
+
+      return highlightElement(el);
+    }
+
+    /* Interface definition */
+    Object.assign(hljs, {
+      highlight,
+      highlightAuto,
+      highlightAll,
+      highlightElement,
+      // TODO: Remove with v12 API
+      highlightBlock: deprecateHighlightBlock,
+      configure,
+      initHighlighting,
+      initHighlightingOnLoad,
+      registerLanguage,
+      unregisterLanguage,
+      listLanguages,
+      getLanguage,
+      registerAliases,
+      autoDetection,
+      inherit,
+      addPlugin,
+      removePlugin
+    });
+
+    hljs.debugMode = function() { SAFE_MODE = false; };
+    hljs.safeMode = function() { SAFE_MODE = true; };
+    hljs.versionString = version;
+
+    hljs.regex = {
+      concat: concat,
+      lookahead: lookahead,
+      either: either,
+      optional: optional,
+      anyNumberOfTimes: anyNumberOfTimes
+    };
+
+    for (const key in MODES) {
+      // @ts-ignore
+      if (typeof MODES[key] === "object") {
+        // @ts-ignore
+        deepFreeze(MODES[key]);
+      }
+    }
+
+    // merge all the modes/regexes into our main object
+    Object.assign(hljs, MODES);
+
+    return hljs;
+  };
+
+  // Other names for the variable may break build script
+  const highlight = HLJS({});
+
+  // returns a new instance of the highlighter to be used for extensions
+  // check https://github.com/wooorm/lowlight/issues/47
+  highlight.newInstance = () => HLJS({});
+
+  return highlight;
+
+})();
+if (typeof exports === 'object' && typeof module !== 'undefined') { module.exports = hljs; }
+/*! `bash` grammar compiled for Highlight.js 11.9.0 */
+  (function(){
+    var hljsGrammar = (function () {
+  'use strict';
+
+  /*
+  Language: Bash
+  Author: vah <vahtenberg@gmail.com>
+  Contributrors: Benjamin Pannell <contact@sierrasoftworks.com>
+  Website: https://www.gnu.org/software/bash/
+  Category: common, scripting
+  */
+
+  /** @type LanguageFn */
+  function bash(hljs) {
+    const regex = hljs.regex;
+    const VAR = {};
+    const BRACED_VAR = {
+      begin: /\$\{/,
+      end: /\}/,
+      contains: [
+        "self",
+        {
+          begin: /:-/,
+          contains: [ VAR ]
+        } // default values
+      ]
+    };
+    Object.assign(VAR, {
+      className: 'variable',
+      variants: [
+        { begin: regex.concat(/\$[\w\d#@][\w\d_]*/,
+          // negative look-ahead tries to avoid matching patterns that are not
+          // Perl at all like $ident$, @ident@, etc.
+          `(?![\\w\\d])(?![$])`) },
+        BRACED_VAR
+      ]
+    });
+
+    const SUBST = {
+      className: 'subst',
+      begin: /\$\(/,
+      end: /\)/,
+      contains: [ hljs.BACKSLASH_ESCAPE ]
+    };
+    const COMMENT = hljs.inherit(
+      hljs.COMMENT(),
+      {
+        match: [
+          /(^|\s)/,
+          /#.*$/
+        ],
+        scope: {
+          2: 'comment'
+        }
+      }
+    );
+    const HERE_DOC = {
+      begin: /<<-?\s*(?=\w+)/,
+      starts: { contains: [
+        hljs.END_SAME_AS_BEGIN({
+          begin: /(\w+)/,
+          end: /(\w+)/,
+          className: 'string'
+        })
+      ] }
+    };
+    const QUOTE_STRING = {
+      className: 'string',
+      begin: /"/,
+      end: /"/,
+      contains: [
+        hljs.BACKSLASH_ESCAPE,
+        VAR,
+        SUBST
+      ]
+    };
+    SUBST.contains.push(QUOTE_STRING);
+    const ESCAPED_QUOTE = {
+      match: /\\"/
+    };
+    const APOS_STRING = {
+      className: 'string',
+      begin: /'/,
+      end: /'/
+    };
+    const ESCAPED_APOS = {
+      match: /\\'/
+    };
+    const ARITHMETIC = {
+      begin: /\$?\(\(/,
+      end: /\)\)/,
+      contains: [
+        {
+          begin: /\d+#[0-9a-f]+/,
+          className: "number"
+        },
+        hljs.NUMBER_MODE,
+        VAR
+      ]
+    };
+    const SH_LIKE_SHELLS = [
+      "fish",
+      "bash",
+      "zsh",
+      "sh",
+      "csh",
+      "ksh",
+      "tcsh",
+      "dash",
+      "scsh",
+    ];
+    const KNOWN_SHEBANG = hljs.SHEBANG({
+      binary: `(${SH_LIKE_SHELLS.join("|")})`,
+      relevance: 10
+    });
+    const FUNCTION = {
+      className: 'function',
+      begin: /\w[\w\d_]*\s*\(\s*\)\s*\{/,
+      returnBegin: true,
+      contains: [ hljs.inherit(hljs.TITLE_MODE, { begin: /\w[\w\d_]*/ }) ],
+      relevance: 0
+    };
+
+    const KEYWORDS = [
+      "if",
+      "then",
+      "else",
+      "elif",
+      "fi",
+      "for",
+      "while",
+      "until",
+      "in",
+      "do",
+      "done",
+      "case",
+      "esac",
+      "function",
+      "select"
+    ];
+
+    const LITERALS = [
+      "true",
+      "false"
+    ];
+
+    // to consume paths to prevent keyword matches inside them
+    const PATH_MODE = { match: /(\/[a-z._-]+)+/ };
+
+    // http://www.gnu.org/software/bash/manual/html_node/Shell-Builtin-Commands.html
+    const SHELL_BUILT_INS = [
+      "break",
+      "cd",
+      "continue",
+      "eval",
+      "exec",
+      "exit",
+      "export",
+      "getopts",
+      "hash",
+      "pwd",
+      "readonly",
+      "return",
+      "shift",
+      "test",
+      "times",
+      "trap",
+      "umask",
+      "unset"
+    ];
+
+    const BASH_BUILT_INS = [
+      "alias",
+      "bind",
+      "builtin",
+      "caller",
+      "command",
+      "declare",
+      "echo",
+      "enable",
+      "help",
+      "let",
+      "local",
+      "logout",
+      "mapfile",
+      "printf",
+      "read",
+      "readarray",
+      "source",
+      "type",
+      "typeset",
+      "ulimit",
+      "unalias"
+    ];
+
+    const ZSH_BUILT_INS = [
+      "autoload",
+      "bg",
+      "bindkey",
+      "bye",
+      "cap",
+      "chdir",
+      "clone",
+      "comparguments",
+      "compcall",
+      "compctl",
+      "compdescribe",
+      "compfiles",
+      "compgroups",
+      "compquote",
+      "comptags",
+      "comptry",
+      "compvalues",
+      "dirs",
+      "disable",
+      "disown",
+      "echotc",
+      "echoti",
+      "emulate",
+      "fc",
+      "fg",
+      "float",
+      "functions",
+      "getcap",
+      "getln",
+      "history",
+      "integer",
+      "jobs",
+      "kill",
+      "limit",
+      "log",
+      "noglob",
+      "popd",
+      "print",
+      "pushd",
+      "pushln",
+      "rehash",
+      "sched",
+      "setcap",
+      "setopt",
+      "stat",
+      "suspend",
+      "ttyctl",
+      "unfunction",
+      "unhash",
+      "unlimit",
+      "unsetopt",
+      "vared",
+      "wait",
+      "whence",
+      "where",
+      "which",
+      "zcompile",
+      "zformat",
+      "zftp",
+      "zle",
+      "zmodload",
+      "zparseopts",
+      "zprof",
+      "zpty",
+      "zregexparse",
+      "zsocket",
+      "zstyle",
+      "ztcp"
+    ];
+
+    const GNU_CORE_UTILS = [
+      "chcon",
+      "chgrp",
+      "chown",
+      "chmod",
+      "cp",
+      "dd",
+      "df",
+      "dir",
+      "dircolors",
+      "ln",
+      "ls",
+      "mkdir",
+      "mkfifo",
+      "mknod",
+      "mktemp",
+      "mv",
+      "realpath",
+      "rm",
+      "rmdir",
+      "shred",
+      "sync",
+      "touch",
+      "truncate",
+      "vdir",
+      "b2sum",
+      "base32",
+      "base64",
+      "cat",
+      "cksum",
+      "comm",
+      "csplit",
+      "cut",
+      "expand",
+      "fmt",
+      "fold",
+      "head",
+      "join",
+      "md5sum",
+      "nl",
+      "numfmt",
+      "od",
+      "paste",
+      "ptx",
+      "pr",
+      "sha1sum",
+      "sha224sum",
+      "sha256sum",
+      "sha384sum",
+      "sha512sum",
+      "shuf",
+      "sort",
+      "split",
+      "sum",
+      "tac",
+      "tail",
+      "tr",
+      "tsort",
+      "unexpand",
+      "uniq",
+      "wc",
+      "arch",
+      "basename",
+      "chroot",
+      "date",
+      "dirname",
+      "du",
+      "echo",
+      "env",
+      "expr",
+      "factor",
+      // "false", // keyword literal already
+      "groups",
+      "hostid",
+      "id",
+      "link",
+      "logname",
+      "nice",
+      "nohup",
+      "nproc",
+      "pathchk",
+      "pinky",
+      "printenv",
+      "printf",
+      "pwd",
+      "readlink",
+      "runcon",
+      "seq",
+      "sleep",
+      "stat",
+      "stdbuf",
+      "stty",
+      "tee",
+      "test",
+      "timeout",
+      // "true", // keyword literal already
+      "tty",
+      "uname",
+      "unlink",
+      "uptime",
+      "users",
+      "who",
+      "whoami",
+      "yes"
+    ];
+
+    return {
+      name: 'Bash',
+      aliases: [ 'sh' ],
+      keywords: {
+        $pattern: /\b[a-z][a-z0-9._-]+\b/,
+        keyword: KEYWORDS,
+        literal: LITERALS,
+        built_in: [
+          ...SHELL_BUILT_INS,
+          ...BASH_BUILT_INS,
+          // Shell modifiers
+          "set",
+          "shopt",
+          ...ZSH_BUILT_INS,
+          ...GNU_CORE_UTILS
+        ]
+      },
+      contains: [
+        KNOWN_SHEBANG, // to catch known shells and boost relevancy
+        hljs.SHEBANG(), // to catch unknown shells but still highlight the shebang
+        FUNCTION,
+        ARITHMETIC,
+        COMMENT,
+        HERE_DOC,
+        PATH_MODE,
+        QUOTE_STRING,
+        ESCAPED_QUOTE,
+        APOS_STRING,
+        ESCAPED_APOS,
+        VAR
+      ]
+    };
+  }
+
+  return bash;
+
+})();
+
+    hljs.registerLanguage('bash', hljsGrammar);
+  })();/*! `c` grammar compiled for Highlight.js 11.9.0 */
+  (function(){
+    var hljsGrammar = (function () {
+  'use strict';
+
+  /*
+  Language: C
+  Category: common, system
+  Website: https://en.wikipedia.org/wiki/C_(programming_language)
+  */
+
+  /** @type LanguageFn */
+  function c(hljs) {
+    const regex = hljs.regex;
+    // added for historic reasons because `hljs.C_LINE_COMMENT_MODE` does
+    // not include such support nor can we be sure all the grammars depending
+    // on it would desire this behavior
+    const C_LINE_COMMENT_MODE = hljs.COMMENT('//', '$', { contains: [ { begin: /\\\n/ } ] });
+    const DECLTYPE_AUTO_RE = 'decltype\\(auto\\)';
+    const NAMESPACE_RE = '[a-zA-Z_]\\w*::';
+    const TEMPLATE_ARGUMENT_RE = '<[^<>]+>';
+    const FUNCTION_TYPE_RE = '('
+      + DECLTYPE_AUTO_RE + '|'
+      + regex.optional(NAMESPACE_RE)
+      + '[a-zA-Z_]\\w*' + regex.optional(TEMPLATE_ARGUMENT_RE)
+    + ')';
+
+
+    const TYPES = {
+      className: 'type',
+      variants: [
+        { begin: '\\b[a-z\\d_]*_t\\b' },
+        { match: /\batomic_[a-z]{3,6}\b/ }
+      ]
+
+    };
+
+    // https://en.cppreference.com/w/cpp/language/escape
+    // \\ \x \xFF \u2837 \u00323747 \374
+    const CHARACTER_ESCAPES = '\\\\(x[0-9A-Fa-f]{2}|u[0-9A-Fa-f]{4,8}|[0-7]{3}|\\S)';
+    const STRINGS = {
+      className: 'string',
+      variants: [
+        {
+          begin: '(u8?|U|L)?"',
+          end: '"',
+          illegal: '\\n',
+          contains: [ hljs.BACKSLASH_ESCAPE ]
+        },
+        {
+          begin: '(u8?|U|L)?\'(' + CHARACTER_ESCAPES + "|.)",
+          end: '\'',
+          illegal: '.'
+        },
+        hljs.END_SAME_AS_BEGIN({
+          begin: /(?:u8?|U|L)?R"([^()\\ ]{0,16})\(/,
+          end: /\)([^()\\ ]{0,16})"/
+        })
+      ]
+    };
+
+    const NUMBERS = {
+      className: 'number',
+      variants: [
+        { begin: '\\b(0b[01\']+)' },
+        { begin: '(-?)\\b([\\d\']+(\\.[\\d\']*)?|\\.[\\d\']+)((ll|LL|l|L)(u|U)?|(u|U)(ll|LL|l|L)?|f|F|b|B)' },
+        { begin: '(-?)(\\b0[xX][a-fA-F0-9\']+|(\\b[\\d\']+(\\.[\\d\']*)?|\\.[\\d\']+)([eE][-+]?[\\d\']+)?)' }
+      ],
+      relevance: 0
+    };
+
+    const PREPROCESSOR = {
+      className: 'meta',
+      begin: /#\s*[a-z]+\b/,
+      end: /$/,
+      keywords: { keyword:
+          'if else elif endif define undef warning error line '
+          + 'pragma _Pragma ifdef ifndef include' },
+      contains: [
+        {
+          begin: /\\\n/,
+          relevance: 0
+        },
+        hljs.inherit(STRINGS, { className: 'string' }),
+        {
+          className: 'string',
+          begin: /<.*?>/
+        },
+        C_LINE_COMMENT_MODE,
+        hljs.C_BLOCK_COMMENT_MODE
+      ]
+    };
+
+    const TITLE_MODE = {
+      className: 'title',
+      begin: regex.optional(NAMESPACE_RE) + hljs.IDENT_RE,
+      relevance: 0
+    };
+
+    const FUNCTION_TITLE = regex.optional(NAMESPACE_RE) + hljs.IDENT_RE + '\\s*\\(';
+
+    const C_KEYWORDS = [
+      "asm",
+      "auto",
+      "break",
+      "case",
+      "continue",
+      "default",
+      "do",
+      "else",
+      "enum",
+      "extern",
+      "for",
+      "fortran",
+      "goto",
+      "if",
+      "inline",
+      "register",
+      "restrict",
+      "return",
+      "sizeof",
+      "struct",
+      "switch",
+      "typedef",
+      "union",
+      "volatile",
+      "while",
+      "_Alignas",
+      "_Alignof",
+      "_Atomic",
+      "_Generic",
+      "_Noreturn",
+      "_Static_assert",
+      "_Thread_local",
+      // aliases
+      "alignas",
+      "alignof",
+      "noreturn",
+      "static_assert",
+      "thread_local",
+      // not a C keyword but is, for all intents and purposes, treated exactly like one.
+      "_Pragma"
+    ];
+
+    const C_TYPES = [
+      "float",
+      "double",
+      "signed",
+      "unsigned",
+      "int",
+      "short",
+      "long",
+      "char",
+      "void",
+      "_Bool",
+      "_Complex",
+      "_Imaginary",
+      "_Decimal32",
+      "_Decimal64",
+      "_Decimal128",
+      // modifiers
+      "const",
+      "static",
+      // aliases
+      "complex",
+      "bool",
+      "imaginary"
+    ];
+
+    const KEYWORDS = {
+      keyword: C_KEYWORDS,
+      type: C_TYPES,
+      literal: 'true false NULL',
+      // TODO: apply hinting work similar to what was done in cpp.js
+      built_in: 'std string wstring cin cout cerr clog stdin stdout stderr stringstream istringstream ostringstream '
+        + 'auto_ptr deque list queue stack vector map set pair bitset multiset multimap unordered_set '
+        + 'unordered_map unordered_multiset unordered_multimap priority_queue make_pair array shared_ptr abort terminate abs acos '
+        + 'asin atan2 atan calloc ceil cosh cos exit exp fabs floor fmod fprintf fputs free frexp '
+        + 'fscanf future isalnum isalpha iscntrl isdigit isgraph islower isprint ispunct isspace isupper '
+        + 'isxdigit tolower toupper labs ldexp log10 log malloc realloc memchr memcmp memcpy memset modf pow '
+        + 'printf putchar puts scanf sinh sin snprintf sprintf sqrt sscanf strcat strchr strcmp '
+        + 'strcpy strcspn strlen strncat strncmp strncpy strpbrk strrchr strspn strstr tanh tan '
+        + 'vfprintf vprintf vsprintf endl initializer_list unique_ptr',
+    };
+
+    const EXPRESSION_CONTAINS = [
+      PREPROCESSOR,
+      TYPES,
+      C_LINE_COMMENT_MODE,
+      hljs.C_BLOCK_COMMENT_MODE,
+      NUMBERS,
+      STRINGS
+    ];
+
+    const EXPRESSION_CONTEXT = {
+      // This mode covers expression context where we can't expect a function
+      // definition and shouldn't highlight anything that looks like one:
+      // `return some()`, `else if()`, `(x*sum(1, 2))`
+      variants: [
+        {
+          begin: /=/,
+          end: /;/
+        },
+        {
+          begin: /\(/,
+          end: /\)/
+        },
+        {
+          beginKeywords: 'new throw return else',
+          end: /;/
+        }
+      ],
+      keywords: KEYWORDS,
+      contains: EXPRESSION_CONTAINS.concat([
+        {
+          begin: /\(/,
+          end: /\)/,
+          keywords: KEYWORDS,
+          contains: EXPRESSION_CONTAINS.concat([ 'self' ]),
+          relevance: 0
+        }
+      ]),
+      relevance: 0
+    };
+
+    const FUNCTION_DECLARATION = {
+      begin: '(' + FUNCTION_TYPE_RE + '[\\*&\\s]+)+' + FUNCTION_TITLE,
+      returnBegin: true,
+      end: /[{;=]/,
+      excludeEnd: true,
+      keywords: KEYWORDS,
+      illegal: /[^\w\s\*&:<>.]/,
+      contains: [
+        { // to prevent it from being confused as the function title
+          begin: DECLTYPE_AUTO_RE,
+          keywords: KEYWORDS,
+          relevance: 0
+        },
+        {
+          begin: FUNCTION_TITLE,
+          returnBegin: true,
+          contains: [ hljs.inherit(TITLE_MODE, { className: "title.function" }) ],
+          relevance: 0
+        },
+        // allow for multiple declarations, e.g.:
+        // extern void f(int), g(char);
+        {
+          relevance: 0,
+          match: /,/
+        },
+        {
+          className: 'params',
+          begin: /\(/,
+          end: /\)/,
+          keywords: KEYWORDS,
+          relevance: 0,
+          contains: [
+            C_LINE_COMMENT_MODE,
+            hljs.C_BLOCK_COMMENT_MODE,
+            STRINGS,
+            NUMBERS,
+            TYPES,
+            // Count matching parentheses.
+            {
+              begin: /\(/,
+              end: /\)/,
+              keywords: KEYWORDS,
+              relevance: 0,
+              contains: [
+                'self',
+                C_LINE_COMMENT_MODE,
+                hljs.C_BLOCK_COMMENT_MODE,
+                STRINGS,
+                NUMBERS,
+                TYPES
+              ]
+            }
+          ]
+        },
+        TYPES,
+        C_LINE_COMMENT_MODE,
+        hljs.C_BLOCK_COMMENT_MODE,
+        PREPROCESSOR
+      ]
+    };
+
+    return {
+      name: "C",
+      aliases: [ 'h' ],
+      keywords: KEYWORDS,
+      // Until differentiations are added between `c` and `cpp`, `c` will
+      // not be auto-detected to avoid auto-detect conflicts between C and C++
+      disableAutodetect: true,
+      illegal: '</',
+      contains: [].concat(
+        EXPRESSION_CONTEXT,
+        FUNCTION_DECLARATION,
+        EXPRESSION_CONTAINS,
+        [
+          PREPROCESSOR,
+          {
+            begin: hljs.IDENT_RE + '::',
+            keywords: KEYWORDS
+          },
+          {
+            className: 'class',
+            beginKeywords: 'enum class struct union',
+            end: /[{;:<>=]/,
+            contains: [
+              { beginKeywords: "final class struct" },
+              hljs.TITLE_MODE
+            ]
+          }
+        ]),
+      exports: {
+        preprocessor: PREPROCESSOR,
+        strings: STRINGS,
+        keywords: KEYWORDS
+      }
+    };
+  }
+
+  return c;
+
+})();
+
+    hljs.registerLanguage('c', hljsGrammar);
+  })();/*! `cpp` grammar compiled for Highlight.js 11.9.0 */
+  (function(){
+    var hljsGrammar = (function () {
+  'use strict';
+
+  /*
+  Language: C++
+  Category: common, system
+  Website: https://isocpp.org
+  */
+
+  /** @type LanguageFn */
+  function cpp(hljs) {
+    const regex = hljs.regex;
+    // added for historic reasons because `hljs.C_LINE_COMMENT_MODE` does
+    // not include such support nor can we be sure all the grammars depending
+    // on it would desire this behavior
+    const C_LINE_COMMENT_MODE = hljs.COMMENT('//', '$', { contains: [ { begin: /\\\n/ } ] });
+    const DECLTYPE_AUTO_RE = 'decltype\\(auto\\)';
+    const NAMESPACE_RE = '[a-zA-Z_]\\w*::';
+    const TEMPLATE_ARGUMENT_RE = '<[^<>]+>';
+    const FUNCTION_TYPE_RE = '(?!struct)('
+      + DECLTYPE_AUTO_RE + '|'
+      + regex.optional(NAMESPACE_RE)
+      + '[a-zA-Z_]\\w*' + regex.optional(TEMPLATE_ARGUMENT_RE)
+    + ')';
+
+    const CPP_PRIMITIVE_TYPES = {
+      className: 'type',
+      begin: '\\b[a-z\\d_]*_t\\b'
+    };
+
+    // https://en.cppreference.com/w/cpp/language/escape
+    // \\ \x \xFF \u2837 \u00323747 \374
+    const CHARACTER_ESCAPES = '\\\\(x[0-9A-Fa-f]{2}|u[0-9A-Fa-f]{4,8}|[0-7]{3}|\\S)';
+    const STRINGS = {
+      className: 'string',
+      variants: [
+        {
+          begin: '(u8?|U|L)?"',
+          end: '"',
+          illegal: '\\n',
+          contains: [ hljs.BACKSLASH_ESCAPE ]
+        },
+        {
+          begin: '(u8?|U|L)?\'(' + CHARACTER_ESCAPES + '|.)',
+          end: '\'',
+          illegal: '.'
+        },
+        hljs.END_SAME_AS_BEGIN({
+          begin: /(?:u8?|U|L)?R"([^()\\ ]{0,16})\(/,
+          end: /\)([^()\\ ]{0,16})"/
+        })
+      ]
+    };
+
+    const NUMBERS = {
+      className: 'number',
+      variants: [
+        // Floating-point literal.
+        { begin:
+          "[+-]?(?:" // Leading sign.
+            // Decimal.
+            + "(?:"
+              +"[0-9](?:'?[0-9])*\\.(?:[0-9](?:'?[0-9])*)?"
+              + "|\\.[0-9](?:'?[0-9])*"
+            + ")(?:[Ee][+-]?[0-9](?:'?[0-9])*)?"
+            + "|[0-9](?:'?[0-9])*[Ee][+-]?[0-9](?:'?[0-9])*"
+            // Hexadecimal.
+            + "|0[Xx](?:"
+              +"[0-9A-Fa-f](?:'?[0-9A-Fa-f])*(?:\\.(?:[0-9A-Fa-f](?:'?[0-9A-Fa-f])*)?)?"
+              + "|\\.[0-9A-Fa-f](?:'?[0-9A-Fa-f])*"
+            + ")[Pp][+-]?[0-9](?:'?[0-9])*"
+          + ")(?:" // Literal suffixes.
+            + "[Ff](?:16|32|64|128)?"
+            + "|(BF|bf)16"
+            + "|[Ll]"
+            + "|" // Literal suffix is optional.
+          + ")"
+        },
+        // Integer literal.
+        { begin:
+          "[+-]?\\b(?:" // Leading sign.
+            + "0[Bb][01](?:'?[01])*" // Binary.
+            + "|0[Xx][0-9A-Fa-f](?:'?[0-9A-Fa-f])*" // Hexadecimal.
+            + "|0(?:'?[0-7])*" // Octal or just a lone zero.
+            + "|[1-9](?:'?[0-9])*" // Decimal.
+          + ")(?:" // Literal suffixes.
+            + "[Uu](?:LL?|ll?)"
+            + "|[Uu][Zz]?"
+            + "|(?:LL?|ll?)[Uu]?"
+            + "|[Zz][Uu]"
+            + "|" // Literal suffix is optional.
+          + ")"
+          // Note: there are user-defined literal suffixes too, but perhaps having the custom suffix not part of the
+          // literal highlight actually makes it stand out more.
+        }
+      ],
+      relevance: 0
+    };
+
+    const PREPROCESSOR = {
+      className: 'meta',
+      begin: /#\s*[a-z]+\b/,
+      end: /$/,
+      keywords: { keyword:
+          'if else elif endif define undef warning error line '
+          + 'pragma _Pragma ifdef ifndef include' },
+      contains: [
+        {
+          begin: /\\\n/,
+          relevance: 0
+        },
+        hljs.inherit(STRINGS, { className: 'string' }),
+        {
+          className: 'string',
+          begin: /<.*?>/
+        },
+        C_LINE_COMMENT_MODE,
+        hljs.C_BLOCK_COMMENT_MODE
+      ]
+    };
+
+    const TITLE_MODE = {
+      className: 'title',
+      begin: regex.optional(NAMESPACE_RE) + hljs.IDENT_RE,
+      relevance: 0
+    };
+
+    const FUNCTION_TITLE = regex.optional(NAMESPACE_RE) + hljs.IDENT_RE + '\\s*\\(';
+
+    // https://en.cppreference.com/w/cpp/keyword
+    const RESERVED_KEYWORDS = [
+      'alignas',
+      'alignof',
+      'and',
+      'and_eq',
+      'asm',
+      'atomic_cancel',
+      'atomic_commit',
+      'atomic_noexcept',
+      'auto',
+      'bitand',
+      'bitor',
+      'break',
+      'case',
+      'catch',
+      'class',
+      'co_await',
+      'co_return',
+      'co_yield',
+      'compl',
+      'concept',
+      'const_cast|10',
+      'consteval',
+      'constexpr',
+      'constinit',
+      'continue',
+      'decltype',
+      'default',
+      'delete',
+      'do',
+      'dynamic_cast|10',
+      'else',
+      'enum',
+      'explicit',
+      'export',
+      'extern',
+      'false',
+      'final',
+      'for',
+      'friend',
+      'goto',
+      'if',
+      'import',
+      'inline',
+      'module',
+      'mutable',
+      'namespace',
+      'new',
+      'noexcept',
+      'not',
+      'not_eq',
+      'nullptr',
+      'operator',
+      'or',
+      'or_eq',
+      'override',
+      'private',
+      'protected',
+      'public',
+      'reflexpr',
+      'register',
+      'reinterpret_cast|10',
+      'requires',
+      'return',
+      'sizeof',
+      'static_assert',
+      'static_cast|10',
+      'struct',
+      'switch',
+      'synchronized',
+      'template',
+      'this',
+      'thread_local',
+      'throw',
+      'transaction_safe',
+      'transaction_safe_dynamic',
+      'true',
+      'try',
+      'typedef',
+      'typeid',
+      'typename',
+      'union',
+      'using',
+      'virtual',
+      'volatile',
+      'while',
+      'xor',
+      'xor_eq'
+    ];
+
+    // https://en.cppreference.com/w/cpp/keyword
+    const RESERVED_TYPES = [
+      'bool',
+      'char',
+      'char16_t',
+      'char32_t',
+      'char8_t',
+      'double',
+      'float',
+      'int',
+      'long',
+      'short',
+      'void',
+      'wchar_t',
+      'unsigned',
+      'signed',
+      'const',
+      'static'
+    ];
+
+    const TYPE_HINTS = [
+      'any',
+      'auto_ptr',
+      'barrier',
+      'binary_semaphore',
+      'bitset',
+      'complex',
+      'condition_variable',
+      'condition_variable_any',
+      'counting_semaphore',
+      'deque',
+      'false_type',
+      'future',
+      'imaginary',
+      'initializer_list',
+      'istringstream',
+      'jthread',
+      'latch',
+      'lock_guard',
+      'multimap',
+      'multiset',
+      'mutex',
+      'optional',
+      'ostringstream',
+      'packaged_task',
+      'pair',
+      'promise',
+      'priority_queue',
+      'queue',
+      'recursive_mutex',
+      'recursive_timed_mutex',
+      'scoped_lock',
+      'set',
+      'shared_future',
+      'shared_lock',
+      'shared_mutex',
+      'shared_timed_mutex',
+      'shared_ptr',
+      'stack',
+      'string_view',
+      'stringstream',
+      'timed_mutex',
+      'thread',
+      'true_type',
+      'tuple',
+      'unique_lock',
+      'unique_ptr',
+      'unordered_map',
+      'unordered_multimap',
+      'unordered_multiset',
+      'unordered_set',
+      'variant',
+      'vector',
+      'weak_ptr',
+      'wstring',
+      'wstring_view'
+    ];
+
+    const FUNCTION_HINTS = [
+      'abort',
+      'abs',
+      'acos',
+      'apply',
+      'as_const',
+      'asin',
+      'atan',
+      'atan2',
+      'calloc',
+      'ceil',
+      'cerr',
+      'cin',
+      'clog',
+      'cos',
+      'cosh',
+      'cout',
+      'declval',
+      'endl',
+      'exchange',
+      'exit',
+      'exp',
+      'fabs',
+      'floor',
+      'fmod',
+      'forward',
+      'fprintf',
+      'fputs',
+      'free',
+      'frexp',
+      'fscanf',
+      'future',
+      'invoke',
+      'isalnum',
+      'isalpha',
+      'iscntrl',
+      'isdigit',
+      'isgraph',
+      'islower',
+      'isprint',
+      'ispunct',
+      'isspace',
+      'isupper',
+      'isxdigit',
+      'labs',
+      'launder',
+      'ldexp',
+      'log',
+      'log10',
+      'make_pair',
+      'make_shared',
+      'make_shared_for_overwrite',
+      'make_tuple',
+      'make_unique',
+      'malloc',
+      'memchr',
+      'memcmp',
+      'memcpy',
+      'memset',
+      'modf',
+      'move',
+      'pow',
+      'printf',
+      'putchar',
+      'puts',
+      'realloc',
+      'scanf',
+      'sin',
+      'sinh',
+      'snprintf',
+      'sprintf',
+      'sqrt',
+      'sscanf',
+      'std',
+      'stderr',
+      'stdin',
+      'stdout',
+      'strcat',
+      'strchr',
+      'strcmp',
+      'strcpy',
+      'strcspn',
+      'strlen',
+      'strncat',
+      'strncmp',
+      'strncpy',
+      'strpbrk',
+      'strrchr',
+      'strspn',
+      'strstr',
+      'swap',
+      'tan',
+      'tanh',
+      'terminate',
+      'to_underlying',
+      'tolower',
+      'toupper',
+      'vfprintf',
+      'visit',
+      'vprintf',
+      'vsprintf'
+    ];
+
+    const LITERALS = [
+      'NULL',
+      'false',
+      'nullopt',
+      'nullptr',
+      'true'
+    ];
+
+    // https://en.cppreference.com/w/cpp/keyword
+    const BUILT_IN = [ '_Pragma' ];
+
+    const CPP_KEYWORDS = {
+      type: RESERVED_TYPES,
+      keyword: RESERVED_KEYWORDS,
+      literal: LITERALS,
+      built_in: BUILT_IN,
+      _type_hints: TYPE_HINTS
+    };
+
+    const FUNCTION_DISPATCH = {
+      className: 'function.dispatch',
+      relevance: 0,
+      keywords: {
+        // Only for relevance, not highlighting.
+        _hint: FUNCTION_HINTS },
+      begin: regex.concat(
+        /\b/,
+        /(?!decltype)/,
+        /(?!if)/,
+        /(?!for)/,
+        /(?!switch)/,
+        /(?!while)/,
+        hljs.IDENT_RE,
+        regex.lookahead(/(<[^<>]+>|)\s*\(/))
+    };
+
+    const EXPRESSION_CONTAINS = [
+      FUNCTION_DISPATCH,
+      PREPROCESSOR,
+      CPP_PRIMITIVE_TYPES,
+      C_LINE_COMMENT_MODE,
+      hljs.C_BLOCK_COMMENT_MODE,
+      NUMBERS,
+      STRINGS
+    ];
+
+    const EXPRESSION_CONTEXT = {
+      // This mode covers expression context where we can't expect a function
+      // definition and shouldn't highlight anything that looks like one:
+      // `return some()`, `else if()`, `(x*sum(1, 2))`
+      variants: [
+        {
+          begin: /=/,
+          end: /;/
+        },
+        {
+          begin: /\(/,
+          end: /\)/
+        },
+        {
+          beginKeywords: 'new throw return else',
+          end: /;/
+        }
+      ],
+      keywords: CPP_KEYWORDS,
+      contains: EXPRESSION_CONTAINS.concat([
+        {
+          begin: /\(/,
+          end: /\)/,
+          keywords: CPP_KEYWORDS,
+          contains: EXPRESSION_CONTAINS.concat([ 'self' ]),
+          relevance: 0
+        }
+      ]),
+      relevance: 0
+    };
+
+    const FUNCTION_DECLARATION = {
+      className: 'function',
+      begin: '(' + FUNCTION_TYPE_RE + '[\\*&\\s]+)+' + FUNCTION_TITLE,
+      returnBegin: true,
+      end: /[{;=]/,
+      excludeEnd: true,
+      keywords: CPP_KEYWORDS,
+      illegal: /[^\w\s\*&:<>.]/,
+      contains: [
+        { // to prevent it from being confused as the function title
+          begin: DECLTYPE_AUTO_RE,
+          keywords: CPP_KEYWORDS,
+          relevance: 0
+        },
+        {
+          begin: FUNCTION_TITLE,
+          returnBegin: true,
+          contains: [ TITLE_MODE ],
+          relevance: 0
+        },
+        // needed because we do not have look-behind on the below rule
+        // to prevent it from grabbing the final : in a :: pair
+        {
+          begin: /::/,
+          relevance: 0
+        },
+        // initializers
+        {
+          begin: /:/,
+          endsWithParent: true,
+          contains: [
+            STRINGS,
+            NUMBERS
+          ]
+        },
+        // allow for multiple declarations, e.g.:
+        // extern void f(int), g(char);
+        {
+          relevance: 0,
+          match: /,/
+        },
+        {
+          className: 'params',
+          begin: /\(/,
+          end: /\)/,
+          keywords: CPP_KEYWORDS,
+          relevance: 0,
+          contains: [
+            C_LINE_COMMENT_MODE,
+            hljs.C_BLOCK_COMMENT_MODE,
+            STRINGS,
+            NUMBERS,
+            CPP_PRIMITIVE_TYPES,
+            // Count matching parentheses.
+            {
+              begin: /\(/,
+              end: /\)/,
+              keywords: CPP_KEYWORDS,
+              relevance: 0,
+              contains: [
+                'self',
+                C_LINE_COMMENT_MODE,
+                hljs.C_BLOCK_COMMENT_MODE,
+                STRINGS,
+                NUMBERS,
+                CPP_PRIMITIVE_TYPES
+              ]
+            }
+          ]
+        },
+        CPP_PRIMITIVE_TYPES,
+        C_LINE_COMMENT_MODE,
+        hljs.C_BLOCK_COMMENT_MODE,
+        PREPROCESSOR
+      ]
+    };
+
+    return {
+      name: 'C++',
+      aliases: [
+        'cc',
+        'c++',
+        'h++',
+        'hpp',
+        'hh',
+        'hxx',
+        'cxx'
+      ],
+      keywords: CPP_KEYWORDS,
+      illegal: '</',
+      classNameAliases: { 'function.dispatch': 'built_in' },
+      contains: [].concat(
+        EXPRESSION_CONTEXT,
+        FUNCTION_DECLARATION,
+        FUNCTION_DISPATCH,
+        EXPRESSION_CONTAINS,
+        [
+          PREPROCESSOR,
+          { // containers: ie, `vector <int> rooms (9);`
+            begin: '\\b(deque|list|queue|priority_queue|pair|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array|tuple|optional|variant|function)\\s*<(?!<)',
+            end: '>',
+            keywords: CPP_KEYWORDS,
+            contains: [
+              'self',
+              CPP_PRIMITIVE_TYPES
+            ]
+          },
+          {
+            begin: hljs.IDENT_RE + '::',
+            keywords: CPP_KEYWORDS
+          },
+          {
+            match: [
+              // extra complexity to deal with `enum class` and `enum struct`
+              /\b(?:enum(?:\s+(?:class|struct))?|class|struct|union)/,
+              /\s+/,
+              /\w+/
+            ],
+            className: {
+              1: 'keyword',
+              3: 'title.class'
+            }
+          }
+        ])
+    };
+  }
+
+  return cpp;
+
+})();
+
+    hljs.registerLanguage('cpp', hljsGrammar);
+  })();/*! `csharp` grammar compiled for Highlight.js 11.9.0 */
+  (function(){
+    var hljsGrammar = (function () {
+  'use strict';
+
+  /*
+  Language: C#
+  Author: Jason Diamond <jason@diamond.name>
+  Contributor: Nicolas LLOBERA <nllobera@gmail.com>, Pieter Vantorre <pietervantorre@gmail.com>, David Pine <david.pine@microsoft.com>
+  Website: https://docs.microsoft.com/dotnet/csharp/
+  Category: common
+  */
+
+  /** @type LanguageFn */
+  function csharp(hljs) {
+    const BUILT_IN_KEYWORDS = [
+      'bool',
+      'byte',
+      'char',
+      'decimal',
+      'delegate',
+      'double',
+      'dynamic',
+      'enum',
+      'float',
+      'int',
+      'long',
+      'nint',
+      'nuint',
+      'object',
+      'sbyte',
+      'short',
+      'string',
+      'ulong',
+      'uint',
+      'ushort'
+    ];
+    const FUNCTION_MODIFIERS = [
+      'public',
+      'private',
+      'protected',
+      'static',
+      'internal',
+      'protected',
+      'abstract',
+      'async',
+      'extern',
+      'override',
+      'unsafe',
+      'virtual',
+      'new',
+      'sealed',
+      'partial'
+    ];
+    const LITERAL_KEYWORDS = [
+      'default',
+      'false',
+      'null',
+      'true'
+    ];
+    const NORMAL_KEYWORDS = [
+      'abstract',
+      'as',
+      'base',
+      'break',
+      'case',
+      'catch',
+      'class',
+      'const',
+      'continue',
+      'do',
+      'else',
+      'event',
+      'explicit',
+      'extern',
+      'finally',
+      'fixed',
+      'for',
+      'foreach',
+      'goto',
+      'if',
+      'implicit',
+      'in',
+      'interface',
+      'internal',
+      'is',
+      'lock',
+      'namespace',
+      'new',
+      'operator',
+      'out',
+      'override',
+      'params',
+      'private',
+      'protected',
+      'public',
+      'readonly',
+      'record',
+      'ref',
+      'return',
+      'scoped',
+      'sealed',
+      'sizeof',
+      'stackalloc',
+      'static',
+      'struct',
+      'switch',
+      'this',
+      'throw',
+      'try',
+      'typeof',
+      'unchecked',
+      'unsafe',
+      'using',
+      'virtual',
+      'void',
+      'volatile',
+      'while'
+    ];
+    const CONTEXTUAL_KEYWORDS = [
+      'add',
+      'alias',
+      'and',
+      'ascending',
+      'async',
+      'await',
+      'by',
+      'descending',
+      'equals',
+      'from',
+      'get',
+      'global',
+      'group',
+      'init',
+      'into',
+      'join',
+      'let',
+      'nameof',
+      'not',
+      'notnull',
+      'on',
+      'or',
+      'orderby',
+      'partial',
+      'remove',
+      'select',
+      'set',
+      'unmanaged',
+      'value|0',
+      'var',
+      'when',
+      'where',
+      'with',
+      'yield'
+    ];
+
+    const KEYWORDS = {
+      keyword: NORMAL_KEYWORDS.concat(CONTEXTUAL_KEYWORDS),
+      built_in: BUILT_IN_KEYWORDS,
+      literal: LITERAL_KEYWORDS
+    };
+    const TITLE_MODE = hljs.inherit(hljs.TITLE_MODE, { begin: '[a-zA-Z](\\.?\\w)*' });
+    const NUMBERS = {
+      className: 'number',
+      variants: [
+        { begin: '\\b(0b[01\']+)' },
+        { begin: '(-?)\\b([\\d\']+(\\.[\\d\']*)?|\\.[\\d\']+)(u|U|l|L|ul|UL|f|F|b|B)' },
+        { begin: '(-?)(\\b0[xX][a-fA-F0-9\']+|(\\b[\\d\']+(\\.[\\d\']*)?|\\.[\\d\']+)([eE][-+]?[\\d\']+)?)' }
+      ],
+      relevance: 0
+    };
+    const VERBATIM_STRING = {
+      className: 'string',
+      begin: '@"',
+      end: '"',
+      contains: [ { begin: '""' } ]
+    };
+    const VERBATIM_STRING_NO_LF = hljs.inherit(VERBATIM_STRING, { illegal: /\n/ });
+    const SUBST = {
+      className: 'subst',
+      begin: /\{/,
+      end: /\}/,
+      keywords: KEYWORDS
+    };
+    const SUBST_NO_LF = hljs.inherit(SUBST, { illegal: /\n/ });
+    const INTERPOLATED_STRING = {
+      className: 'string',
+      begin: /\$"/,
+      end: '"',
+      illegal: /\n/,
+      contains: [
+        { begin: /\{\{/ },
+        { begin: /\}\}/ },
+        hljs.BACKSLASH_ESCAPE,
+        SUBST_NO_LF
+      ]
+    };
+    const INTERPOLATED_VERBATIM_STRING = {
+      className: 'string',
+      begin: /\$@"/,
+      end: '"',
+      contains: [
+        { begin: /\{\{/ },
+        { begin: /\}\}/ },
+        { begin: '""' },
+        SUBST
+      ]
+    };
+    const INTERPOLATED_VERBATIM_STRING_NO_LF = hljs.inherit(INTERPOLATED_VERBATIM_STRING, {
+      illegal: /\n/,
+      contains: [
+        { begin: /\{\{/ },
+        { begin: /\}\}/ },
+        { begin: '""' },
+        SUBST_NO_LF
+      ]
+    });
+    SUBST.contains = [
+      INTERPOLATED_VERBATIM_STRING,
+      INTERPOLATED_STRING,
+      VERBATIM_STRING,
+      hljs.APOS_STRING_MODE,
+      hljs.QUOTE_STRING_MODE,
+      NUMBERS,
+      hljs.C_BLOCK_COMMENT_MODE
+    ];
+    SUBST_NO_LF.contains = [
+      INTERPOLATED_VERBATIM_STRING_NO_LF,
+      INTERPOLATED_STRING,
+      VERBATIM_STRING_NO_LF,
+      hljs.APOS_STRING_MODE,
+      hljs.QUOTE_STRING_MODE,
+      NUMBERS,
+      hljs.inherit(hljs.C_BLOCK_COMMENT_MODE, { illegal: /\n/ })
+    ];
+    const STRING = { variants: [
+      INTERPOLATED_VERBATIM_STRING,
+      INTERPOLATED_STRING,
+      VERBATIM_STRING,
+      hljs.APOS_STRING_MODE,
+      hljs.QUOTE_STRING_MODE
+    ] };
+
+    const GENERIC_MODIFIER = {
+      begin: "<",
+      end: ">",
+      contains: [
+        { beginKeywords: "in out" },
+        TITLE_MODE
+      ]
+    };
+    const TYPE_IDENT_RE = hljs.IDENT_RE + '(<' + hljs.IDENT_RE + '(\\s*,\\s*' + hljs.IDENT_RE + ')*>)?(\\[\\])?';
+    const AT_IDENTIFIER = {
+      // prevents expressions like `@class` from incorrect flagging
+      // `class` as a keyword
+      begin: "@" + hljs.IDENT_RE,
+      relevance: 0
+    };
+
+    return {
+      name: 'C#',
+      aliases: [
+        'cs',
+        'c#'
+      ],
+      keywords: KEYWORDS,
+      illegal: /::/,
+      contains: [
+        hljs.COMMENT(
+          '///',
+          '$',
+          {
+            returnBegin: true,
+            contains: [
+              {
+                className: 'doctag',
+                variants: [
+                  {
+                    begin: '///',
+                    relevance: 0
+                  },
+                  { begin: '<!--|-->' },
+                  {
+                    begin: '</?',
+                    end: '>'
+                  }
+                ]
+              }
+            ]
+          }
+        ),
+        hljs.C_LINE_COMMENT_MODE,
+        hljs.C_BLOCK_COMMENT_MODE,
+        {
+          className: 'meta',
+          begin: '#',
+          end: '$',
+          keywords: { keyword: 'if else elif endif define undef warning error line region endregion pragma checksum' }
+        },
+        STRING,
+        NUMBERS,
+        {
+          beginKeywords: 'class interface',
+          relevance: 0,
+          end: /[{;=]/,
+          illegal: /[^\s:,]/,
+          contains: [
+            { beginKeywords: "where class" },
+            TITLE_MODE,
+            GENERIC_MODIFIER,
+            hljs.C_LINE_COMMENT_MODE,
+            hljs.C_BLOCK_COMMENT_MODE
+          ]
+        },
+        {
+          beginKeywords: 'namespace',
+          relevance: 0,
+          end: /[{;=]/,
+          illegal: /[^\s:]/,
+          contains: [
+            TITLE_MODE,
+            hljs.C_LINE_COMMENT_MODE,
+            hljs.C_BLOCK_COMMENT_MODE
+          ]
+        },
+        {
+          beginKeywords: 'record',
+          relevance: 0,
+          end: /[{;=]/,
+          illegal: /[^\s:]/,
+          contains: [
+            TITLE_MODE,
+            GENERIC_MODIFIER,
+            hljs.C_LINE_COMMENT_MODE,
+            hljs.C_BLOCK_COMMENT_MODE
+          ]
+        },
+        {
+          // [Attributes("")]
+          className: 'meta',
+          begin: '^\\s*\\[(?=[\\w])',
+          excludeBegin: true,
+          end: '\\]',
+          excludeEnd: true,
+          contains: [
+            {
+              className: 'string',
+              begin: /"/,
+              end: /"/
+            }
+          ]
+        },
+        {
+          // Expression keywords prevent 'keyword Name(...)' from being
+          // recognized as a function definition
+          beginKeywords: 'new return throw await else',
+          relevance: 0
+        },
+        {
+          className: 'function',
+          begin: '(' + TYPE_IDENT_RE + '\\s+)+' + hljs.IDENT_RE + '\\s*(<[^=]+>\\s*)?\\(',
+          returnBegin: true,
+          end: /\s*[{;=]/,
+          excludeEnd: true,
+          keywords: KEYWORDS,
+          contains: [
+            // prevents these from being highlighted `title`
+            {
+              beginKeywords: FUNCTION_MODIFIERS.join(" "),
+              relevance: 0
+            },
+            {
+              begin: hljs.IDENT_RE + '\\s*(<[^=]+>\\s*)?\\(',
+              returnBegin: true,
+              contains: [
+                hljs.TITLE_MODE,
+                GENERIC_MODIFIER
+              ],
+              relevance: 0
+            },
+            { match: /\(\)/ },
+            {
+              className: 'params',
+              begin: /\(/,
+              end: /\)/,
+              excludeBegin: true,
+              excludeEnd: true,
+              keywords: KEYWORDS,
+              relevance: 0,
+              contains: [
+                STRING,
+                NUMBERS,
+                hljs.C_BLOCK_COMMENT_MODE
+              ]
+            },
+            hljs.C_LINE_COMMENT_MODE,
+            hljs.C_BLOCK_COMMENT_MODE
+          ]
+        },
+        AT_IDENTIFIER
+      ]
+    };
+  }
+
+  return csharp;
+
+})();
+
+    hljs.registerLanguage('csharp', hljsGrammar);
+  })();/*! `css` grammar compiled for Highlight.js 11.9.0 */
+  (function(){
+    var hljsGrammar = (function () {
+  'use strict';
+
+  const MODES = (hljs) => {
+    return {
+      IMPORTANT: {
+        scope: 'meta',
+        begin: '!important'
+      },
+      BLOCK_COMMENT: hljs.C_BLOCK_COMMENT_MODE,
+      HEXCOLOR: {
+        scope: 'number',
+        begin: /#(([0-9a-fA-F]{3,4})|(([0-9a-fA-F]{2}){3,4}))\b/
+      },
+      FUNCTION_DISPATCH: {
+        className: "built_in",
+        begin: /[\w-]+(?=\()/
+      },
+      ATTRIBUTE_SELECTOR_MODE: {
+        scope: 'selector-attr',
+        begin: /\[/,
+        end: /\]/,
+        illegal: '$',
+        contains: [
+          hljs.APOS_STRING_MODE,
+          hljs.QUOTE_STRING_MODE
+        ]
+      },
+      CSS_NUMBER_MODE: {
+        scope: 'number',
+        begin: hljs.NUMBER_RE + '(' +
+          '%|em|ex|ch|rem' +
+          '|vw|vh|vmin|vmax' +
+          '|cm|mm|in|pt|pc|px' +
+          '|deg|grad|rad|turn' +
+          '|s|ms' +
+          '|Hz|kHz' +
+          '|dpi|dpcm|dppx' +
+          ')?',
+        relevance: 0
+      },
+      CSS_VARIABLE: {
+        className: "attr",
+        begin: /--[A-Za-z_][A-Za-z0-9_-]*/
+      }
+    };
+  };
+
+  const HTML_TAGS = [
+    'a',
+    'abbr',
+    'address',
+    'article',
+    'aside',
+    'audio',
+    'b',
+    'blockquote',
+    'body',
+    'button',
+    'canvas',
+    'caption',
+    'cite',
+    'code',
+    'dd',
+    'del',
+    'details',
+    'dfn',
+    'div',
+    'dl',
+    'dt',
+    'em',
+    'fieldset',
+    'figcaption',
+    'figure',
+    'footer',
+    'form',
+    'h1',
+    'h2',
+    'h3',
+    'h4',
+    'h5',
+    'h6',
+    'header',
+    'hgroup',
+    'html',
+    'i',
+    'iframe',
+    'img',
+    'input',
+    'ins',
+    'kbd',
+    'label',
+    'legend',
+    'li',
+    'main',
+    'mark',
+    'menu',
+    'nav',
+    'object',
+    'ol',
+    'p',
+    'q',
+    'quote',
+    'samp',
+    'section',
+    'span',
+    'strong',
+    'summary',
+    'sup',
+    'table',
+    'tbody',
+    'td',
+    'textarea',
+    'tfoot',
+    'th',
+    'thead',
+    'time',
+    'tr',
+    'ul',
+    'var',
+    'video'
+  ];
+
+  const SVG_TAGS = [
+    'defs',
+    'g',
+    'marker',
+    'mask',
+    'pattern',
+    'svg',
+    'switch',
+    'symbol',
+    'feBlend',
+    'feColorMatrix',
+    'feComponentTransfer',
+    'feComposite',
+    'feConvolveMatrix',
+    'feDiffuseLighting',
+    'feDisplacementMap',
+    'feFlood',
+    'feGaussianBlur',
+    'feImage',
+    'feMerge',
+    'feMorphology',
+    'feOffset',
+    'feSpecularLighting',
+    'feTile',
+    'feTurbulence',
+    'linearGradient',
+    'radialGradient',
+    'stop',
+    'circle',
+    'ellipse',
+    'image',
+    'line',
+    'path',
+    'polygon',
+    'polyline',
+    'rect',
+    'text',
+    'use',
+    'textPath',
+    'tspan',
+    'foreignObject',
+    'clipPath'
+  ];
+
+  const TAGS = [
+    ...HTML_TAGS,
+    ...SVG_TAGS,
+  ];
+
+  // Sorting, then reversing makes sure longer attributes/elements like
+  // `font-weight` are matched fully instead of getting false positives on say `font`
+
+  const MEDIA_FEATURES = [
+    'any-hover',
+    'any-pointer',
+    'aspect-ratio',
+    'color',
+    'color-gamut',
+    'color-index',
+    'device-aspect-ratio',
+    'device-height',
+    'device-width',
+    'display-mode',
+    'forced-colors',
+    'grid',
+    'height',
+    'hover',
+    'inverted-colors',
+    'monochrome',
+    'orientation',
+    'overflow-block',
+    'overflow-inline',
+    'pointer',
+    'prefers-color-scheme',
+    'prefers-contrast',
+    'prefers-reduced-motion',
+    'prefers-reduced-transparency',
+    'resolution',
+    'scan',
+    'scripting',
+    'update',
+    'width',
+    // TODO: find a better solution?
+    'min-width',
+    'max-width',
+    'min-height',
+    'max-height'
+  ].sort().reverse();
+
+  // https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes
+  const PSEUDO_CLASSES = [
+    'active',
+    'any-link',
+    'blank',
+    'checked',
+    'current',
+    'default',
+    'defined',
+    'dir', // dir()
+    'disabled',
+    'drop',
+    'empty',
+    'enabled',
+    'first',
+    'first-child',
+    'first-of-type',
+    'fullscreen',
+    'future',
+    'focus',
+    'focus-visible',
+    'focus-within',
+    'has', // has()
+    'host', // host or host()
+    'host-context', // host-context()
+    'hover',
+    'indeterminate',
+    'in-range',
+    'invalid',
+    'is', // is()
+    'lang', // lang()
+    'last-child',
+    'last-of-type',
+    'left',
+    'link',
+    'local-link',
+    'not', // not()
+    'nth-child', // nth-child()
+    'nth-col', // nth-col()
+    'nth-last-child', // nth-last-child()
+    'nth-last-col', // nth-last-col()
+    'nth-last-of-type', //nth-last-of-type()
+    'nth-of-type', //nth-of-type()
+    'only-child',
+    'only-of-type',
+    'optional',
+    'out-of-range',
+    'past',
+    'placeholder-shown',
+    'read-only',
+    'read-write',
+    'required',
+    'right',
+    'root',
+    'scope',
+    'target',
+    'target-within',
+    'user-invalid',
+    'valid',
+    'visited',
+    'where' // where()
+  ].sort().reverse();
+
+  // https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-elements
+  const PSEUDO_ELEMENTS = [
+    'after',
+    'backdrop',
+    'before',
+    'cue',
+    'cue-region',
+    'first-letter',
+    'first-line',
+    'grammar-error',
+    'marker',
+    'part',
+    'placeholder',
+    'selection',
+    'slotted',
+    'spelling-error'
+  ].sort().reverse();
+
+  const ATTRIBUTES = [
+    'align-content',
+    'align-items',
+    'align-self',
+    'alignment-baseline',
+    'all',
+    'animation',
+    'animation-delay',
+    'animation-direction',
+    'animation-duration',
+    'animation-fill-mode',
+    'animation-iteration-count',
+    'animation-name',
+    'animation-play-state',
+    'animation-timing-function',
+    'backface-visibility',
+    'background',
+    'background-attachment',
+    'background-blend-mode',
+    'background-clip',
+    'background-color',
+    'background-image',
+    'background-origin',
+    'background-position',
+    'background-repeat',
+    'background-size',
+    'baseline-shift',
+    'block-size',
+    'border',
+    'border-block',
+    'border-block-color',
+    'border-block-end',
+    'border-block-end-color',
+    'border-block-end-style',
+    'border-block-end-width',
+    'border-block-start',
+    'border-block-start-color',
+    'border-block-start-style',
+    'border-block-start-width',
+    'border-block-style',
+    'border-block-width',
+    'border-bottom',
+    'border-bottom-color',
+    'border-bottom-left-radius',
+    'border-bottom-right-radius',
+    'border-bottom-style',
+    'border-bottom-width',
+    'border-collapse',
+    'border-color',
+    'border-image',
+    'border-image-outset',
+    'border-image-repeat',
+    'border-image-slice',
+    'border-image-source',
+    'border-image-width',
+    'border-inline',
+    'border-inline-color',
+    'border-inline-end',
+    'border-inline-end-color',
+    'border-inline-end-style',
+    'border-inline-end-width',
+    'border-inline-start',
+    'border-inline-start-color',
+    'border-inline-start-style',
+    'border-inline-start-width',
+    'border-inline-style',
+    'border-inline-width',
+    'border-left',
+    'border-left-color',
+    'border-left-style',
+    'border-left-width',
+    'border-radius',
+    'border-right',
+    'border-right-color',
+    'border-right-style',
+    'border-right-width',
+    'border-spacing',
+    'border-style',
+    'border-top',
+    'border-top-color',
+    'border-top-left-radius',
+    'border-top-right-radius',
+    'border-top-style',
+    'border-top-width',
+    'border-width',
+    'bottom',
+    'box-decoration-break',
+    'box-shadow',
+    'box-sizing',
+    'break-after',
+    'break-before',
+    'break-inside',
+    'cx',
+    'cy',
+    'caption-side',
+    'caret-color',
+    'clear',
+    'clip',
+    'clip-path',
+    'clip-rule',
+    'color',
+    'color-interpolation',
+    'color-interpolation-filters',
+    'color-profile',
+    'color-rendering',
+    'column-count',
+    'column-fill',
+    'column-gap',
+    'column-rule',
+    'column-rule-color',
+    'column-rule-style',
+    'column-rule-width',
+    'column-span',
+    'column-width',
+    'columns',
+    'contain',
+    'content',
+    'content-visibility',
+    'counter-increment',
+    'counter-reset',
+    'cue',
+    'cue-after',
+    'cue-before',
+    'cursor',
+    'direction',
+    'display',
+    'dominant-baseline',
+    'empty-cells',
+    'enable-background',
+    'fill',
+    'fill-opacity',
+    'fill-rule',
+    'filter',
+    'flex',
+    'flex-basis',
+    'flex-direction',
+    'flex-flow',
+    'flex-grow',
+    'flex-shrink',
+    'flex-wrap',
+    'float',
+    'flow',
+    'flood-color',
+    'flood-opacity',
+    'font',
+    'font-display',
+    'font-family',
+    'font-feature-settings',
+    'font-kerning',
+    'font-language-override',
+    'font-size',
+    'font-size-adjust',
+    'font-smoothing',
+    'font-stretch',
+    'font-style',
+    'font-synthesis',
+    'font-variant',
+    'font-variant-caps',
+    'font-variant-east-asian',
+    'font-variant-ligatures',
+    'font-variant-numeric',
+    'font-variant-position',
+    'font-variation-settings',
+    'font-weight',
+    'gap',
+    'glyph-orientation-horizontal',
+    'glyph-orientation-vertical',
+    'grid',
+    'grid-area',
+    'grid-auto-columns',
+    'grid-auto-flow',
+    'grid-auto-rows',
+    'grid-column',
+    'grid-column-end',
+    'grid-column-start',
+    'grid-gap',
+    'grid-row',
+    'grid-row-end',
+    'grid-row-start',
+    'grid-template',
+    'grid-template-areas',
+    'grid-template-columns',
+    'grid-template-rows',
+    'hanging-punctuation',
+    'height',
+    'hyphens',
+    'icon',
+    'image-orientation',
+    'image-rendering',
+    'image-resolution',
+    'ime-mode',
+    'inline-size',
+    'isolation',
+    'kerning',
+    'justify-content',
+    'left',
+    'letter-spacing',
+    'lighting-color',
+    'line-break',
+    'line-height',
+    'list-style',
+    'list-style-image',
+    'list-style-position',
+    'list-style-type',
+    'marker',
+    'marker-end',
+    'marker-mid',
+    'marker-start',
+    'mask',
+    'margin',
+    'margin-block',
+    'margin-block-end',
+    'margin-block-start',
+    'margin-bottom',
+    'margin-inline',
+    'margin-inline-end',
+    'margin-inline-start',
+    'margin-left',
+    'margin-right',
+    'margin-top',
+    'marks',
+    'mask',
+    'mask-border',
+    'mask-border-mode',
+    'mask-border-outset',
+    'mask-border-repeat',
+    'mask-border-slice',
+    'mask-border-source',
+    'mask-border-width',
+    'mask-clip',
+    'mask-composite',
+    'mask-image',
+    'mask-mode',
+    'mask-origin',
+    'mask-position',
+    'mask-repeat',
+    'mask-size',
+    'mask-type',
+    'max-block-size',
+    'max-height',
+    'max-inline-size',
+    'max-width',
+    'min-block-size',
+    'min-height',
+    'min-inline-size',
+    'min-width',
+    'mix-blend-mode',
+    'nav-down',
+    'nav-index',
+    'nav-left',
+    'nav-right',
+    'nav-up',
+    'none',
+    'normal',
+    'object-fit',
+    'object-position',
+    'opacity',
+    'order',
+    'orphans',
+    'outline',
+    'outline-color',
+    'outline-offset',
+    'outline-style',
+    'outline-width',
+    'overflow',
+    'overflow-wrap',
+    'overflow-x',
+    'overflow-y',
+    'padding',
+    'padding-block',
+    'padding-block-end',
+    'padding-block-start',
+    'padding-bottom',
+    'padding-inline',
+    'padding-inline-end',
+    'padding-inline-start',
+    'padding-left',
+    'padding-right',
+    'padding-top',
+    'page-break-after',
+    'page-break-before',
+    'page-break-inside',
+    'pause',
+    'pause-after',
+    'pause-before',
+    'perspective',
+    'perspective-origin',
+    'pointer-events',
+    'position',
+    'quotes',
+    'r',
+    'resize',
+    'rest',
+    'rest-after',
+    'rest-before',
+    'right',
+    'row-gap',
+    'scroll-margin',
+    'scroll-margin-block',
+    'scroll-margin-block-end',
+    'scroll-margin-block-start',
+    'scroll-margin-bottom',
+    'scroll-margin-inline',
+    'scroll-margin-inline-end',
+    'scroll-margin-inline-start',
+    'scroll-margin-left',
+    'scroll-margin-right',
+    'scroll-margin-top',
+    'scroll-padding',
+    'scroll-padding-block',
+    'scroll-padding-block-end',
+    'scroll-padding-block-start',
+    'scroll-padding-bottom',
+    'scroll-padding-inline',
+    'scroll-padding-inline-end',
+    'scroll-padding-inline-start',
+    'scroll-padding-left',
+    'scroll-padding-right',
+    'scroll-padding-top',
+    'scroll-snap-align',
+    'scroll-snap-stop',
+    'scroll-snap-type',
+    'scrollbar-color',
+    'scrollbar-gutter',
+    'scrollbar-width',
+    'shape-image-threshold',
+    'shape-margin',
+    'shape-outside',
+    'shape-rendering',
+    'stop-color',
+    'stop-opacity',
+    'stroke',
+    'stroke-dasharray',
+    'stroke-dashoffset',
+    'stroke-linecap',
+    'stroke-linejoin',
+    'stroke-miterlimit',
+    'stroke-opacity',
+    'stroke-width',
+    'speak',
+    'speak-as',
+    'src', // @font-face
+    'tab-size',
+    'table-layout',
+    'text-anchor',
+    'text-align',
+    'text-align-all',
+    'text-align-last',
+    'text-combine-upright',
+    'text-decoration',
+    'text-decoration-color',
+    'text-decoration-line',
+    'text-decoration-style',
+    'text-emphasis',
+    'text-emphasis-color',
+    'text-emphasis-position',
+    'text-emphasis-style',
+    'text-indent',
+    'text-justify',
+    'text-orientation',
+    'text-overflow',
+    'text-rendering',
+    'text-shadow',
+    'text-transform',
+    'text-underline-position',
+    'top',
+    'transform',
+    'transform-box',
+    'transform-origin',
+    'transform-style',
+    'transition',
+    'transition-delay',
+    'transition-duration',
+    'transition-property',
+    'transition-timing-function',
+    'unicode-bidi',
+    'vector-effect',
+    'vertical-align',
+    'visibility',
+    'voice-balance',
+    'voice-duration',
+    'voice-family',
+    'voice-pitch',
+    'voice-range',
+    'voice-rate',
+    'voice-stress',
+    'voice-volume',
+    'white-space',
+    'widows',
+    'width',
+    'will-change',
+    'word-break',
+    'word-spacing',
+    'word-wrap',
+    'writing-mode',
+    'x',
+    'y',
+    'z-index'
+  ].sort().reverse();
+
+  /*
+  Language: CSS
+  Category: common, css, web
+  Website: https://developer.mozilla.org/en-US/docs/Web/CSS
+  */
+
+
+  /** @type LanguageFn */
+  function css(hljs) {
+    const regex = hljs.regex;
+    const modes = MODES(hljs);
+    const VENDOR_PREFIX = { begin: /-(webkit|moz|ms|o)-(?=[a-z])/ };
+    const AT_MODIFIERS = "and or not only";
+    const AT_PROPERTY_RE = /@-?\w[\w]*(-\w+)*/; // @-webkit-keyframes
+    const IDENT_RE = '[a-zA-Z-][a-zA-Z0-9_-]*';
+    const STRINGS = [
+      hljs.APOS_STRING_MODE,
+      hljs.QUOTE_STRING_MODE
+    ];
+
+    return {
+      name: 'CSS',
+      case_insensitive: true,
+      illegal: /[=|'\$]/,
+      keywords: { keyframePosition: "from to" },
+      classNameAliases: {
+        // for visual continuity with `tag {}` and because we
+        // don't have a great class for this?
+        keyframePosition: "selector-tag" },
+      contains: [
+        modes.BLOCK_COMMENT,
+        VENDOR_PREFIX,
+        // to recognize keyframe 40% etc which are outside the scope of our
+        // attribute value mode
+        modes.CSS_NUMBER_MODE,
+        {
+          className: 'selector-id',
+          begin: /#[A-Za-z0-9_-]+/,
+          relevance: 0
+        },
+        {
+          className: 'selector-class',
+          begin: '\\.' + IDENT_RE,
+          relevance: 0
+        },
+        modes.ATTRIBUTE_SELECTOR_MODE,
+        {
+          className: 'selector-pseudo',
+          variants: [
+            { begin: ':(' + PSEUDO_CLASSES.join('|') + ')' },
+            { begin: ':(:)?(' + PSEUDO_ELEMENTS.join('|') + ')' }
+          ]
+        },
+        // we may actually need this (12/2020)
+        // { // pseudo-selector params
+        //   begin: /\(/,
+        //   end: /\)/,
+        //   contains: [ hljs.CSS_NUMBER_MODE ]
+        // },
+        modes.CSS_VARIABLE,
+        {
+          className: 'attribute',
+          begin: '\\b(' + ATTRIBUTES.join('|') + ')\\b'
+        },
+        // attribute values
+        {
+          begin: /:/,
+          end: /[;}{]/,
+          contains: [
+            modes.BLOCK_COMMENT,
+            modes.HEXCOLOR,
+            modes.IMPORTANT,
+            modes.CSS_NUMBER_MODE,
+            ...STRINGS,
+            // needed to highlight these as strings and to avoid issues with
+            // illegal characters that might be inside urls that would tigger the
+            // languages illegal stack
+            {
+              begin: /(url|data-uri)\(/,
+              end: /\)/,
+              relevance: 0, // from keywords
+              keywords: { built_in: "url data-uri" },
+              contains: [
+                ...STRINGS,
+                {
+                  className: "string",
+                  // any character other than `)` as in `url()` will be the start
+                  // of a string, which ends with `)` (from the parent mode)
+                  begin: /[^)]/,
+                  endsWithParent: true,
+                  excludeEnd: true
+                }
+              ]
+            },
+            modes.FUNCTION_DISPATCH
+          ]
+        },
+        {
+          begin: regex.lookahead(/@/),
+          end: '[{;]',
+          relevance: 0,
+          illegal: /:/, // break on Less variables @var: ...
+          contains: [
+            {
+              className: 'keyword',
+              begin: AT_PROPERTY_RE
+            },
+            {
+              begin: /\s/,
+              endsWithParent: true,
+              excludeEnd: true,
+              relevance: 0,
+              keywords: {
+                $pattern: /[a-z-]+/,
+                keyword: AT_MODIFIERS,
+                attribute: MEDIA_FEATURES.join(" ")
+              },
+              contains: [
+                {
+                  begin: /[a-z-]+(?=:)/,
+                  className: "attribute"
+                },
+                ...STRINGS,
+                modes.CSS_NUMBER_MODE
+              ]
+            }
+          ]
+        },
+        {
+          className: 'selector-tag',
+          begin: '\\b(' + TAGS.join('|') + ')\\b'
+        }
+      ]
+    };
+  }
+
+  return css;
+
+})();
+
+    hljs.registerLanguage('css', hljsGrammar);
+  })();/*! `diff` grammar compiled for Highlight.js 11.9.0 */
+  (function(){
+    var hljsGrammar = (function () {
+  'use strict';
+
+  /*
+  Language: Diff
+  Description: Unified and context diff
+  Author: Vasily Polovnyov <vast@whiteants.net>
+  Website: https://www.gnu.org/software/diffutils/
+  Category: common
+  */
+
+  /** @type LanguageFn */
+  function diff(hljs) {
+    const regex = hljs.regex;
+    return {
+      name: 'Diff',
+      aliases: [ 'patch' ],
+      contains: [
+        {
+          className: 'meta',
+          relevance: 10,
+          match: regex.either(
+            /^@@ +-\d+,\d+ +\+\d+,\d+ +@@/,
+            /^\*\*\* +\d+,\d+ +\*\*\*\*$/,
+            /^--- +\d+,\d+ +----$/
+          )
+        },
+        {
+          className: 'comment',
+          variants: [
+            {
+              begin: regex.either(
+                /Index: /,
+                /^index/,
+                /={3,}/,
+                /^-{3}/,
+                /^\*{3} /,
+                /^\+{3}/,
+                /^diff --git/
+              ),
+              end: /$/
+            },
+            { match: /^\*{15}$/ }
+          ]
+        },
+        {
+          className: 'addition',
+          begin: /^\+/,
+          end: /$/
+        },
+        {
+          className: 'deletion',
+          begin: /^-/,
+          end: /$/
+        },
+        {
+          className: 'addition',
+          begin: /^!/,
+          end: /$/
+        }
+      ]
+    };
+  }
+
+  return diff;
+
+})();
+
+    hljs.registerLanguage('diff', hljsGrammar);
+  })();/*! `gml` grammar compiled for Highlight.js 11.9.0 */
+  (function(){
+    var hljsGrammar = (function () {
+  'use strict';
+
+  /*
+  Language: GML
+  Author: Meseta <meseta@gmail.com>
+  Description: Game Maker Language for GameMaker Studio 2
+  Website: https://docs2.yoyogames.com
+  Category: scripting
+  */
+
+  function gml(hljs) {
+    const KEYWORDS = [
+      "#endregion",
+      "#macro",
+      "#region",
+      "and",
+      "begin",
+      "break",
+      "case",
+      "constructor",
+      "continue",
+      "default",
+      "delete",
+      "div",
+      "do",
+      "else",
+      "end",
+      "enum",
+      "exit",
+      "for",
+      "function",
+      "globalvar",
+      "if",
+      "mod",
+      "not",
+      "or",
+      "repeat",
+      "return",
+      "switch",
+      "then",
+      "until",
+      "var",
+      "while",
+      "with",
+      "xor"
+    ];
+    const BUILT_INS = [
+      "abs",
+      "achievement_available",
+      "achievement_event",
+      "achievement_get_challenges",
+      "achievement_get_info",
+      "achievement_get_pic",
+      "achievement_increment",
+      "achievement_load_friends",
+      "achievement_load_leaderboard",
+      "achievement_load_progress",
+      "achievement_login",
+      "achievement_login_status",
+      "achievement_logout",
+      "achievement_post",
+      "achievement_post_score",
+      "achievement_reset",
+      "achievement_send_challenge",
+      "achievement_show",
+      "achievement_show_achievements",
+      "achievement_show_challenge_notifications",
+      "achievement_show_leaderboards",
+      "action_inherited",
+      "action_kill_object",
+      "ads_disable",
+      "ads_enable",
+      "ads_engagement_active",
+      "ads_engagement_available",
+      "ads_engagement_launch",
+      "ads_event",
+      "ads_event_preload",
+      "ads_get_display_height",
+      "ads_get_display_width",
+      "ads_interstitial_available",
+      "ads_interstitial_display",
+      "ads_move",
+      "ads_set_reward_callback",
+      "ads_setup",
+      "alarm_get",
+      "alarm_set",
+      "analytics_event",
+      "analytics_event_ext",
+      "angle_difference",
+      "ansi_char",
+      "application_get_position",
+      "application_surface_draw_enable",
+      "application_surface_enable",
+      "application_surface_is_enabled",
+      "arccos",
+      "arcsin",
+      "arctan",
+      "arctan2",
+      "array_copy",
+      "array_create",
+      "array_delete",
+      "array_equals",
+      "array_height_2d",
+      "array_insert",
+      "array_length",
+      "array_length_1d",
+      "array_length_2d",
+      "array_pop",
+      "array_push",
+      "array_resize",
+      "array_sort",
+      "asset_get_index",
+      "asset_get_type",
+      "audio_channel_num",
+      "audio_create_buffer_sound",
+      "audio_create_play_queue",
+      "audio_create_stream",
+      "audio_create_sync_group",
+      "audio_debug",
+      "audio_destroy_stream",
+      "audio_destroy_sync_group",
+      "audio_emitter_create",
+      "audio_emitter_exists",
+      "audio_emitter_falloff",
+      "audio_emitter_free",
+      "audio_emitter_gain",
+      "audio_emitter_get_gain",
+      "audio_emitter_get_listener_mask",
+      "audio_emitter_get_pitch",
+      "audio_emitter_get_vx",
+      "audio_emitter_get_vy",
+      "audio_emitter_get_vz",
+      "audio_emitter_get_x",
+      "audio_emitter_get_y",
+      "audio_emitter_get_z",
+      "audio_emitter_pitch",
+      "audio_emitter_position",
+      "audio_emitter_set_listener_mask",
+      "audio_emitter_velocity",
+      "audio_exists",
+      "audio_falloff_set_model",
+      "audio_free_buffer_sound",
+      "audio_free_play_queue",
+      "audio_get_listener_count",
+      "audio_get_listener_info",
+      "audio_get_listener_mask",
+      "audio_get_master_gain",
+      "audio_get_name",
+      "audio_get_recorder_count",
+      "audio_get_recorder_info",
+      "audio_get_type",
+      "audio_group_is_loaded",
+      "audio_group_load",
+      "audio_group_load_progress",
+      "audio_group_name",
+      "audio_group_set_gain",
+      "audio_group_stop_all",
+      "audio_group_unload",
+      "audio_is_paused",
+      "audio_is_playing",
+      "audio_listener_get_data",
+      "audio_listener_orientation",
+      "audio_listener_position",
+      "audio_listener_set_orientation",
+      "audio_listener_set_position",
+      "audio_listener_set_velocity",
+      "audio_listener_velocity",
+      "audio_master_gain",
+      "audio_music_gain",
+      "audio_music_is_playing",
+      "audio_pause_all",
+      "audio_pause_music",
+      "audio_pause_sound",
+      "audio_pause_sync_group",
+      "audio_play_in_sync_group",
+      "audio_play_music",
+      "audio_play_sound",
+      "audio_play_sound_at",
+      "audio_play_sound_on",
+      "audio_queue_sound",
+      "audio_resume_all",
+      "audio_resume_music",
+      "audio_resume_sound",
+      "audio_resume_sync_group",
+      "audio_set_listener_mask",
+      "audio_set_master_gain",
+      "audio_sound_gain",
+      "audio_sound_get_gain",
+      "audio_sound_get_listener_mask",
+      "audio_sound_get_pitch",
+      "audio_sound_get_track_position",
+      "audio_sound_length",
+      "audio_sound_pitch",
+      "audio_sound_set_listener_mask",
+      "audio_sound_set_track_position",
+      "audio_start_recording",
+      "audio_start_sync_group",
+      "audio_stop_all",
+      "audio_stop_music",
+      "audio_stop_recording",
+      "audio_stop_sound",
+      "audio_stop_sync_group",
+      "audio_sync_group_debug",
+      "audio_sync_group_get_track_pos",
+      "audio_sync_group_is_playing",
+      "audio_system",
+      "background_get_height",
+      "background_get_width",
+      "base64_decode",
+      "base64_encode",
+      "browser_input_capture",
+      "buffer_async_group_begin",
+      "buffer_async_group_end",
+      "buffer_async_group_option",
+      "buffer_base64_decode",
+      "buffer_base64_decode_ext",
+      "buffer_base64_encode",
+      "buffer_copy",
+      "buffer_copy_from_vertex_buffer",
+      "buffer_create",
+      "buffer_create_from_vertex_buffer",
+      "buffer_create_from_vertex_buffer_ext",
+      "buffer_delete",
+      "buffer_exists",
+      "buffer_fill",
+      "buffer_get_address",
+      "buffer_get_alignment",
+      "buffer_get_size",
+      "buffer_get_surface",
+      "buffer_get_type",
+      "buffer_load",
+      "buffer_load_async",
+      "buffer_load_ext",
+      "buffer_load_partial",
+      "buffer_md5",
+      "buffer_peek",
+      "buffer_poke",
+      "buffer_read",
+      "buffer_resize",
+      "buffer_save",
+      "buffer_save_async",
+      "buffer_save_ext",
+      "buffer_seek",
+      "buffer_set_surface",
+      "buffer_sha1",
+      "buffer_sizeof",
+      "buffer_tell",
+      "buffer_write",
+      "camera_apply",
+      "camera_create",
+      "camera_create_view",
+      "camera_destroy",
+      "camera_get_active",
+      "camera_get_begin_script",
+      "camera_get_default",
+      "camera_get_end_script",
+      "camera_get_proj_mat",
+      "camera_get_update_script",
+      "camera_get_view_angle",
+      "camera_get_view_border_x",
+      "camera_get_view_border_y",
+      "camera_get_view_height",
+      "camera_get_view_mat",
+      "camera_get_view_speed_x",
+      "camera_get_view_speed_y",
+      "camera_get_view_target",
+      "camera_get_view_width",
+      "camera_get_view_x",
+      "camera_get_view_y",
+      "camera_set_begin_script",
+      "camera_set_default",
+      "camera_set_end_script",
+      "camera_set_proj_mat",
+      "camera_set_update_script",
+      "camera_set_view_angle",
+      "camera_set_view_border",
+      "camera_set_view_mat",
+      "camera_set_view_pos",
+      "camera_set_view_size",
+      "camera_set_view_speed",
+      "camera_set_view_target",
+      "ceil",
+      "choose",
+      "chr",
+      "clamp",
+      "clickable_add",
+      "clickable_add_ext",
+      "clickable_change",
+      "clickable_change_ext",
+      "clickable_delete",
+      "clickable_exists",
+      "clickable_set_style",
+      "clipboard_get_text",
+      "clipboard_has_text",
+      "clipboard_set_text",
+      "cloud_file_save",
+      "cloud_string_save",
+      "cloud_synchronise",
+      "code_is_compiled",
+      "collision_circle",
+      "collision_circle_list",
+      "collision_ellipse",
+      "collision_ellipse_list",
+      "collision_line",
+      "collision_line_list",
+      "collision_point",
+      "collision_point_list",
+      "collision_rectangle",
+      "collision_rectangle_list",
+      "color_get_blue",
+      "color_get_green",
+      "color_get_hue",
+      "color_get_red",
+      "color_get_saturation",
+      "color_get_value",
+      "colour_get_blue",
+      "colour_get_green",
+      "colour_get_hue",
+      "colour_get_red",
+      "colour_get_saturation",
+      "colour_get_value",
+      "cos",
+      "darccos",
+      "darcsin",
+      "darctan",
+      "darctan2",
+      "date_compare_date",
+      "date_compare_datetime",
+      "date_compare_time",
+      "date_create_datetime",
+      "date_current_datetime",
+      "date_date_of",
+      "date_date_string",
+      "date_datetime_string",
+      "date_day_span",
+      "date_days_in_month",
+      "date_days_in_year",
+      "date_get_day",
+      "date_get_day_of_year",
+      "date_get_hour",
+      "date_get_hour_of_year",
+      "date_get_minute",
+      "date_get_minute_of_year",
+      "date_get_month",
+      "date_get_second",
+      "date_get_second_of_year",
+      "date_get_timezone",
+      "date_get_week",
+      "date_get_weekday",
+      "date_get_year",
+      "date_hour_span",
+      "date_inc_day",
+      "date_inc_hour",
+      "date_inc_minute",
+      "date_inc_month",
+      "date_inc_second",
+      "date_inc_week",
+      "date_inc_year",
+      "date_is_today",
+      "date_leap_year",
+      "date_minute_span",
+      "date_month_span",
+      "date_second_span",
+      "date_set_timezone",
+      "date_time_of",
+      "date_time_string",
+      "date_valid_datetime",
+      "date_week_span",
+      "date_year_span",
+      "dcos",
+      "debug_event",
+      "debug_get_callstack",
+      "degtorad",
+      "device_get_tilt_x",
+      "device_get_tilt_y",
+      "device_get_tilt_z",
+      "device_is_keypad_open",
+      "device_mouse_check_button",
+      "device_mouse_check_button_pressed",
+      "device_mouse_check_button_released",
+      "device_mouse_dbclick_enable",
+      "device_mouse_raw_x",
+      "device_mouse_raw_y",
+      "device_mouse_x",
+      "device_mouse_x_to_gui",
+      "device_mouse_y",
+      "device_mouse_y_to_gui",
+      "directory_create",
+      "directory_destroy",
+      "directory_exists",
+      "display_get_dpi_x",
+      "display_get_dpi_y",
+      "display_get_gui_height",
+      "display_get_gui_width",
+      "display_get_height",
+      "display_get_orientation",
+      "display_get_sleep_margin",
+      "display_get_timing_method",
+      "display_get_width",
+      "display_mouse_get_x",
+      "display_mouse_get_y",
+      "display_mouse_set",
+      "display_reset",
+      "display_set_gui_maximise",
+      "display_set_gui_maximize",
+      "display_set_gui_size",
+      "display_set_sleep_margin",
+      "display_set_timing_method",
+      "display_set_ui_visibility",
+      "distance_to_object",
+      "distance_to_point",
+      "dot_product",
+      "dot_product_3d",
+      "dot_product_3d_normalised",
+      "dot_product_3d_normalized",
+      "dot_product_normalised",
+      "dot_product_normalized",
+      "draw_arrow",
+      "draw_background",
+      "draw_background_ext",
+      "draw_background_part_ext",
+      "draw_background_tiled",
+      "draw_button",
+      "draw_circle",
+      "draw_circle_color",
+      "draw_circle_colour",
+      "draw_clear",
+      "draw_clear_alpha",
+      "draw_ellipse",
+      "draw_ellipse_color",
+      "draw_ellipse_colour",
+      "draw_enable_alphablend",
+      "draw_enable_drawevent",
+      "draw_enable_swf_aa",
+      "draw_flush",
+      "draw_get_alpha",
+      "draw_get_color",
+      "draw_get_colour",
+      "draw_get_lighting",
+      "draw_get_swf_aa_level",
+      "draw_getpixel",
+      "draw_getpixel_ext",
+      "draw_healthbar",
+      "draw_highscore",
+      "draw_light_define_ambient",
+      "draw_light_define_direction",
+      "draw_light_define_point",
+      "draw_light_enable",
+      "draw_light_get",
+      "draw_light_get_ambient",
+      "draw_line",
+      "draw_line_color",
+      "draw_line_colour",
+      "draw_line_width",
+      "draw_line_width_color",
+      "draw_line_width_colour",
+      "draw_path",
+      "draw_point",
+      "draw_point_color",
+      "draw_point_colour",
+      "draw_primitive_begin",
+      "draw_primitive_begin_texture",
+      "draw_primitive_end",
+      "draw_rectangle",
+      "draw_rectangle_color",
+      "draw_rectangle_colour",
+      "draw_roundrect",
+      "draw_roundrect_color",
+      "draw_roundrect_color_ext",
+      "draw_roundrect_colour",
+      "draw_roundrect_colour_ext",
+      "draw_roundrect_ext",
+      "draw_self",
+      "draw_set_alpha",
+      "draw_set_alpha_test",
+      "draw_set_alpha_test_ref_value",
+      "draw_set_blend_mode",
+      "draw_set_blend_mode_ext",
+      "draw_set_circle_precision",
+      "draw_set_color",
+      "draw_set_color_write_enable",
+      "draw_set_colour",
+      "draw_set_font",
+      "draw_set_halign",
+      "draw_set_lighting",
+      "draw_set_swf_aa_level",
+      "draw_set_valign",
+      "draw_skeleton",
+      "draw_skeleton_collision",
+      "draw_skeleton_instance",
+      "draw_skeleton_time",
+      "draw_sprite",
+      "draw_sprite_ext",
+      "draw_sprite_general",
+      "draw_sprite_part",
+      "draw_sprite_part_ext",
+      "draw_sprite_pos",
+      "draw_sprite_stretched",
+      "draw_sprite_stretched_ext",
+      "draw_sprite_tiled",
+      "draw_sprite_tiled_ext",
+      "draw_surface",
+      "draw_surface_ext",
+      "draw_surface_general",
+      "draw_surface_part",
+      "draw_surface_part_ext",
+      "draw_surface_stretched",
+      "draw_surface_stretched_ext",
+      "draw_surface_tiled",
+      "draw_surface_tiled_ext",
+      "draw_text",
+      "draw_text_color",
+      "draw_text_colour",
+      "draw_text_ext",
+      "draw_text_ext_color",
+      "draw_text_ext_colour",
+      "draw_text_ext_transformed",
+      "draw_text_ext_transformed_color",
+      "draw_text_ext_transformed_colour",
+      "draw_text_transformed",
+      "draw_text_transformed_color",
+      "draw_text_transformed_colour",
+      "draw_texture_flush",
+      "draw_tile",
+      "draw_tilemap",
+      "draw_triangle",
+      "draw_triangle_color",
+      "draw_triangle_colour",
+      "draw_vertex",
+      "draw_vertex_color",
+      "draw_vertex_colour",
+      "draw_vertex_texture",
+      "draw_vertex_texture_color",
+      "draw_vertex_texture_colour",
+      "ds_exists",
+      "ds_grid_add",
+      "ds_grid_add_disk",
+      "ds_grid_add_grid_region",
+      "ds_grid_add_region",
+      "ds_grid_clear",
+      "ds_grid_copy",
+      "ds_grid_create",
+      "ds_grid_destroy",
+      "ds_grid_get",
+      "ds_grid_get_disk_max",
+      "ds_grid_get_disk_mean",
+      "ds_grid_get_disk_min",
+      "ds_grid_get_disk_sum",
+      "ds_grid_get_max",
+      "ds_grid_get_mean",
+      "ds_grid_get_min",
+      "ds_grid_get_sum",
+      "ds_grid_height",
+      "ds_grid_multiply",
+      "ds_grid_multiply_disk",
+      "ds_grid_multiply_grid_region",
+      "ds_grid_multiply_region",
+      "ds_grid_read",
+      "ds_grid_resize",
+      "ds_grid_set",
+      "ds_grid_set_disk",
+      "ds_grid_set_grid_region",
+      "ds_grid_set_region",
+      "ds_grid_shuffle",
+      "ds_grid_sort",
+      "ds_grid_value_disk_exists",
+      "ds_grid_value_disk_x",
+      "ds_grid_value_disk_y",
+      "ds_grid_value_exists",
+      "ds_grid_value_x",
+      "ds_grid_value_y",
+      "ds_grid_width",
+      "ds_grid_write",
+      "ds_list_add",
+      "ds_list_clear",
+      "ds_list_copy",
+      "ds_list_create",
+      "ds_list_delete",
+      "ds_list_destroy",
+      "ds_list_empty",
+      "ds_list_find_index",
+      "ds_list_find_value",
+      "ds_list_insert",
+      "ds_list_mark_as_list",
+      "ds_list_mark_as_map",
+      "ds_list_read",
+      "ds_list_replace",
+      "ds_list_set",
+      "ds_list_shuffle",
+      "ds_list_size",
+      "ds_list_sort",
+      "ds_list_write",
+      "ds_map_add",
+      "ds_map_add_list",
+      "ds_map_add_map",
+      "ds_map_clear",
+      "ds_map_copy",
+      "ds_map_create",
+      "ds_map_delete",
+      "ds_map_destroy",
+      "ds_map_empty",
+      "ds_map_exists",
+      "ds_map_find_first",
+      "ds_map_find_last",
+      "ds_map_find_next",
+      "ds_map_find_previous",
+      "ds_map_find_value",
+      "ds_map_read",
+      "ds_map_replace",
+      "ds_map_replace_list",
+      "ds_map_replace_map",
+      "ds_map_secure_load",
+      "ds_map_secure_load_buffer",
+      "ds_map_secure_save",
+      "ds_map_secure_save_buffer",
+      "ds_map_set",
+      "ds_map_size",
+      "ds_map_write",
+      "ds_priority_add",
+      "ds_priority_change_priority",
+      "ds_priority_clear",
+      "ds_priority_copy",
+      "ds_priority_create",
+      "ds_priority_delete_max",
+      "ds_priority_delete_min",
+      "ds_priority_delete_value",
+      "ds_priority_destroy",
+      "ds_priority_empty",
+      "ds_priority_find_max",
+      "ds_priority_find_min",
+      "ds_priority_find_priority",
+      "ds_priority_read",
+      "ds_priority_size",
+      "ds_priority_write",
+      "ds_queue_clear",
+      "ds_queue_copy",
+      "ds_queue_create",
+      "ds_queue_dequeue",
+      "ds_queue_destroy",
+      "ds_queue_empty",
+      "ds_queue_enqueue",
+      "ds_queue_head",
+      "ds_queue_read",
+      "ds_queue_size",
+      "ds_queue_tail",
+      "ds_queue_write",
+      "ds_set_precision",
+      "ds_stack_clear",
+      "ds_stack_copy",
+      "ds_stack_create",
+      "ds_stack_destroy",
+      "ds_stack_empty",
+      "ds_stack_pop",
+      "ds_stack_push",
+      "ds_stack_read",
+      "ds_stack_size",
+      "ds_stack_top",
+      "ds_stack_write",
+      "dsin",
+      "dtan",
+      "effect_clear",
+      "effect_create_above",
+      "effect_create_below",
+      "environment_get_variable",
+      "event_inherited",
+      "event_perform",
+      "event_perform_object",
+      "event_user",
+      "exp",
+      "external_call",
+      "external_define",
+      "external_free",
+      "facebook_accesstoken",
+      "facebook_check_permission",
+      "facebook_dialog",
+      "facebook_graph_request",
+      "facebook_init",
+      "facebook_launch_offerwall",
+      "facebook_login",
+      "facebook_logout",
+      "facebook_post_message",
+      "facebook_request_publish_permissions",
+      "facebook_request_read_permissions",
+      "facebook_send_invite",
+      "facebook_status",
+      "facebook_user_id",
+      "file_attributes",
+      "file_bin_close",
+      "file_bin_open",
+      "file_bin_position",
+      "file_bin_read_byte",
+      "file_bin_rewrite",
+      "file_bin_seek",
+      "file_bin_size",
+      "file_bin_write_byte",
+      "file_copy",
+      "file_delete",
+      "file_exists",
+      "file_find_close",
+      "file_find_first",
+      "file_find_next",
+      "file_rename",
+      "file_text_close",
+      "file_text_eof",
+      "file_text_eoln",
+      "file_text_open_append",
+      "file_text_open_from_string",
+      "file_text_open_read",
+      "file_text_open_write",
+      "file_text_read_real",
+      "file_text_read_string",
+      "file_text_readln",
+      "file_text_write_real",
+      "file_text_write_string",
+      "file_text_writeln",
+      "filename_change_ext",
+      "filename_dir",
+      "filename_drive",
+      "filename_ext",
+      "filename_name",
+      "filename_path",
+      "floor",
+      "font_add",
+      "font_add_enable_aa",
+      "font_add_get_enable_aa",
+      "font_add_sprite",
+      "font_add_sprite_ext",
+      "font_delete",
+      "font_exists",
+      "font_get_bold",
+      "font_get_first",
+      "font_get_fontname",
+      "font_get_italic",
+      "font_get_last",
+      "font_get_name",
+      "font_get_size",
+      "font_get_texture",
+      "font_get_uvs",
+      "font_replace",
+      "font_replace_sprite",
+      "font_replace_sprite_ext",
+      "font_set_cache_size",
+      "font_texture_page_size",
+      "frac",
+      "game_end",
+      "game_get_speed",
+      "game_load",
+      "game_load_buffer",
+      "game_restart",
+      "game_save",
+      "game_save_buffer",
+      "game_set_speed",
+      "gamepad_axis_count",
+      "gamepad_axis_value",
+      "gamepad_button_check",
+      "gamepad_button_check_pressed",
+      "gamepad_button_check_released",
+      "gamepad_button_count",
+      "gamepad_button_value",
+      "gamepad_get_axis_deadzone",
+      "gamepad_get_button_threshold",
+      "gamepad_get_description",
+      "gamepad_get_device_count",
+      "gamepad_is_connected",
+      "gamepad_is_supported",
+      "gamepad_set_axis_deadzone",
+      "gamepad_set_button_threshold",
+      "gamepad_set_color",
+      "gamepad_set_colour",
+      "gamepad_set_vibration",
+      "gesture_double_tap_distance",
+      "gesture_double_tap_time",
+      "gesture_drag_distance",
+      "gesture_drag_time",
+      "gesture_flick_speed",
+      "gesture_get_double_tap_distance",
+      "gesture_get_double_tap_time",
+      "gesture_get_drag_distance",
+      "gesture_get_drag_time",
+      "gesture_get_flick_speed",
+      "gesture_get_pinch_angle_away",
+      "gesture_get_pinch_angle_towards",
+      "gesture_get_pinch_distance",
+      "gesture_get_rotate_angle",
+      "gesture_get_rotate_time",
+      "gesture_get_tap_count",
+      "gesture_pinch_angle_away",
+      "gesture_pinch_angle_towards",
+      "gesture_pinch_distance",
+      "gesture_rotate_angle",
+      "gesture_rotate_time",
+      "gesture_tap_count",
+      "get_integer",
+      "get_integer_async",
+      "get_login_async",
+      "get_open_filename",
+      "get_open_filename_ext",
+      "get_save_filename",
+      "get_save_filename_ext",
+      "get_string",
+      "get_string_async",
+      "get_timer",
+      "gml_pragma",
+      "gml_release_mode",
+      "gpu_get_alphatestenable",
+      "gpu_get_alphatestfunc",
+      "gpu_get_alphatestref",
+      "gpu_get_blendenable",
+      "gpu_get_blendmode",
+      "gpu_get_blendmode_dest",
+      "gpu_get_blendmode_destalpha",
+      "gpu_get_blendmode_ext",
+      "gpu_get_blendmode_ext_sepalpha",
+      "gpu_get_blendmode_src",
+      "gpu_get_blendmode_srcalpha",
+      "gpu_get_colorwriteenable",
+      "gpu_get_colourwriteenable",
+      "gpu_get_cullmode",
+      "gpu_get_fog",
+      "gpu_get_lightingenable",
+      "gpu_get_state",
+      "gpu_get_tex_filter",
+      "gpu_get_tex_filter_ext",
+      "gpu_get_tex_max_aniso",
+      "gpu_get_tex_max_aniso_ext",
+      "gpu_get_tex_max_mip",
+      "gpu_get_tex_max_mip_ext",
+      "gpu_get_tex_min_mip",
+      "gpu_get_tex_min_mip_ext",
+      "gpu_get_tex_mip_bias",
+      "gpu_get_tex_mip_bias_ext",
+      "gpu_get_tex_mip_enable",
+      "gpu_get_tex_mip_enable_ext",
+      "gpu_get_tex_mip_filter",
+      "gpu_get_tex_mip_filter_ext",
+      "gpu_get_tex_repeat",
+      "gpu_get_tex_repeat_ext",
+      "gpu_get_texfilter",
+      "gpu_get_texfilter_ext",
+      "gpu_get_texrepeat",
+      "gpu_get_texrepeat_ext",
+      "gpu_get_zfunc",
+      "gpu_get_ztestenable",
+      "gpu_get_zwriteenable",
+      "gpu_pop_state",
+      "gpu_push_state",
+      "gpu_set_alphatestenable",
+      "gpu_set_alphatestfunc",
+      "gpu_set_alphatestref",
+      "gpu_set_blendenable",
+      "gpu_set_blendmode",
+      "gpu_set_blendmode_ext",
+      "gpu_set_blendmode_ext_sepalpha",
+      "gpu_set_colorwriteenable",
+      "gpu_set_colourwriteenable",
+      "gpu_set_cullmode",
+      "gpu_set_fog",
+      "gpu_set_lightingenable",
+      "gpu_set_state",
+      "gpu_set_tex_filter",
+      "gpu_set_tex_filter_ext",
+      "gpu_set_tex_max_aniso",
+      "gpu_set_tex_max_aniso_ext",
+      "gpu_set_tex_max_mip",
+      "gpu_set_tex_max_mip_ext",
+      "gpu_set_tex_min_mip",
+      "gpu_set_tex_min_mip_ext",
+      "gpu_set_tex_mip_bias",
+      "gpu_set_tex_mip_bias_ext",
+      "gpu_set_tex_mip_enable",
+      "gpu_set_tex_mip_enable_ext",
+      "gpu_set_tex_mip_filter",
+      "gpu_set_tex_mip_filter_ext",
+      "gpu_set_tex_repeat",
+      "gpu_set_tex_repeat_ext",
+      "gpu_set_texfilter",
+      "gpu_set_texfilter_ext",
+      "gpu_set_texrepeat",
+      "gpu_set_texrepeat_ext",
+      "gpu_set_zfunc",
+      "gpu_set_ztestenable",
+      "gpu_set_zwriteenable",
+      "highscore_add",
+      "highscore_clear",
+      "highscore_name",
+      "highscore_value",
+      "http_get",
+      "http_get_file",
+      "http_post_string",
+      "http_request",
+      "iap_acquire",
+      "iap_activate",
+      "iap_consume",
+      "iap_enumerate_products",
+      "iap_product_details",
+      "iap_purchase_details",
+      "iap_restore_all",
+      "iap_status",
+      "ini_close",
+      "ini_key_delete",
+      "ini_key_exists",
+      "ini_open",
+      "ini_open_from_string",
+      "ini_read_real",
+      "ini_read_string",
+      "ini_section_delete",
+      "ini_section_exists",
+      "ini_write_real",
+      "ini_write_string",
+      "instance_activate_all",
+      "instance_activate_layer",
+      "instance_activate_object",
+      "instance_activate_region",
+      "instance_change",
+      "instance_copy",
+      "instance_create",
+      "instance_create_depth",
+      "instance_create_layer",
+      "instance_deactivate_all",
+      "instance_deactivate_layer",
+      "instance_deactivate_object",
+      "instance_deactivate_region",
+      "instance_destroy",
+      "instance_exists",
+      "instance_find",
+      "instance_furthest",
+      "instance_id_get",
+      "instance_nearest",
+      "instance_number",
+      "instance_place",
+      "instance_place_list",
+      "instance_position",
+      "instance_position_list",
+      "int64",
+      "io_clear",
+      "irandom",
+      "irandom_range",
+      "is_array",
+      "is_bool",
+      "is_infinity",
+      "is_int32",
+      "is_int64",
+      "is_matrix",
+      "is_method",
+      "is_nan",
+      "is_numeric",
+      "is_ptr",
+      "is_real",
+      "is_string",
+      "is_struct",
+      "is_undefined",
+      "is_vec3",
+      "is_vec4",
+      "json_decode",
+      "json_encode",
+      "keyboard_check",
+      "keyboard_check_direct",
+      "keyboard_check_pressed",
+      "keyboard_check_released",
+      "keyboard_clear",
+      "keyboard_get_map",
+      "keyboard_get_numlock",
+      "keyboard_key_press",
+      "keyboard_key_release",
+      "keyboard_set_map",
+      "keyboard_set_numlock",
+      "keyboard_unset_map",
+      "keyboard_virtual_height",
+      "keyboard_virtual_hide",
+      "keyboard_virtual_show",
+      "keyboard_virtual_status",
+      "layer_add_instance",
+      "layer_background_alpha",
+      "layer_background_blend",
+      "layer_background_change",
+      "layer_background_create",
+      "layer_background_destroy",
+      "layer_background_exists",
+      "layer_background_get_alpha",
+      "layer_background_get_blend",
+      "layer_background_get_htiled",
+      "layer_background_get_id",
+      "layer_background_get_index",
+      "layer_background_get_speed",
+      "layer_background_get_sprite",
+      "layer_background_get_stretch",
+      "layer_background_get_visible",
+      "layer_background_get_vtiled",
+      "layer_background_get_xscale",
+      "layer_background_get_yscale",
+      "layer_background_htiled",
+      "layer_background_index",
+      "layer_background_speed",
+      "layer_background_sprite",
+      "layer_background_stretch",
+      "layer_background_visible",
+      "layer_background_vtiled",
+      "layer_background_xscale",
+      "layer_background_yscale",
+      "layer_create",
+      "layer_depth",
+      "layer_destroy",
+      "layer_destroy_instances",
+      "layer_element_move",
+      "layer_exists",
+      "layer_force_draw_depth",
+      "layer_get_all",
+      "layer_get_all_elements",
+      "layer_get_depth",
+      "layer_get_element_layer",
+      "layer_get_element_type",
+      "layer_get_forced_depth",
+      "layer_get_hspeed",
+      "layer_get_id",
+      "layer_get_id_at_depth",
+      "layer_get_name",
+      "layer_get_script_begin",
+      "layer_get_script_end",
+      "layer_get_shader",
+      "layer_get_target_room",
+      "layer_get_visible",
+      "layer_get_vspeed",
+      "layer_get_x",
+      "layer_get_y",
+      "layer_has_instance",
+      "layer_hspeed",
+      "layer_instance_get_instance",
+      "layer_is_draw_depth_forced",
+      "layer_reset_target_room",
+      "layer_script_begin",
+      "layer_script_end",
+      "layer_set_target_room",
+      "layer_set_visible",
+      "layer_shader",
+      "layer_sprite_alpha",
+      "layer_sprite_angle",
+      "layer_sprite_blend",
+      "layer_sprite_change",
+      "layer_sprite_create",
+      "layer_sprite_destroy",
+      "layer_sprite_exists",
+      "layer_sprite_get_alpha",
+      "layer_sprite_get_angle",
+      "layer_sprite_get_blend",
+      "layer_sprite_get_id",
+      "layer_sprite_get_index",
+      "layer_sprite_get_speed",
+      "layer_sprite_get_sprite",
+      "layer_sprite_get_x",
+      "layer_sprite_get_xscale",
+      "layer_sprite_get_y",
+      "layer_sprite_get_yscale",
+      "layer_sprite_index",
+      "layer_sprite_speed",
+      "layer_sprite_x",
+      "layer_sprite_xscale",
+      "layer_sprite_y",
+      "layer_sprite_yscale",
+      "layer_tile_alpha",
+      "layer_tile_blend",
+      "layer_tile_change",
+      "layer_tile_create",
+      "layer_tile_destroy",
+      "layer_tile_exists",
+      "layer_tile_get_alpha",
+      "layer_tile_get_blend",
+      "layer_tile_get_region",
+      "layer_tile_get_sprite",
+      "layer_tile_get_visible",
+      "layer_tile_get_x",
+      "layer_tile_get_xscale",
+      "layer_tile_get_y",
+      "layer_tile_get_yscale",
+      "layer_tile_region",
+      "layer_tile_visible",
+      "layer_tile_x",
+      "layer_tile_xscale",
+      "layer_tile_y",
+      "layer_tile_yscale",
+      "layer_tilemap_create",
+      "layer_tilemap_destroy",
+      "layer_tilemap_exists",
+      "layer_tilemap_get_id",
+      "layer_vspeed",
+      "layer_x",
+      "layer_y",
+      "lengthdir_x",
+      "lengthdir_y",
+      "lerp",
+      "ln",
+      "load_csv",
+      "log10",
+      "log2",
+      "logn",
+      "make_color_hsv",
+      "make_color_rgb",
+      "make_colour_hsv",
+      "make_colour_rgb",
+      "math_get_epsilon",
+      "math_set_epsilon",
+      "matrix_build",
+      "matrix_build_identity",
+      "matrix_build_lookat",
+      "matrix_build_projection_ortho",
+      "matrix_build_projection_perspective",
+      "matrix_build_projection_perspective_fov",
+      "matrix_get",
+      "matrix_multiply",
+      "matrix_set",
+      "matrix_stack_clear",
+      "matrix_stack_is_empty",
+      "matrix_stack_multiply",
+      "matrix_stack_pop",
+      "matrix_stack_push",
+      "matrix_stack_set",
+      "matrix_stack_top",
+      "matrix_transform_vertex",
+      "max",
+      "md5_file",
+      "md5_string_unicode",
+      "md5_string_utf8",
+      "mean",
+      "median",
+      "merge_color",
+      "merge_colour",
+      "min",
+      "motion_add",
+      "motion_set",
+      "mouse_check_button",
+      "mouse_check_button_pressed",
+      "mouse_check_button_released",
+      "mouse_clear",
+      "mouse_wheel_down",
+      "mouse_wheel_up",
+      "move_bounce_all",
+      "move_bounce_solid",
+      "move_contact_all",
+      "move_contact_solid",
+      "move_outside_all",
+      "move_outside_solid",
+      "move_random",
+      "move_snap",
+      "move_towards_point",
+      "move_wrap",
+      "mp_grid_add_cell",
+      "mp_grid_add_instances",
+      "mp_grid_add_rectangle",
+      "mp_grid_clear_all",
+      "mp_grid_clear_cell",
+      "mp_grid_clear_rectangle",
+      "mp_grid_create",
+      "mp_grid_destroy",
+      "mp_grid_draw",
+      "mp_grid_get_cell",
+      "mp_grid_path",
+      "mp_grid_to_ds_grid",
+      "mp_linear_path",
+      "mp_linear_path_object",
+      "mp_linear_step",
+      "mp_linear_step_object",
+      "mp_potential_path",
+      "mp_potential_path_object",
+      "mp_potential_settings",
+      "mp_potential_step",
+      "mp_potential_step_object",
+      "network_connect",
+      "network_connect_raw",
+      "network_create_server",
+      "network_create_server_raw",
+      "network_create_socket",
+      "network_create_socket_ext",
+      "network_destroy",
+      "network_resolve",
+      "network_send_broadcast",
+      "network_send_packet",
+      "network_send_raw",
+      "network_send_udp",
+      "network_send_udp_raw",
+      "network_set_config",
+      "network_set_timeout",
+      "object_exists",
+      "object_get_depth",
+      "object_get_mask",
+      "object_get_name",
+      "object_get_parent",
+      "object_get_persistent",
+      "object_get_physics",
+      "object_get_solid",
+      "object_get_sprite",
+      "object_get_visible",
+      "object_is_ancestor",
+      "object_set_mask",
+      "object_set_persistent",
+      "object_set_solid",
+      "object_set_sprite",
+      "object_set_visible",
+      "ord",
+      "os_get_config",
+      "os_get_info",
+      "os_get_language",
+      "os_get_region",
+      "os_is_network_connected",
+      "os_is_paused",
+      "os_lock_orientation",
+      "os_powersave_enable",
+      "parameter_count",
+      "parameter_string",
+      "part_emitter_burst",
+      "part_emitter_clear",
+      "part_emitter_create",
+      "part_emitter_destroy",
+      "part_emitter_destroy_all",
+      "part_emitter_exists",
+      "part_emitter_region",
+      "part_emitter_stream",
+      "part_particles_clear",
+      "part_particles_count",
+      "part_particles_create",
+      "part_particles_create_color",
+      "part_particles_create_colour",
+      "part_system_automatic_draw",
+      "part_system_automatic_update",
+      "part_system_clear",
+      "part_system_create",
+      "part_system_create_layer",
+      "part_system_depth",
+      "part_system_destroy",
+      "part_system_draw_order",
+      "part_system_drawit",
+      "part_system_exists",
+      "part_system_get_layer",
+      "part_system_layer",
+      "part_system_position",
+      "part_system_update",
+      "part_type_alpha1",
+      "part_type_alpha2",
+      "part_type_alpha3",
+      "part_type_blend",
+      "part_type_clear",
+      "part_type_color1",
+      "part_type_color2",
+      "part_type_color3",
+      "part_type_color_hsv",
+      "part_type_color_mix",
+      "part_type_color_rgb",
+      "part_type_colour1",
+      "part_type_colour2",
+      "part_type_colour3",
+      "part_type_colour_hsv",
+      "part_type_colour_mix",
+      "part_type_colour_rgb",
+      "part_type_create",
+      "part_type_death",
+      "part_type_destroy",
+      "part_type_direction",
+      "part_type_exists",
+      "part_type_gravity",
+      "part_type_life",
+      "part_type_orientation",
+      "part_type_scale",
+      "part_type_shape",
+      "part_type_size",
+      "part_type_speed",
+      "part_type_sprite",
+      "part_type_step",
+      "path_add",
+      "path_add_point",
+      "path_append",
+      "path_assign",
+      "path_change_point",
+      "path_clear_points",
+      "path_delete",
+      "path_delete_point",
+      "path_duplicate",
+      "path_end",
+      "path_exists",
+      "path_flip",
+      "path_get_closed",
+      "path_get_kind",
+      "path_get_length",
+      "path_get_name",
+      "path_get_number",
+      "path_get_point_speed",
+      "path_get_point_x",
+      "path_get_point_y",
+      "path_get_precision",
+      "path_get_speed",
+      "path_get_time",
+      "path_get_x",
+      "path_get_y",
+      "path_insert_point",
+      "path_mirror",
+      "path_rescale",
+      "path_reverse",
+      "path_rotate",
+      "path_set_closed",
+      "path_set_kind",
+      "path_set_precision",
+      "path_shift",
+      "path_start",
+      "physics_apply_angular_impulse",
+      "physics_apply_force",
+      "physics_apply_impulse",
+      "physics_apply_local_force",
+      "physics_apply_local_impulse",
+      "physics_apply_torque",
+      "physics_draw_debug",
+      "physics_fixture_add_point",
+      "physics_fixture_bind",
+      "physics_fixture_bind_ext",
+      "physics_fixture_create",
+      "physics_fixture_delete",
+      "physics_fixture_set_angular_damping",
+      "physics_fixture_set_awake",
+      "physics_fixture_set_box_shape",
+      "physics_fixture_set_chain_shape",
+      "physics_fixture_set_circle_shape",
+      "physics_fixture_set_collision_group",
+      "physics_fixture_set_density",
+      "physics_fixture_set_edge_shape",
+      "physics_fixture_set_friction",
+      "physics_fixture_set_kinematic",
+      "physics_fixture_set_linear_damping",
+      "physics_fixture_set_polygon_shape",
+      "physics_fixture_set_restitution",
+      "physics_fixture_set_sensor",
+      "physics_get_density",
+      "physics_get_friction",
+      "physics_get_restitution",
+      "physics_joint_delete",
+      "physics_joint_distance_create",
+      "physics_joint_enable_motor",
+      "physics_joint_friction_create",
+      "physics_joint_gear_create",
+      "physics_joint_get_value",
+      "physics_joint_prismatic_create",
+      "physics_joint_pulley_create",
+      "physics_joint_revolute_create",
+      "physics_joint_rope_create",
+      "physics_joint_set_value",
+      "physics_joint_weld_create",
+      "physics_joint_wheel_create",
+      "physics_mass_properties",
+      "physics_particle_count",
+      "physics_particle_create",
+      "physics_particle_delete",
+      "physics_particle_delete_region_box",
+      "physics_particle_delete_region_circle",
+      "physics_particle_delete_region_poly",
+      "physics_particle_draw",
+      "physics_particle_draw_ext",
+      "physics_particle_get_damping",
+      "physics_particle_get_data",
+      "physics_particle_get_data_particle",
+      "physics_particle_get_density",
+      "physics_particle_get_gravity_scale",
+      "physics_particle_get_group_flags",
+      "physics_particle_get_max_count",
+      "physics_particle_get_radius",
+      "physics_particle_group_add_point",
+      "physics_particle_group_begin",
+      "physics_particle_group_box",
+      "physics_particle_group_circle",
+      "physics_particle_group_count",
+      "physics_particle_group_delete",
+      "physics_particle_group_end",
+      "physics_particle_group_get_ang_vel",
+      "physics_particle_group_get_angle",
+      "physics_particle_group_get_centre_x",
+      "physics_particle_group_get_centre_y",
+      "physics_particle_group_get_data",
+      "physics_particle_group_get_inertia",
+      "physics_particle_group_get_mass",
+      "physics_particle_group_get_vel_x",
+      "physics_particle_group_get_vel_y",
+      "physics_particle_group_get_x",
+      "physics_particle_group_get_y",
+      "physics_particle_group_join",
+      "physics_particle_group_polygon",
+      "physics_particle_set_category_flags",
+      "physics_particle_set_damping",
+      "physics_particle_set_density",
+      "physics_particle_set_flags",
+      "physics_particle_set_gravity_scale",
+      "physics_particle_set_group_flags",
+      "physics_particle_set_max_count",
+      "physics_particle_set_radius",
+      "physics_pause_enable",
+      "physics_remove_fixture",
+      "physics_set_density",
+      "physics_set_friction",
+      "physics_set_restitution",
+      "physics_test_overlap",
+      "physics_world_create",
+      "physics_world_draw_debug",
+      "physics_world_gravity",
+      "physics_world_update_iterations",
+      "physics_world_update_speed",
+      "place_empty",
+      "place_free",
+      "place_meeting",
+      "place_snapped",
+      "point_direction",
+      "point_distance",
+      "point_distance_3d",
+      "point_in_circle",
+      "point_in_rectangle",
+      "point_in_triangle",
+      "position_change",
+      "position_destroy",
+      "position_empty",
+      "position_meeting",
+      "power",
+      "ptr",
+      "push_cancel_local_notification",
+      "push_get_first_local_notification",
+      "push_get_next_local_notification",
+      "push_local_notification",
+      "radtodeg",
+      "random",
+      "random_get_seed",
+      "random_range",
+      "random_set_seed",
+      "randomise",
+      "randomize",
+      "real",
+      "rectangle_in_circle",
+      "rectangle_in_rectangle",
+      "rectangle_in_triangle",
+      "room_add",
+      "room_assign",
+      "room_duplicate",
+      "room_exists",
+      "room_get_camera",
+      "room_get_name",
+      "room_get_viewport",
+      "room_goto",
+      "room_goto_next",
+      "room_goto_previous",
+      "room_instance_add",
+      "room_instance_clear",
+      "room_next",
+      "room_previous",
+      "room_restart",
+      "room_set_background_color",
+      "room_set_background_colour",
+      "room_set_camera",
+      "room_set_height",
+      "room_set_persistent",
+      "room_set_view",
+      "room_set_view_enabled",
+      "room_set_viewport",
+      "room_set_width",
+      "round",
+      "screen_save",
+      "screen_save_part",
+      "script_execute",
+      "script_exists",
+      "script_get_name",
+      "sha1_file",
+      "sha1_string_unicode",
+      "sha1_string_utf8",
+      "shader_current",
+      "shader_enable_corner_id",
+      "shader_get_name",
+      "shader_get_sampler_index",
+      "shader_get_uniform",
+      "shader_is_compiled",
+      "shader_reset",
+      "shader_set",
+      "shader_set_uniform_f",
+      "shader_set_uniform_f_array",
+      "shader_set_uniform_i",
+      "shader_set_uniform_i_array",
+      "shader_set_uniform_matrix",
+      "shader_set_uniform_matrix_array",
+      "shaders_are_supported",
+      "shop_leave_rating",
+      "show_debug_message",
+      "show_debug_overlay",
+      "show_error",
+      "show_message",
+      "show_message_async",
+      "show_question",
+      "show_question_async",
+      "sign",
+      "sin",
+      "skeleton_animation_clear",
+      "skeleton_animation_get",
+      "skeleton_animation_get_duration",
+      "skeleton_animation_get_ext",
+      "skeleton_animation_get_frame",
+      "skeleton_animation_get_frames",
+      "skeleton_animation_list",
+      "skeleton_animation_mix",
+      "skeleton_animation_set",
+      "skeleton_animation_set_ext",
+      "skeleton_animation_set_frame",
+      "skeleton_attachment_create",
+      "skeleton_attachment_get",
+      "skeleton_attachment_set",
+      "skeleton_bone_data_get",
+      "skeleton_bone_data_set",
+      "skeleton_bone_state_get",
+      "skeleton_bone_state_set",
+      "skeleton_collision_draw_set",
+      "skeleton_get_bounds",
+      "skeleton_get_minmax",
+      "skeleton_get_num_bounds",
+      "skeleton_skin_get",
+      "skeleton_skin_list",
+      "skeleton_skin_set",
+      "skeleton_slot_data",
+      "sprite_add",
+      "sprite_add_from_surface",
+      "sprite_assign",
+      "sprite_collision_mask",
+      "sprite_create_from_surface",
+      "sprite_delete",
+      "sprite_duplicate",
+      "sprite_exists",
+      "sprite_flush",
+      "sprite_flush_multi",
+      "sprite_get_bbox_bottom",
+      "sprite_get_bbox_left",
+      "sprite_get_bbox_right",
+      "sprite_get_bbox_top",
+      "sprite_get_height",
+      "sprite_get_name",
+      "sprite_get_number",
+      "sprite_get_speed",
+      "sprite_get_speed_type",
+      "sprite_get_texture",
+      "sprite_get_tpe",
+      "sprite_get_uvs",
+      "sprite_get_width",
+      "sprite_get_xoffset",
+      "sprite_get_yoffset",
+      "sprite_merge",
+      "sprite_prefetch",
+      "sprite_prefetch_multi",
+      "sprite_replace",
+      "sprite_save",
+      "sprite_save_strip",
+      "sprite_set_alpha_from_sprite",
+      "sprite_set_cache_size",
+      "sprite_set_cache_size_ext",
+      "sprite_set_offset",
+      "sprite_set_speed",
+      "sqr",
+      "sqrt",
+      "steam_activate_overlay",
+      "steam_activate_overlay_browser",
+      "steam_activate_overlay_store",
+      "steam_activate_overlay_user",
+      "steam_available_languages",
+      "steam_clear_achievement",
+      "steam_create_leaderboard",
+      "steam_current_game_language",
+      "steam_download_friends_scores",
+      "steam_download_scores",
+      "steam_download_scores_around_user",
+      "steam_file_delete",
+      "steam_file_exists",
+      "steam_file_persisted",
+      "steam_file_read",
+      "steam_file_share",
+      "steam_file_size",
+      "steam_file_write",
+      "steam_file_write_file",
+      "steam_get_achievement",
+      "steam_get_app_id",
+      "steam_get_persona_name",
+      "steam_get_quota_free",
+      "steam_get_quota_total",
+      "steam_get_stat_avg_rate",
+      "steam_get_stat_float",
+      "steam_get_stat_int",
+      "steam_get_user_account_id",
+      "steam_get_user_persona_name",
+      "steam_get_user_steam_id",
+      "steam_initialised",
+      "steam_is_cloud_enabled_for_account",
+      "steam_is_cloud_enabled_for_app",
+      "steam_is_overlay_activated",
+      "steam_is_overlay_enabled",
+      "steam_is_screenshot_requested",
+      "steam_is_user_logged_on",
+      "steam_reset_all_stats",
+      "steam_reset_all_stats_achievements",
+      "steam_send_screenshot",
+      "steam_set_achievement",
+      "steam_set_stat_avg_rate",
+      "steam_set_stat_float",
+      "steam_set_stat_int",
+      "steam_stats_ready",
+      "steam_ugc_create_item",
+      "steam_ugc_create_query_all",
+      "steam_ugc_create_query_all_ex",
+      "steam_ugc_create_query_user",
+      "steam_ugc_create_query_user_ex",
+      "steam_ugc_download",
+      "steam_ugc_get_item_install_info",
+      "steam_ugc_get_item_update_info",
+      "steam_ugc_get_item_update_progress",
+      "steam_ugc_get_subscribed_items",
+      "steam_ugc_num_subscribed_items",
+      "steam_ugc_query_add_excluded_tag",
+      "steam_ugc_query_add_required_tag",
+      "steam_ugc_query_set_allow_cached_response",
+      "steam_ugc_query_set_cloud_filename_filter",
+      "steam_ugc_query_set_match_any_tag",
+      "steam_ugc_query_set_ranked_by_trend_days",
+      "steam_ugc_query_set_return_long_description",
+      "steam_ugc_query_set_return_total_only",
+      "steam_ugc_query_set_search_text",
+      "steam_ugc_request_item_details",
+      "steam_ugc_send_query",
+      "steam_ugc_set_item_content",
+      "steam_ugc_set_item_description",
+      "steam_ugc_set_item_preview",
+      "steam_ugc_set_item_tags",
+      "steam_ugc_set_item_title",
+      "steam_ugc_set_item_visibility",
+      "steam_ugc_start_item_update",
+      "steam_ugc_submit_item_update",
+      "steam_ugc_subscribe_item",
+      "steam_ugc_unsubscribe_item",
+      "steam_upload_score",
+      "steam_upload_score_buffer",
+      "steam_upload_score_buffer_ext",
+      "steam_upload_score_ext",
+      "steam_user_installed_dlc",
+      "steam_user_owns_dlc",
+      "string",
+      "string_byte_at",
+      "string_byte_length",
+      "string_char_at",
+      "string_copy",
+      "string_count",
+      "string_delete",
+      "string_digits",
+      "string_format",
+      "string_hash_to_newline",
+      "string_height",
+      "string_height_ext",
+      "string_insert",
+      "string_length",
+      "string_letters",
+      "string_lettersdigits",
+      "string_lower",
+      "string_ord_at",
+      "string_pos",
+      "string_repeat",
+      "string_replace",
+      "string_replace_all",
+      "string_set_byte_at",
+      "string_upper",
+      "string_width",
+      "string_width_ext",
+      "surface_copy",
+      "surface_copy_part",
+      "surface_create",
+      "surface_create_ext",
+      "surface_depth_disable",
+      "surface_exists",
+      "surface_free",
+      "surface_get_depth_disable",
+      "surface_get_height",
+      "surface_get_texture",
+      "surface_get_width",
+      "surface_getpixel",
+      "surface_getpixel_ext",
+      "surface_reset_target",
+      "surface_resize",
+      "surface_save",
+      "surface_save_part",
+      "surface_set_target",
+      "surface_set_target_ext",
+      "tan",
+      "texture_get_height",
+      "texture_get_texel_height",
+      "texture_get_texel_width",
+      "texture_get_uvs",
+      "texture_get_width",
+      "texture_global_scale",
+      "texture_set_stage",
+      "tile_get_empty",
+      "tile_get_flip",
+      "tile_get_index",
+      "tile_get_mirror",
+      "tile_get_rotate",
+      "tile_set_empty",
+      "tile_set_flip",
+      "tile_set_index",
+      "tile_set_mirror",
+      "tile_set_rotate",
+      "tilemap_clear",
+      "tilemap_get",
+      "tilemap_get_at_pixel",
+      "tilemap_get_cell_x_at_pixel",
+      "tilemap_get_cell_y_at_pixel",
+      "tilemap_get_frame",
+      "tilemap_get_global_mask",
+      "tilemap_get_height",
+      "tilemap_get_mask",
+      "tilemap_get_tile_height",
+      "tilemap_get_tile_width",
+      "tilemap_get_tileset",
+      "tilemap_get_width",
+      "tilemap_get_x",
+      "tilemap_get_y",
+      "tilemap_set",
+      "tilemap_set_at_pixel",
+      "tilemap_set_global_mask",
+      "tilemap_set_mask",
+      "tilemap_tileset",
+      "tilemap_x",
+      "tilemap_y",
+      "timeline_add",
+      "timeline_clear",
+      "timeline_delete",
+      "timeline_exists",
+      "timeline_get_name",
+      "timeline_max_moment",
+      "timeline_moment_add_script",
+      "timeline_moment_clear",
+      "timeline_size",
+      "typeof",
+      "url_get_domain",
+      "url_open",
+      "url_open_ext",
+      "url_open_full",
+      "variable_global_exists",
+      "variable_global_get",
+      "variable_global_set",
+      "variable_instance_exists",
+      "variable_instance_get",
+      "variable_instance_get_names",
+      "variable_instance_set",
+      "variable_struct_exists",
+      "variable_struct_get",
+      "variable_struct_get_names",
+      "variable_struct_names_count",
+      "variable_struct_remove",
+      "variable_struct_set",
+      "vertex_argb",
+      "vertex_begin",
+      "vertex_color",
+      "vertex_colour",
+      "vertex_create_buffer",
+      "vertex_create_buffer_ext",
+      "vertex_create_buffer_from_buffer",
+      "vertex_create_buffer_from_buffer_ext",
+      "vertex_delete_buffer",
+      "vertex_end",
+      "vertex_float1",
+      "vertex_float2",
+      "vertex_float3",
+      "vertex_float4",
+      "vertex_format_add_color",
+      "vertex_format_add_colour",
+      "vertex_format_add_custom",
+      "vertex_format_add_normal",
+      "vertex_format_add_position",
+      "vertex_format_add_position_3d",
+      "vertex_format_add_texcoord",
+      "vertex_format_add_textcoord",
+      "vertex_format_begin",
+      "vertex_format_delete",
+      "vertex_format_end",
+      "vertex_freeze",
+      "vertex_get_buffer_size",
+      "vertex_get_number",
+      "vertex_normal",
+      "vertex_position",
+      "vertex_position_3d",
+      "vertex_submit",
+      "vertex_texcoord",
+      "vertex_ubyte4",
+      "view_get_camera",
+      "view_get_hport",
+      "view_get_surface_id",
+      "view_get_visible",
+      "view_get_wport",
+      "view_get_xport",
+      "view_get_yport",
+      "view_set_camera",
+      "view_set_hport",
+      "view_set_surface_id",
+      "view_set_visible",
+      "view_set_wport",
+      "view_set_xport",
+      "view_set_yport",
+      "virtual_key_add",
+      "virtual_key_delete",
+      "virtual_key_hide",
+      "virtual_key_show",
+      "win8_appbar_add_element",
+      "win8_appbar_enable",
+      "win8_appbar_remove_element",
+      "win8_device_touchscreen_available",
+      "win8_license_initialize_sandbox",
+      "win8_license_trial_version",
+      "win8_livetile_badge_clear",
+      "win8_livetile_badge_notification",
+      "win8_livetile_notification_begin",
+      "win8_livetile_notification_end",
+      "win8_livetile_notification_expiry",
+      "win8_livetile_notification_image_add",
+      "win8_livetile_notification_secondary_begin",
+      "win8_livetile_notification_tag",
+      "win8_livetile_notification_text_add",
+      "win8_livetile_queue_enable",
+      "win8_livetile_tile_clear",
+      "win8_livetile_tile_notification",
+      "win8_search_add_suggestions",
+      "win8_search_disable",
+      "win8_search_enable",
+      "win8_secondarytile_badge_notification",
+      "win8_secondarytile_delete",
+      "win8_secondarytile_pin",
+      "win8_settingscharm_add_entry",
+      "win8_settingscharm_add_html_entry",
+      "win8_settingscharm_add_xaml_entry",
+      "win8_settingscharm_get_xaml_property",
+      "win8_settingscharm_remove_entry",
+      "win8_settingscharm_set_xaml_property",
+      "win8_share_file",
+      "win8_share_image",
+      "win8_share_screenshot",
+      "win8_share_text",
+      "win8_share_url",
+      "window_center",
+      "window_device",
+      "window_get_caption",
+      "window_get_color",
+      "window_get_colour",
+      "window_get_cursor",
+      "window_get_fullscreen",
+      "window_get_height",
+      "window_get_visible_rects",
+      "window_get_width",
+      "window_get_x",
+      "window_get_y",
+      "window_handle",
+      "window_has_focus",
+      "window_mouse_get_x",
+      "window_mouse_get_y",
+      "window_mouse_set",
+      "window_set_caption",
+      "window_set_color",
+      "window_set_colour",
+      "window_set_cursor",
+      "window_set_fullscreen",
+      "window_set_max_height",
+      "window_set_max_width",
+      "window_set_min_height",
+      "window_set_min_width",
+      "window_set_position",
+      "window_set_rectangle",
+      "window_set_size",
+      "window_view_mouse_get_x",
+      "window_view_mouse_get_y",
+      "window_views_mouse_get_x",
+      "window_views_mouse_get_y",
+      "winphone_license_trial_version",
+      "winphone_tile_back_content",
+      "winphone_tile_back_content_wide",
+      "winphone_tile_back_image",
+      "winphone_tile_back_image_wide",
+      "winphone_tile_back_title",
+      "winphone_tile_background_color",
+      "winphone_tile_background_colour",
+      "winphone_tile_count",
+      "winphone_tile_cycle_images",
+      "winphone_tile_front_image",
+      "winphone_tile_front_image_small",
+      "winphone_tile_front_image_wide",
+      "winphone_tile_icon_image",
+      "winphone_tile_small_background_image",
+      "winphone_tile_small_icon_image",
+      "winphone_tile_title",
+      "winphone_tile_wide_content",
+      "zip_unzip"
+    ];
+    const LITERALS = [
+      "all",
+      "false",
+      "noone",
+      "pointer_invalid",
+      "pointer_null",
+      "true",
+      "undefined"
+    ];
+    // many of these look like enumerables to me (see comments below)
+    const SYMBOLS = [
+      "ANSI_CHARSET",
+      "ARABIC_CHARSET",
+      "BALTIC_CHARSET",
+      "CHINESEBIG5_CHARSET",
+      "DEFAULT_CHARSET",
+      "EASTEUROPE_CHARSET",
+      "GB2312_CHARSET",
+      "GM_build_date",
+      "GM_runtime_version",
+      "GM_version",
+      "GREEK_CHARSET",
+      "HANGEUL_CHARSET",
+      "HEBREW_CHARSET",
+      "JOHAB_CHARSET",
+      "MAC_CHARSET",
+      "OEM_CHARSET",
+      "RUSSIAN_CHARSET",
+      "SHIFTJIS_CHARSET",
+      "SYMBOL_CHARSET",
+      "THAI_CHARSET",
+      "TURKISH_CHARSET",
+      "VIETNAMESE_CHARSET",
+      "achievement_achievement_info",
+      "achievement_filter_all_players",
+      "achievement_filter_favorites_only",
+      "achievement_filter_friends_only",
+      "achievement_friends_info",
+      "achievement_leaderboard_info",
+      "achievement_our_info",
+      "achievement_pic_loaded",
+      "achievement_show_achievement",
+      "achievement_show_bank",
+      "achievement_show_friend_picker",
+      "achievement_show_leaderboard",
+      "achievement_show_profile",
+      "achievement_show_purchase_prompt",
+      "achievement_show_ui",
+      "achievement_type_achievement_challenge",
+      "achievement_type_score_challenge",
+      "asset_font",
+      "asset_object",
+      "asset_path",
+      "asset_room",
+      "asset_script",
+      "asset_shader",
+      "asset_sound",
+      "asset_sprite",
+      "asset_tiles",
+      "asset_timeline",
+      "asset_unknown",
+      "audio_3d",
+      "audio_falloff_exponent_distance",
+      "audio_falloff_exponent_distance_clamped",
+      "audio_falloff_inverse_distance",
+      "audio_falloff_inverse_distance_clamped",
+      "audio_falloff_linear_distance",
+      "audio_falloff_linear_distance_clamped",
+      "audio_falloff_none",
+      "audio_mono",
+      "audio_new_system",
+      "audio_old_system",
+      "audio_stereo",
+      "bm_add",
+      "bm_complex",
+      "bm_dest_alpha",
+      "bm_dest_color",
+      "bm_dest_colour",
+      "bm_inv_dest_alpha",
+      "bm_inv_dest_color",
+      "bm_inv_dest_colour",
+      "bm_inv_src_alpha",
+      "bm_inv_src_color",
+      "bm_inv_src_colour",
+      "bm_max",
+      "bm_normal",
+      "bm_one",
+      "bm_src_alpha",
+      "bm_src_alpha_sat",
+      "bm_src_color",
+      "bm_src_colour",
+      "bm_subtract",
+      "bm_zero",
+      "browser_chrome",
+      "browser_edge",
+      "browser_firefox",
+      "browser_ie",
+      "browser_ie_mobile",
+      "browser_not_a_browser",
+      "browser_opera",
+      "browser_safari",
+      "browser_safari_mobile",
+      "browser_tizen",
+      "browser_unknown",
+      "browser_windows_store",
+      "buffer_bool",
+      "buffer_f16",
+      "buffer_f32",
+      "buffer_f64",
+      "buffer_fast",
+      "buffer_fixed",
+      "buffer_generalerror",
+      "buffer_grow",
+      "buffer_invalidtype",
+      "buffer_network",
+      "buffer_outofbounds",
+      "buffer_outofspace",
+      "buffer_s16",
+      "buffer_s32",
+      "buffer_s8",
+      "buffer_seek_end",
+      "buffer_seek_relative",
+      "buffer_seek_start",
+      "buffer_string",
+      "buffer_surface_copy",
+      "buffer_text",
+      "buffer_u16",
+      "buffer_u32",
+      "buffer_u64",
+      "buffer_u8",
+      "buffer_vbuffer",
+      "buffer_wrap",
+      "button_type",
+      "c_aqua",
+      "c_black",
+      "c_blue",
+      "c_dkgray",
+      "c_fuchsia",
+      "c_gray",
+      "c_green",
+      "c_lime",
+      "c_ltgray",
+      "c_maroon",
+      "c_navy",
+      "c_olive",
+      "c_orange",
+      "c_purple",
+      "c_red",
+      "c_silver",
+      "c_teal",
+      "c_white",
+      "c_yellow",
+      "cmpfunc_always",
+      "cmpfunc_equal",
+      "cmpfunc_greater",
+      "cmpfunc_greaterequal",
+      "cmpfunc_less",
+      "cmpfunc_lessequal",
+      "cmpfunc_never",
+      "cmpfunc_notequal",
+      "cr_appstart",
+      "cr_arrow",
+      "cr_beam",
+      "cr_cross",
+      "cr_default",
+      "cr_drag",
+      "cr_handpoint",
+      "cr_hourglass",
+      "cr_none",
+      "cr_size_all",
+      "cr_size_nesw",
+      "cr_size_ns",
+      "cr_size_nwse",
+      "cr_size_we",
+      "cr_uparrow",
+      "cull_clockwise",
+      "cull_counterclockwise",
+      "cull_noculling",
+      "device_emulator",
+      "device_ios_ipad",
+      "device_ios_ipad_retina",
+      "device_ios_iphone",
+      "device_ios_iphone5",
+      "device_ios_iphone6",
+      "device_ios_iphone6plus",
+      "device_ios_iphone_retina",
+      "device_ios_unknown",
+      "device_tablet",
+      "display_landscape",
+      "display_landscape_flipped",
+      "display_portrait",
+      "display_portrait_flipped",
+      "dll_cdecl",
+      "dll_stdcall",
+      "ds_type_grid",
+      "ds_type_list",
+      "ds_type_map",
+      "ds_type_priority",
+      "ds_type_queue",
+      "ds_type_stack",
+      "ef_cloud",
+      "ef_ellipse",
+      "ef_explosion",
+      "ef_firework",
+      "ef_flare",
+      "ef_rain",
+      "ef_ring",
+      "ef_smoke",
+      "ef_smokeup",
+      "ef_snow",
+      "ef_spark",
+      "ef_star",
+      // for example ev_ are types of events
+      "ev_alarm",
+      "ev_animation_end",
+      "ev_boundary",
+      "ev_cleanup",
+      "ev_close_button",
+      "ev_collision",
+      "ev_create",
+      "ev_destroy",
+      "ev_draw",
+      "ev_draw_begin",
+      "ev_draw_end",
+      "ev_draw_post",
+      "ev_draw_pre",
+      "ev_end_of_path",
+      "ev_game_end",
+      "ev_game_start",
+      "ev_gesture",
+      "ev_gesture_double_tap",
+      "ev_gesture_drag_end",
+      "ev_gesture_drag_start",
+      "ev_gesture_dragging",
+      "ev_gesture_flick",
+      "ev_gesture_pinch_end",
+      "ev_gesture_pinch_in",
+      "ev_gesture_pinch_out",
+      "ev_gesture_pinch_start",
+      "ev_gesture_rotate_end",
+      "ev_gesture_rotate_start",
+      "ev_gesture_rotating",
+      "ev_gesture_tap",
+      "ev_global_gesture_double_tap",
+      "ev_global_gesture_drag_end",
+      "ev_global_gesture_drag_start",
+      "ev_global_gesture_dragging",
+      "ev_global_gesture_flick",
+      "ev_global_gesture_pinch_end",
+      "ev_global_gesture_pinch_in",
+      "ev_global_gesture_pinch_out",
+      "ev_global_gesture_pinch_start",
+      "ev_global_gesture_rotate_end",
+      "ev_global_gesture_rotate_start",
+      "ev_global_gesture_rotating",
+      "ev_global_gesture_tap",
+      "ev_global_left_button",
+      "ev_global_left_press",
+      "ev_global_left_release",
+      "ev_global_middle_button",
+      "ev_global_middle_press",
+      "ev_global_middle_release",
+      "ev_global_right_button",
+      "ev_global_right_press",
+      "ev_global_right_release",
+      "ev_gui",
+      "ev_gui_begin",
+      "ev_gui_end",
+      "ev_joystick1_button1",
+      "ev_joystick1_button2",
+      "ev_joystick1_button3",
+      "ev_joystick1_button4",
+      "ev_joystick1_button5",
+      "ev_joystick1_button6",
+      "ev_joystick1_button7",
+      "ev_joystick1_button8",
+      "ev_joystick1_down",
+      "ev_joystick1_left",
+      "ev_joystick1_right",
+      "ev_joystick1_up",
+      "ev_joystick2_button1",
+      "ev_joystick2_button2",
+      "ev_joystick2_button3",
+      "ev_joystick2_button4",
+      "ev_joystick2_button5",
+      "ev_joystick2_button6",
+      "ev_joystick2_button7",
+      "ev_joystick2_button8",
+      "ev_joystick2_down",
+      "ev_joystick2_left",
+      "ev_joystick2_right",
+      "ev_joystick2_up",
+      "ev_keyboard",
+      "ev_keypress",
+      "ev_keyrelease",
+      "ev_left_button",
+      "ev_left_press",
+      "ev_left_release",
+      "ev_middle_button",
+      "ev_middle_press",
+      "ev_middle_release",
+      "ev_mouse",
+      "ev_mouse_enter",
+      "ev_mouse_leave",
+      "ev_mouse_wheel_down",
+      "ev_mouse_wheel_up",
+      "ev_no_button",
+      "ev_no_more_health",
+      "ev_no_more_lives",
+      "ev_other",
+      "ev_outside",
+      "ev_right_button",
+      "ev_right_press",
+      "ev_right_release",
+      "ev_room_end",
+      "ev_room_start",
+      "ev_step",
+      "ev_step_begin",
+      "ev_step_end",
+      "ev_step_normal",
+      "ev_trigger",
+      "ev_user0",
+      "ev_user1",
+      "ev_user2",
+      "ev_user3",
+      "ev_user4",
+      "ev_user5",
+      "ev_user6",
+      "ev_user7",
+      "ev_user8",
+      "ev_user9",
+      "ev_user10",
+      "ev_user11",
+      "ev_user12",
+      "ev_user13",
+      "ev_user14",
+      "ev_user15",
+      "fa_archive",
+      "fa_bottom",
+      "fa_center",
+      "fa_directory",
+      "fa_hidden",
+      "fa_left",
+      "fa_middle",
+      "fa_readonly",
+      "fa_right",
+      "fa_sysfile",
+      "fa_top",
+      "fa_volumeid",
+      "fb_login_default",
+      "fb_login_fallback_to_webview",
+      "fb_login_forcing_safari",
+      "fb_login_forcing_webview",
+      "fb_login_no_fallback_to_webview",
+      "fb_login_use_system_account",
+      "gamespeed_fps",
+      "gamespeed_microseconds",
+      "ge_lose",
+      "global",
+      "gp_axislh",
+      "gp_axislv",
+      "gp_axisrh",
+      "gp_axisrv",
+      "gp_face1",
+      "gp_face2",
+      "gp_face3",
+      "gp_face4",
+      "gp_padd",
+      "gp_padl",
+      "gp_padr",
+      "gp_padu",
+      "gp_select",
+      "gp_shoulderl",
+      "gp_shoulderlb",
+      "gp_shoulderr",
+      "gp_shoulderrb",
+      "gp_start",
+      "gp_stickl",
+      "gp_stickr",
+      "iap_available",
+      "iap_canceled",
+      "iap_ev_consume",
+      "iap_ev_product",
+      "iap_ev_purchase",
+      "iap_ev_restore",
+      "iap_ev_storeload",
+      "iap_failed",
+      "iap_purchased",
+      "iap_refunded",
+      "iap_status_available",
+      "iap_status_loading",
+      "iap_status_processing",
+      "iap_status_restoring",
+      "iap_status_unavailable",
+      "iap_status_uninitialised",
+      "iap_storeload_failed",
+      "iap_storeload_ok",
+      "iap_unavailable",
+      "input_type",
+      "kbv_autocapitalize_characters",
+      "kbv_autocapitalize_none",
+      "kbv_autocapitalize_sentences",
+      "kbv_autocapitalize_words",
+      "kbv_returnkey_continue",
+      "kbv_returnkey_default",
+      "kbv_returnkey_done",
+      "kbv_returnkey_emergency",
+      "kbv_returnkey_go",
+      "kbv_returnkey_google",
+      "kbv_returnkey_join",
+      "kbv_returnkey_next",
+      "kbv_returnkey_route",
+      "kbv_returnkey_search",
+      "kbv_returnkey_send",
+      "kbv_returnkey_yahoo",
+      "kbv_type_ascii",
+      "kbv_type_default",
+      "kbv_type_email",
+      "kbv_type_numbers",
+      "kbv_type_phone",
+      "kbv_type_phone_name",
+      "kbv_type_url",
+      "layerelementtype_background",
+      "layerelementtype_instance",
+      "layerelementtype_oldtilemap",
+      "layerelementtype_particlesystem",
+      "layerelementtype_sprite",
+      "layerelementtype_tile",
+      "layerelementtype_tilemap",
+      "layerelementtype_undefined",
+      "lb_disp_none",
+      "lb_disp_numeric",
+      "lb_disp_time_ms",
+      "lb_disp_time_sec",
+      "lb_sort_ascending",
+      "lb_sort_descending",
+      "lb_sort_none",
+      "leaderboard_type_number",
+      "leaderboard_type_time_mins_secs",
+      "lighttype_dir",
+      "lighttype_point",
+      "local",
+      "matrix_projection",
+      "matrix_view",
+      "matrix_world",
+      "mb_any",
+      "mb_left",
+      "mb_middle",
+      "mb_none",
+      "mb_right",
+      "mip_markedonly",
+      "mip_off",
+      "mip_on",
+      "network_config_connect_timeout",
+      "network_config_disable_reliable_udp",
+      "network_config_enable_reliable_udp",
+      "network_config_use_non_blocking_socket",
+      "network_socket_bluetooth",
+      "network_socket_tcp",
+      "network_socket_udp",
+      "network_type_connect",
+      "network_type_data",
+      "network_type_disconnect",
+      "network_type_non_blocking_connect",
+      "of_challen",
+      "of_challenge_tie",
+      "of_challenge_win",
+      "os_3ds",
+      "os_android",
+      "os_bb10",
+      "os_ios",
+      "os_linux",
+      "os_macosx",
+      "os_ps3",
+      "os_ps4",
+      "os_psvita",
+      "os_switch",
+      "os_symbian",
+      "os_tizen",
+      "os_tvos",
+      "os_unknown",
+      "os_uwp",
+      "os_wiiu",
+      "os_win32",
+      "os_win8native",
+      "os_windows",
+      "os_winphone",
+      "os_xbox360",
+      "os_xboxone",
+      "other",
+      "ov_achievements",
+      "ov_community",
+      "ov_friends",
+      "ov_gamegroup",
+      "ov_players",
+      "ov_settings",
+      "path_action_continue",
+      "path_action_restart",
+      "path_action_reverse",
+      "path_action_stop",
+      "phy_debug_render_aabb",
+      "phy_debug_render_collision_pairs",
+      "phy_debug_render_coms",
+      "phy_debug_render_core_shapes",
+      "phy_debug_render_joints",
+      "phy_debug_render_obb",
+      "phy_debug_render_shapes",
+      "phy_joint_anchor_1_x",
+      "phy_joint_anchor_1_y",
+      "phy_joint_anchor_2_x",
+      "phy_joint_anchor_2_y",
+      "phy_joint_angle",
+      "phy_joint_angle_limits",
+      "phy_joint_damping_ratio",
+      "phy_joint_frequency",
+      "phy_joint_length_1",
+      "phy_joint_length_2",
+      "phy_joint_lower_angle_limit",
+      "phy_joint_max_force",
+      "phy_joint_max_length",
+      "phy_joint_max_motor_force",
+      "phy_joint_max_motor_torque",
+      "phy_joint_max_torque",
+      "phy_joint_motor_force",
+      "phy_joint_motor_speed",
+      "phy_joint_motor_torque",
+      "phy_joint_reaction_force_x",
+      "phy_joint_reaction_force_y",
+      "phy_joint_reaction_torque",
+      "phy_joint_speed",
+      "phy_joint_translation",
+      "phy_joint_upper_angle_limit",
+      "phy_particle_data_flag_category",
+      "phy_particle_data_flag_color",
+      "phy_particle_data_flag_colour",
+      "phy_particle_data_flag_position",
+      "phy_particle_data_flag_typeflags",
+      "phy_particle_data_flag_velocity",
+      "phy_particle_flag_colormixing",
+      "phy_particle_flag_colourmixing",
+      "phy_particle_flag_elastic",
+      "phy_particle_flag_powder",
+      "phy_particle_flag_spring",
+      "phy_particle_flag_tensile",
+      "phy_particle_flag_viscous",
+      "phy_particle_flag_wall",
+      "phy_particle_flag_water",
+      "phy_particle_flag_zombie",
+      "phy_particle_group_flag_rigid",
+      "phy_particle_group_flag_solid",
+      "pi",
+      "pr_linelist",
+      "pr_linestrip",
+      "pr_pointlist",
+      "pr_trianglefan",
+      "pr_trianglelist",
+      "pr_trianglestrip",
+      "ps_distr_gaussian",
+      "ps_distr_invgaussian",
+      "ps_distr_linear",
+      "ps_shape_diamond",
+      "ps_shape_ellipse",
+      "ps_shape_line",
+      "ps_shape_rectangle",
+      "pt_shape_circle",
+      "pt_shape_cloud",
+      "pt_shape_disk",
+      "pt_shape_explosion",
+      "pt_shape_flare",
+      "pt_shape_line",
+      "pt_shape_pixel",
+      "pt_shape_ring",
+      "pt_shape_smoke",
+      "pt_shape_snow",
+      "pt_shape_spark",
+      "pt_shape_sphere",
+      "pt_shape_square",
+      "pt_shape_star",
+      "spritespeed_framespergameframe",
+      "spritespeed_framespersecond",
+      "text_type",
+      "tf_anisotropic",
+      "tf_linear",
+      "tf_point",
+      "tile_flip",
+      "tile_index_mask",
+      "tile_mirror",
+      "tile_rotate",
+      "timezone_local",
+      "timezone_utc",
+      "tm_countvsyncs",
+      "tm_sleep",
+      "ty_real",
+      "ty_string",
+      "ugc_filetype_community",
+      "ugc_filetype_microtrans",
+      "ugc_list_Favorited",
+      "ugc_list_Followed",
+      "ugc_list_Published",
+      "ugc_list_Subscribed",
+      "ugc_list_UsedOrPlayed",
+      "ugc_list_VotedDown",
+      "ugc_list_VotedOn",
+      "ugc_list_VotedUp",
+      "ugc_list_WillVoteLater",
+      "ugc_match_AllGuides",
+      "ugc_match_Artwork",
+      "ugc_match_Collections",
+      "ugc_match_ControllerBindings",
+      "ugc_match_IntegratedGuides",
+      "ugc_match_Items",
+      "ugc_match_Items_Mtx",
+      "ugc_match_Items_ReadyToUse",
+      "ugc_match_Screenshots",
+      "ugc_match_UsableInGame",
+      "ugc_match_Videos",
+      "ugc_match_WebGuides",
+      "ugc_query_AcceptedForGameRankedByAcceptanceDate",
+      "ugc_query_CreatedByFollowedUsersRankedByPublicationDate",
+      "ugc_query_CreatedByFriendsRankedByPublicationDate",
+      "ugc_query_FavoritedByFriendsRankedByPublicationDate",
+      "ugc_query_NotYetRated",
+      "ugc_query_RankedByNumTimesReported",
+      "ugc_query_RankedByPublicationDate",
+      "ugc_query_RankedByTextSearch",
+      "ugc_query_RankedByTotalVotesAsc",
+      "ugc_query_RankedByTrend",
+      "ugc_query_RankedByVote",
+      "ugc_query_RankedByVotesUp",
+      "ugc_result_success",
+      "ugc_sortorder_CreationOrderAsc",
+      "ugc_sortorder_CreationOrderDesc",
+      "ugc_sortorder_ForModeration",
+      "ugc_sortorder_LastUpdatedDesc",
+      "ugc_sortorder_SubscriptionDateDesc",
+      "ugc_sortorder_TitleAsc",
+      "ugc_sortorder_VoteScoreDesc",
+      "ugc_visibility_friends_only",
+      "ugc_visibility_private",
+      "ugc_visibility_public",
+      "vertex_type_color",
+      "vertex_type_colour",
+      "vertex_type_float1",
+      "vertex_type_float2",
+      "vertex_type_float3",
+      "vertex_type_float4",
+      "vertex_type_ubyte4",
+      "vertex_usage_binormal",
+      "vertex_usage_blendindices",
+      "vertex_usage_blendweight",
+      "vertex_usage_color",
+      "vertex_usage_colour",
+      "vertex_usage_depth",
+      "vertex_usage_fog",
+      "vertex_usage_normal",
+      "vertex_usage_position",
+      "vertex_usage_psize",
+      "vertex_usage_sample",
+      "vertex_usage_tangent",
+      "vertex_usage_texcoord",
+      "vertex_usage_textcoord",
+      "vk_add",
+      "vk_alt",
+      "vk_anykey",
+      "vk_backspace",
+      "vk_control",
+      "vk_decimal",
+      "vk_delete",
+      "vk_divide",
+      "vk_down",
+      "vk_end",
+      "vk_enter",
+      "vk_escape",
+      "vk_f1",
+      "vk_f2",
+      "vk_f3",
+      "vk_f4",
+      "vk_f5",
+      "vk_f6",
+      "vk_f7",
+      "vk_f8",
+      "vk_f9",
+      "vk_f10",
+      "vk_f11",
+      "vk_f12",
+      "vk_home",
+      "vk_insert",
+      "vk_lalt",
+      "vk_lcontrol",
+      "vk_left",
+      "vk_lshift",
+      "vk_multiply",
+      "vk_nokey",
+      "vk_numpad0",
+      "vk_numpad1",
+      "vk_numpad2",
+      "vk_numpad3",
+      "vk_numpad4",
+      "vk_numpad5",
+      "vk_numpad6",
+      "vk_numpad7",
+      "vk_numpad8",
+      "vk_numpad9",
+      "vk_pagedown",
+      "vk_pageup",
+      "vk_pause",
+      "vk_printscreen",
+      "vk_ralt",
+      "vk_rcontrol",
+      "vk_return",
+      "vk_right",
+      "vk_rshift",
+      "vk_shift",
+      "vk_space",
+      "vk_subtract",
+      "vk_tab",
+      "vk_up"
+    ];
+    const LANGUAGE_VARIABLES = [
+      "alarm",
+      "application_surface",
+      "argument",
+      "argument0",
+      "argument1",
+      "argument2",
+      "argument3",
+      "argument4",
+      "argument5",
+      "argument6",
+      "argument7",
+      "argument8",
+      "argument9",
+      "argument10",
+      "argument11",
+      "argument12",
+      "argument13",
+      "argument14",
+      "argument15",
+      "argument_count",
+      "argument_relative",
+      "async_load",
+      "background_color",
+      "background_colour",
+      "background_showcolor",
+      "background_showcolour",
+      "bbox_bottom",
+      "bbox_left",
+      "bbox_right",
+      "bbox_top",
+      "browser_height",
+      "browser_width",
+      "caption_health",
+      "caption_lives",
+      "caption_score",
+      "current_day",
+      "current_hour",
+      "current_minute",
+      "current_month",
+      "current_second",
+      "current_time",
+      "current_weekday",
+      "current_year",
+      "cursor_sprite",
+      "debug_mode",
+      "delta_time",
+      "depth",
+      "direction",
+      "display_aa",
+      "error_last",
+      "error_occurred",
+      "event_action",
+      "event_data",
+      "event_number",
+      "event_object",
+      "event_type",
+      "fps",
+      "fps_real",
+      "friction",
+      "game_display_name",
+      "game_id",
+      "game_project_name",
+      "game_save_id",
+      "gamemaker_pro",
+      "gamemaker_registered",
+      "gamemaker_version",
+      "gravity",
+      "gravity_direction",
+      "health",
+      "hspeed",
+      "iap_data",
+      "id|0",
+      "image_alpha",
+      "image_angle",
+      "image_blend",
+      "image_index",
+      "image_number",
+      "image_speed",
+      "image_xscale",
+      "image_yscale",
+      "instance_count",
+      "instance_id",
+      "keyboard_key",
+      "keyboard_lastchar",
+      "keyboard_lastkey",
+      "keyboard_string",
+      "layer",
+      "lives",
+      "mask_index",
+      "mouse_button",
+      "mouse_lastbutton",
+      "mouse_x",
+      "mouse_y",
+      "object_index",
+      "os_browser",
+      "os_device",
+      "os_type",
+      "os_version",
+      "path_endaction",
+      "path_index",
+      "path_orientation",
+      "path_position",
+      "path_positionprevious",
+      "path_scale",
+      "path_speed",
+      "persistent",
+      "phy_active",
+      "phy_angular_damping",
+      "phy_angular_velocity",
+      "phy_bullet",
+      "phy_col_normal_x",
+      "phy_col_normal_y",
+      "phy_collision_points",
+      "phy_collision_x",
+      "phy_collision_y",
+      "phy_com_x",
+      "phy_com_y",
+      "phy_dynamic",
+      "phy_fixed_rotation",
+      "phy_inertia",
+      "phy_kinematic",
+      "phy_linear_damping",
+      "phy_linear_velocity_x",
+      "phy_linear_velocity_y",
+      "phy_mass",
+      "phy_position_x",
+      "phy_position_xprevious",
+      "phy_position_y",
+      "phy_position_yprevious",
+      "phy_rotation",
+      "phy_sleeping",
+      "phy_speed",
+      "phy_speed_x",
+      "phy_speed_y",
+      "program_directory",
+      "room",
+      "room_caption",
+      "room_first",
+      "room_height",
+      "room_last",
+      "room_persistent",
+      "room_speed",
+      "room_width",
+      "score",
+      "self",
+      "show_health",
+      "show_lives",
+      "show_score",
+      "solid",
+      "speed",
+      "sprite_height",
+      "sprite_index",
+      "sprite_width",
+      "sprite_xoffset",
+      "sprite_yoffset",
+      "temp_directory",
+      "timeline_index",
+      "timeline_loop",
+      "timeline_position",
+      "timeline_running",
+      "timeline_speed",
+      "view_angle",
+      "view_camera",
+      "view_current",
+      "view_enabled",
+      "view_hborder",
+      "view_hport",
+      "view_hspeed",
+      "view_hview",
+      "view_object",
+      "view_surface_id",
+      "view_vborder",
+      "view_visible",
+      "view_vspeed",
+      "view_wport",
+      "view_wview",
+      "view_xport",
+      "view_xview",
+      "view_yport",
+      "view_yview",
+      "visible",
+      "vspeed",
+      "webgl_enabled",
+      "working_directory",
+      "xprevious",
+      "xstart",
+      "x|0",
+      "yprevious",
+      "ystart",
+      "y|0"
+    ];
+
+    return {
+      name: 'GML',
+      case_insensitive: false, // language is case-insensitive
+      keywords: {
+        keyword: KEYWORDS,
+        built_in: BUILT_INS,
+        literal: LITERALS,
+        symbol: SYMBOLS,
+        "variable.language": LANGUAGE_VARIABLES
+      },
+      contains: [
+        hljs.C_LINE_COMMENT_MODE,
+        hljs.C_BLOCK_COMMENT_MODE,
+        hljs.APOS_STRING_MODE,
+        hljs.QUOTE_STRING_MODE,
+        hljs.C_NUMBER_MODE
+      ]
+    };
+  }
+
+  return gml;
+
+})();
+
+    hljs.registerLanguage('gml', hljsGrammar);
+  })();/*! `go` grammar compiled for Highlight.js 11.9.0 */
+  (function(){
+    var hljsGrammar = (function () {
+  'use strict';
+
+  /*
+  Language: Go
+  Author: Stephan Kountso aka StepLg <steplg@gmail.com>
+  Contributors: Evgeny Stepanischev <imbolk@gmail.com>
+  Description: Google go language (golang). For info about language
+  Website: http://golang.org/
+  Category: common, system
+  */
+
+  function go(hljs) {
+    const LITERALS = [
+      "true",
+      "false",
+      "iota",
+      "nil"
+    ];
+    const BUILT_INS = [
+      "append",
+      "cap",
+      "close",
+      "complex",
+      "copy",
+      "imag",
+      "len",
+      "make",
+      "new",
+      "panic",
+      "print",
+      "println",
+      "real",
+      "recover",
+      "delete"
+    ];
+    const TYPES = [
+      "bool",
+      "byte",
+      "complex64",
+      "complex128",
+      "error",
+      "float32",
+      "float64",
+      "int8",
+      "int16",
+      "int32",
+      "int64",
+      "string",
+      "uint8",
+      "uint16",
+      "uint32",
+      "uint64",
+      "int",
+      "uint",
+      "uintptr",
+      "rune"
+    ];
+    const KWS = [
+      "break",
+      "case",
+      "chan",
+      "const",
+      "continue",
+      "default",
+      "defer",
+      "else",
+      "fallthrough",
+      "for",
+      "func",
+      "go",
+      "goto",
+      "if",
+      "import",
+      "interface",
+      "map",
+      "package",
+      "range",
+      "return",
+      "select",
+      "struct",
+      "switch",
+      "type",
+      "var",
+    ];
+    const KEYWORDS = {
+      keyword: KWS,
+      type: TYPES,
+      literal: LITERALS,
+      built_in: BUILT_INS
+    };
+    return {
+      name: 'Go',
+      aliases: [ 'golang' ],
+      keywords: KEYWORDS,
+      illegal: '</',
+      contains: [
+        hljs.C_LINE_COMMENT_MODE,
+        hljs.C_BLOCK_COMMENT_MODE,
+        {
+          className: 'string',
+          variants: [
+            hljs.QUOTE_STRING_MODE,
+            hljs.APOS_STRING_MODE,
+            {
+              begin: '`',
+              end: '`'
+            }
+          ]
+        },
+        {
+          className: 'number',
+          variants: [
+            {
+              begin: hljs.C_NUMBER_RE + '[i]',
+              relevance: 1
+            },
+            hljs.C_NUMBER_MODE
+          ]
+        },
+        { begin: /:=/ // relevance booster
+        },
+        {
+          className: 'function',
+          beginKeywords: 'func',
+          end: '\\s*(\\{|$)',
+          excludeEnd: true,
+          contains: [
+            hljs.TITLE_MODE,
+            {
+              className: 'params',
+              begin: /\(/,
+              end: /\)/,
+              endsParent: true,
+              keywords: KEYWORDS,
+              illegal: /["']/
+            }
+          ]
+        }
+      ]
+    };
+  }
+
+  return go;
+
+})();
+
+    hljs.registerLanguage('go', hljsGrammar);
+  })();/*! `graphql` grammar compiled for Highlight.js 11.9.0 */
+  (function(){
+    var hljsGrammar = (function () {
+  'use strict';
+
+  /*
+   Language: GraphQL
+   Author: John Foster (GH jf990), and others
+   Description: GraphQL is a query language for APIs
+   Category: web, common
+  */
+
+  /** @type LanguageFn */
+  function graphql(hljs) {
+    const regex = hljs.regex;
+    const GQL_NAME = /[_A-Za-z][_0-9A-Za-z]*/;
+    return {
+      name: "GraphQL",
+      aliases: [ "gql" ],
+      case_insensitive: true,
+      disableAutodetect: false,
+      keywords: {
+        keyword: [
+          "query",
+          "mutation",
+          "subscription",
+          "type",
+          "input",
+          "schema",
+          "directive",
+          "interface",
+          "union",
+          "scalar",
+          "fragment",
+          "enum",
+          "on"
+        ],
+        literal: [
+          "true",
+          "false",
+          "null"
+        ]
+      },
+      contains: [
+        hljs.HASH_COMMENT_MODE,
+        hljs.QUOTE_STRING_MODE,
+        hljs.NUMBER_MODE,
+        {
+          scope: "punctuation",
+          match: /[.]{3}/,
+          relevance: 0
+        },
+        {
+          scope: "punctuation",
+          begin: /[\!\(\)\:\=\[\]\{\|\}]{1}/,
+          relevance: 0
+        },
+        {
+          scope: "variable",
+          begin: /\$/,
+          end: /\W/,
+          excludeEnd: true,
+          relevance: 0
+        },
+        {
+          scope: "meta",
+          match: /@\w+/,
+          excludeEnd: true
+        },
+        {
+          scope: "symbol",
+          begin: regex.concat(GQL_NAME, regex.lookahead(/\s*:/)),
+          relevance: 0
+        }
+      ],
+      illegal: [
+        /[;<']/,
+        /BEGIN/
+      ]
+    };
+  }
+
+  return graphql;
+
+})();
+
+    hljs.registerLanguage('graphql', hljsGrammar);
+  })();/*! `ini` grammar compiled for Highlight.js 11.9.0 */
+  (function(){
+    var hljsGrammar = (function () {
+  'use strict';
+
+  /*
+  Language: TOML, also INI
+  Description: TOML aims to be a minimal configuration file format that's easy to read due to obvious semantics.
+  Contributors: Guillaume Gomez <guillaume1.gomez@gmail.com>
+  Category: common, config
+  Website: https://github.com/toml-lang/toml
+  */
+
+  function ini(hljs) {
+    const regex = hljs.regex;
+    const NUMBERS = {
+      className: 'number',
+      relevance: 0,
+      variants: [
+        { begin: /([+-]+)?[\d]+_[\d_]+/ },
+        { begin: hljs.NUMBER_RE }
+      ]
+    };
+    const COMMENTS = hljs.COMMENT();
+    COMMENTS.variants = [
+      {
+        begin: /;/,
+        end: /$/
+      },
+      {
+        begin: /#/,
+        end: /$/
+      }
+    ];
+    const VARIABLES = {
+      className: 'variable',
+      variants: [
+        { begin: /\$[\w\d"][\w\d_]*/ },
+        { begin: /\$\{(.*?)\}/ }
+      ]
+    };
+    const LITERALS = {
+      className: 'literal',
+      begin: /\bon|off|true|false|yes|no\b/
+    };
+    const STRINGS = {
+      className: "string",
+      contains: [ hljs.BACKSLASH_ESCAPE ],
+      variants: [
+        {
+          begin: "'''",
+          end: "'''",
+          relevance: 10
+        },
+        {
+          begin: '"""',
+          end: '"""',
+          relevance: 10
+        },
+        {
+          begin: '"',
+          end: '"'
+        },
+        {
+          begin: "'",
+          end: "'"
+        }
+      ]
+    };
+    const ARRAY = {
+      begin: /\[/,
+      end: /\]/,
+      contains: [
+        COMMENTS,
+        LITERALS,
+        VARIABLES,
+        STRINGS,
+        NUMBERS,
+        'self'
+      ],
+      relevance: 0
+    };
+
+    const BARE_KEY = /[A-Za-z0-9_-]+/;
+    const QUOTED_KEY_DOUBLE_QUOTE = /"(\\"|[^"])*"/;
+    const QUOTED_KEY_SINGLE_QUOTE = /'[^']*'/;
+    const ANY_KEY = regex.either(
+      BARE_KEY, QUOTED_KEY_DOUBLE_QUOTE, QUOTED_KEY_SINGLE_QUOTE
+    );
+    const DOTTED_KEY = regex.concat(
+      ANY_KEY, '(\\s*\\.\\s*', ANY_KEY, ')*',
+      regex.lookahead(/\s*=\s*[^#\s]/)
+    );
+
+    return {
+      name: 'TOML, also INI',
+      aliases: [ 'toml' ],
+      case_insensitive: true,
+      illegal: /\S/,
+      contains: [
+        COMMENTS,
+        {
+          className: 'section',
+          begin: /\[+/,
+          end: /\]+/
+        },
+        {
+          begin: DOTTED_KEY,
+          className: 'attr',
+          starts: {
+            end: /$/,
+            contains: [
+              COMMENTS,
+              ARRAY,
+              LITERALS,
+              VARIABLES,
+              STRINGS,
+              NUMBERS
+            ]
+          }
+        }
+      ]
+    };
+  }
+
+  return ini;
+
+})();
+
+    hljs.registerLanguage('ini', hljsGrammar);
+  })();/*! `java` grammar compiled for Highlight.js 11.9.0 */
+  (function(){
+    var hljsGrammar = (function () {
+  'use strict';
+
+  // https://docs.oracle.com/javase/specs/jls/se15/html/jls-3.html#jls-3.10
+  var decimalDigits = '[0-9](_*[0-9])*';
+  var frac = `\\.(${decimalDigits})`;
+  var hexDigits = '[0-9a-fA-F](_*[0-9a-fA-F])*';
+  var NUMERIC = {
+    className: 'number',
+    variants: [
+      // DecimalFloatingPointLiteral
+      // including ExponentPart
+      { begin: `(\\b(${decimalDigits})((${frac})|\\.)?|(${frac}))` +
+        `[eE][+-]?(${decimalDigits})[fFdD]?\\b` },
+      // excluding ExponentPart
+      { begin: `\\b(${decimalDigits})((${frac})[fFdD]?\\b|\\.([fFdD]\\b)?)` },
+      { begin: `(${frac})[fFdD]?\\b` },
+      { begin: `\\b(${decimalDigits})[fFdD]\\b` },
+
+      // HexadecimalFloatingPointLiteral
+      { begin: `\\b0[xX]((${hexDigits})\\.?|(${hexDigits})?\\.(${hexDigits}))` +
+        `[pP][+-]?(${decimalDigits})[fFdD]?\\b` },
+
+      // DecimalIntegerLiteral
+      { begin: '\\b(0|[1-9](_*[0-9])*)[lL]?\\b' },
+
+      // HexIntegerLiteral
+      { begin: `\\b0[xX](${hexDigits})[lL]?\\b` },
+
+      // OctalIntegerLiteral
+      { begin: '\\b0(_*[0-7])*[lL]?\\b' },
+
+      // BinaryIntegerLiteral
+      { begin: '\\b0[bB][01](_*[01])*[lL]?\\b' },
+    ],
+    relevance: 0
+  };
+
+  /*
+  Language: Java
+  Author: Vsevolod Solovyov <vsevolod.solovyov@gmail.com>
+  Category: common, enterprise
+  Website: https://www.java.com/
+  */
+
+
+  /**
+   * Allows recursive regex expressions to a given depth
+   *
+   * ie: recurRegex("(abc~~~)", /~~~/g, 2) becomes:
+   * (abc(abc(abc)))
+   *
+   * @param {string} re
+   * @param {RegExp} substitution (should be a g mode regex)
+   * @param {number} depth
+   * @returns {string}``
+   */
+  function recurRegex(re, substitution, depth) {
+    if (depth === -1) return "";
+
+    return re.replace(substitution, _ => {
+      return recurRegex(re, substitution, depth - 1);
+    });
+  }
+
+  /** @type LanguageFn */
+  function java(hljs) {
+    const regex = hljs.regex;
+    const JAVA_IDENT_RE = '[\u00C0-\u02B8a-zA-Z_$][\u00C0-\u02B8a-zA-Z_$0-9]*';
+    const GENERIC_IDENT_RE = JAVA_IDENT_RE
+      + recurRegex('(?:<' + JAVA_IDENT_RE + '~~~(?:\\s*,\\s*' + JAVA_IDENT_RE + '~~~)*>)?', /~~~/g, 2);
+    const MAIN_KEYWORDS = [
+      'synchronized',
+      'abstract',
+      'private',
+      'var',
+      'static',
+      'if',
+      'const ',
+      'for',
+      'while',
+      'strictfp',
+      'finally',
+      'protected',
+      'import',
+      'native',
+      'final',
+      'void',
+      'enum',
+      'else',
+      'break',
+      'transient',
+      'catch',
+      'instanceof',
+      'volatile',
+      'case',
+      'assert',
+      'package',
+      'default',
+      'public',
+      'try',
+      'switch',
+      'continue',
+      'throws',
+      'protected',
+      'public',
+      'private',
+      'module',
+      'requires',
+      'exports',
+      'do',
+      'sealed',
+      'yield',
+      'permits'
+    ];
+
+    const BUILT_INS = [
+      'super',
+      'this'
+    ];
+
+    const LITERALS = [
+      'false',
+      'true',
+      'null'
+    ];
+
+    const TYPES = [
+      'char',
+      'boolean',
+      'long',
+      'float',
+      'int',
+      'byte',
+      'short',
+      'double'
+    ];
+
+    const KEYWORDS = {
+      keyword: MAIN_KEYWORDS,
+      literal: LITERALS,
+      type: TYPES,
+      built_in: BUILT_INS
+    };
+
+    const ANNOTATION = {
+      className: 'meta',
+      begin: '@' + JAVA_IDENT_RE,
+      contains: [
+        {
+          begin: /\(/,
+          end: /\)/,
+          contains: [ "self" ] // allow nested () inside our annotation
+        }
+      ]
+    };
+    const PARAMS = {
+      className: 'params',
+      begin: /\(/,
+      end: /\)/,
+      keywords: KEYWORDS,
+      relevance: 0,
+      contains: [ hljs.C_BLOCK_COMMENT_MODE ],
+      endsParent: true
+    };
+
+    return {
+      name: 'Java',
+      aliases: [ 'jsp' ],
+      keywords: KEYWORDS,
+      illegal: /<\/|#/,
+      contains: [
+        hljs.COMMENT(
+          '/\\*\\*',
+          '\\*/',
+          {
+            relevance: 0,
+            contains: [
+              {
+                // eat up @'s in emails to prevent them to be recognized as doctags
+                begin: /\w+@/,
+                relevance: 0
+              },
+              {
+                className: 'doctag',
+                begin: '@[A-Za-z]+'
+              }
+            ]
+          }
+        ),
+        // relevance boost
+        {
+          begin: /import java\.[a-z]+\./,
+          keywords: "import",
+          relevance: 2
+        },
+        hljs.C_LINE_COMMENT_MODE,
+        hljs.C_BLOCK_COMMENT_MODE,
+        {
+          begin: /"""/,
+          end: /"""/,
+          className: "string",
+          contains: [ hljs.BACKSLASH_ESCAPE ]
+        },
+        hljs.APOS_STRING_MODE,
+        hljs.QUOTE_STRING_MODE,
+        {
+          match: [
+            /\b(?:class|interface|enum|extends|implements|new)/,
+            /\s+/,
+            JAVA_IDENT_RE
+          ],
+          className: {
+            1: "keyword",
+            3: "title.class"
+          }
+        },
+        {
+          // Exceptions for hyphenated keywords
+          match: /non-sealed/,
+          scope: "keyword"
+        },
+        {
+          begin: [
+            regex.concat(/(?!else)/, JAVA_IDENT_RE),
+            /\s+/,
+            JAVA_IDENT_RE,
+            /\s+/,
+            /=(?!=)/
+          ],
+          className: {
+            1: "type",
+            3: "variable",
+            5: "operator"
+          }
+        },
+        {
+          begin: [
+            /record/,
+            /\s+/,
+            JAVA_IDENT_RE
+          ],
+          className: {
+            1: "keyword",
+            3: "title.class"
+          },
+          contains: [
+            PARAMS,
+            hljs.C_LINE_COMMENT_MODE,
+            hljs.C_BLOCK_COMMENT_MODE
+          ]
+        },
+        {
+          // Expression keywords prevent 'keyword Name(...)' from being
+          // recognized as a function definition
+          beginKeywords: 'new throw return else',
+          relevance: 0
+        },
+        {
+          begin: [
+            '(?:' + GENERIC_IDENT_RE + '\\s+)',
+            hljs.UNDERSCORE_IDENT_RE,
+            /\s*(?=\()/
+          ],
+          className: { 2: "title.function" },
+          keywords: KEYWORDS,
+          contains: [
+            {
+              className: 'params',
+              begin: /\(/,
+              end: /\)/,
+              keywords: KEYWORDS,
+              relevance: 0,
+              contains: [
+                ANNOTATION,
+                hljs.APOS_STRING_MODE,
+                hljs.QUOTE_STRING_MODE,
+                NUMERIC,
+                hljs.C_BLOCK_COMMENT_MODE
+              ]
+            },
+            hljs.C_LINE_COMMENT_MODE,
+            hljs.C_BLOCK_COMMENT_MODE
+          ]
+        },
+        NUMERIC,
+        ANNOTATION
+      ]
+    };
+  }
+
+  return java;
+
+})();
+
+    hljs.registerLanguage('java', hljsGrammar);
+  })();/*! `javascript` grammar compiled for Highlight.js 11.9.0 */
+  (function(){
+    var hljsGrammar = (function () {
+  'use strict';
+
+  const IDENT_RE = '[A-Za-z$_][0-9A-Za-z$_]*';
+  const KEYWORDS = [
+    "as", // for exports
+    "in",
+    "of",
+    "if",
+    "for",
+    "while",
+    "finally",
+    "var",
+    "new",
+    "function",
+    "do",
+    "return",
+    "void",
+    "else",
+    "break",
+    "catch",
+    "instanceof",
+    "with",
+    "throw",
+    "case",
+    "default",
+    "try",
+    "switch",
+    "continue",
+    "typeof",
+    "delete",
+    "let",
+    "yield",
+    "const",
+    "class",
+    // JS handles these with a special rule
+    // "get",
+    // "set",
+    "debugger",
+    "async",
+    "await",
+    "static",
+    "import",
+    "from",
+    "export",
+    "extends"
+  ];
+  const LITERALS = [
+    "true",
+    "false",
+    "null",
+    "undefined",
+    "NaN",
+    "Infinity"
+  ];
+
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
+  const TYPES = [
+    // Fundamental objects
+    "Object",
+    "Function",
+    "Boolean",
+    "Symbol",
+    // numbers and dates
+    "Math",
+    "Date",
+    "Number",
+    "BigInt",
+    // text
+    "String",
+    "RegExp",
+    // Indexed collections
+    "Array",
+    "Float32Array",
+    "Float64Array",
+    "Int8Array",
+    "Uint8Array",
+    "Uint8ClampedArray",
+    "Int16Array",
+    "Int32Array",
+    "Uint16Array",
+    "Uint32Array",
+    "BigInt64Array",
+    "BigUint64Array",
+    // Keyed collections
+    "Set",
+    "Map",
+    "WeakSet",
+    "WeakMap",
+    // Structured data
+    "ArrayBuffer",
+    "SharedArrayBuffer",
+    "Atomics",
+    "DataView",
+    "JSON",
+    // Control abstraction objects
+    "Promise",
+    "Generator",
+    "GeneratorFunction",
+    "AsyncFunction",
+    // Reflection
+    "Reflect",
+    "Proxy",
+    // Internationalization
+    "Intl",
+    // WebAssembly
+    "WebAssembly"
+  ];
+
+  const ERROR_TYPES = [
+    "Error",
+    "EvalError",
+    "InternalError",
+    "RangeError",
+    "ReferenceError",
+    "SyntaxError",
+    "TypeError",
+    "URIError"
+  ];
+
+  const BUILT_IN_GLOBALS = [
+    "setInterval",
+    "setTimeout",
+    "clearInterval",
+    "clearTimeout",
+
+    "require",
+    "exports",
+
+    "eval",
+    "isFinite",
+    "isNaN",
+    "parseFloat",
+    "parseInt",
+    "decodeURI",
+    "decodeURIComponent",
+    "encodeURI",
+    "encodeURIComponent",
+    "escape",
+    "unescape"
+  ];
+
+  const BUILT_IN_VARIABLES = [
+    "arguments",
+    "this",
+    "super",
+    "console",
+    "window",
+    "document",
+    "localStorage",
+    "sessionStorage",
+    "module",
+    "global" // Node.js
+  ];
+
+  const BUILT_INS = [].concat(
+    BUILT_IN_GLOBALS,
+    TYPES,
+    ERROR_TYPES
+  );
+
+  /*
+  Language: JavaScript
+  Description: JavaScript (JS) is a lightweight, interpreted, or just-in-time compiled programming language with first-class functions.
+  Category: common, scripting, web
+  Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
+  */
+
+
+  /** @type LanguageFn */
+  function javascript(hljs) {
+    const regex = hljs.regex;
+    /**
+     * Takes a string like "<Booger" and checks to see
+     * if we can find a matching "</Booger" later in the
+     * content.
+     * @param {RegExpMatchArray} match
+     * @param {{after:number}} param1
+     */
+    const hasClosingTag = (match, { after }) => {
+      const tag = "</" + match[0].slice(1);
+      const pos = match.input.indexOf(tag, after);
+      return pos !== -1;
+    };
+
+    const IDENT_RE$1 = IDENT_RE;
+    const FRAGMENT = {
+      begin: '<>',
+      end: '</>'
+    };
+    // to avoid some special cases inside isTrulyOpeningTag
+    const XML_SELF_CLOSING = /<[A-Za-z0-9\\._:-]+\s*\/>/;
+    const XML_TAG = {
+      begin: /<[A-Za-z0-9\\._:-]+/,
+      end: /\/[A-Za-z0-9\\._:-]+>|\/>/,
+      /**
+       * @param {RegExpMatchArray} match
+       * @param {CallbackResponse} response
+       */
+      isTrulyOpeningTag: (match, response) => {
+        const afterMatchIndex = match[0].length + match.index;
+        const nextChar = match.input[afterMatchIndex];
+        if (
+          // HTML should not include another raw `<` inside a tag
+          // nested type?
+          // `<Array<Array<number>>`, etc.
+          nextChar === "<" ||
+          // the , gives away that this is not HTML
+          // `<T, A extends keyof T, V>`
+          nextChar === ","
+          ) {
+          response.ignoreMatch();
+          return;
+        }
+
+        // `<something>`
+        // Quite possibly a tag, lets look for a matching closing tag...
+        if (nextChar === ">") {
+          // if we cannot find a matching closing tag, then we
+          // will ignore it
+          if (!hasClosingTag(match, { after: afterMatchIndex })) {
+            response.ignoreMatch();
+          }
+        }
+
+        // `<blah />` (self-closing)
+        // handled by simpleSelfClosing rule
+
+        let m;
+        const afterMatch = match.input.substring(afterMatchIndex);
+
+        // some more template typing stuff
+        //  <T = any>(key?: string) => Modify<
+        if ((m = afterMatch.match(/^\s*=/))) {
+          response.ignoreMatch();
+          return;
+        }
+
+        // `<From extends string>`
+        // technically this could be HTML, but it smells like a type
+        // NOTE: This is ugh, but added specifically for https://github.com/highlightjs/highlight.js/issues/3276
+        if ((m = afterMatch.match(/^\s+extends\s+/))) {
+          if (m.index === 0) {
+            response.ignoreMatch();
+            // eslint-disable-next-line no-useless-return
+            return;
+          }
+        }
+      }
+    };
+    const KEYWORDS$1 = {
+      $pattern: IDENT_RE,
+      keyword: KEYWORDS,
+      literal: LITERALS,
+      built_in: BUILT_INS,
+      "variable.language": BUILT_IN_VARIABLES
+    };
+
+    // https://tc39.es/ecma262/#sec-literals-numeric-literals
+    const decimalDigits = '[0-9](_?[0-9])*';
+    const frac = `\\.(${decimalDigits})`;
+    // DecimalIntegerLiteral, including Annex B NonOctalDecimalIntegerLiteral
+    // https://tc39.es/ecma262/#sec-additional-syntax-numeric-literals
+    const decimalInteger = `0|[1-9](_?[0-9])*|0[0-7]*[89][0-9]*`;
+    const NUMBER = {
+      className: 'number',
+      variants: [
+        // DecimalLiteral
+        { begin: `(\\b(${decimalInteger})((${frac})|\\.)?|(${frac}))` +
+          `[eE][+-]?(${decimalDigits})\\b` },
+        { begin: `\\b(${decimalInteger})\\b((${frac})\\b|\\.)?|(${frac})\\b` },
+
+        // DecimalBigIntegerLiteral
+        { begin: `\\b(0|[1-9](_?[0-9])*)n\\b` },
+
+        // NonDecimalIntegerLiteral
+        { begin: "\\b0[xX][0-9a-fA-F](_?[0-9a-fA-F])*n?\\b" },
+        { begin: "\\b0[bB][0-1](_?[0-1])*n?\\b" },
+        { begin: "\\b0[oO][0-7](_?[0-7])*n?\\b" },
+
+        // LegacyOctalIntegerLiteral (does not include underscore separators)
+        // https://tc39.es/ecma262/#sec-additional-syntax-numeric-literals
+        { begin: "\\b0[0-7]+n?\\b" },
+      ],
+      relevance: 0
+    };
+
+    const SUBST = {
+      className: 'subst',
+      begin: '\\$\\{',
+      end: '\\}',
+      keywords: KEYWORDS$1,
+      contains: [] // defined later
+    };
+    const HTML_TEMPLATE = {
+      begin: 'html`',
+      end: '',
+      starts: {
+        end: '`',
+        returnEnd: false,
+        contains: [
+          hljs.BACKSLASH_ESCAPE,
+          SUBST
+        ],
+        subLanguage: 'xml'
+      }
+    };
+    const CSS_TEMPLATE = {
+      begin: 'css`',
+      end: '',
+      starts: {
+        end: '`',
+        returnEnd: false,
+        contains: [
+          hljs.BACKSLASH_ESCAPE,
+          SUBST
+        ],
+        subLanguage: 'css'
+      }
+    };
+    const GRAPHQL_TEMPLATE = {
+      begin: 'gql`',
+      end: '',
+      starts: {
+        end: '`',
+        returnEnd: false,
+        contains: [
+          hljs.BACKSLASH_ESCAPE,
+          SUBST
+        ],
+        subLanguage: 'graphql'
+      }
+    };
+    const TEMPLATE_STRING = {
+      className: 'string',
+      begin: '`',
+      end: '`',
+      contains: [
+        hljs.BACKSLASH_ESCAPE,
+        SUBST
+      ]
+    };
+    const JSDOC_COMMENT = hljs.COMMENT(
+      /\/\*\*(?!\/)/,
+      '\\*/',
+      {
+        relevance: 0,
+        contains: [
+          {
+            begin: '(?=@[A-Za-z]+)',
+            relevance: 0,
+            contains: [
+              {
+                className: 'doctag',
+                begin: '@[A-Za-z]+'
+              },
+              {
+                className: 'type',
+                begin: '\\{',
+                end: '\\}',
+                excludeEnd: true,
+                excludeBegin: true,
+                relevance: 0
+              },
+              {
+                className: 'variable',
+                begin: IDENT_RE$1 + '(?=\\s*(-)|$)',
+                endsParent: true,
+                relevance: 0
+              },
+              // eat spaces (not newlines) so we can find
+              // types or variables
+              {
+                begin: /(?=[^\n])\s/,
+                relevance: 0
+              }
+            ]
+          }
+        ]
+      }
+    );
+    const COMMENT = {
+      className: "comment",
+      variants: [
+        JSDOC_COMMENT,
+        hljs.C_BLOCK_COMMENT_MODE,
+        hljs.C_LINE_COMMENT_MODE
+      ]
+    };
+    const SUBST_INTERNALS = [
+      hljs.APOS_STRING_MODE,
+      hljs.QUOTE_STRING_MODE,
+      HTML_TEMPLATE,
+      CSS_TEMPLATE,
+      GRAPHQL_TEMPLATE,
+      TEMPLATE_STRING,
+      // Skip numbers when they are part of a variable name
+      { match: /\$\d+/ },
+      NUMBER,
+      // This is intentional:
+      // See https://github.com/highlightjs/highlight.js/issues/3288
+      // hljs.REGEXP_MODE
+    ];
+    SUBST.contains = SUBST_INTERNALS
+      .concat({
+        // we need to pair up {} inside our subst to prevent
+        // it from ending too early by matching another }
+        begin: /\{/,
+        end: /\}/,
+        keywords: KEYWORDS$1,
+        contains: [
+          "self"
+        ].concat(SUBST_INTERNALS)
+      });
+    const SUBST_AND_COMMENTS = [].concat(COMMENT, SUBST.contains);
+    const PARAMS_CONTAINS = SUBST_AND_COMMENTS.concat([
+      // eat recursive parens in sub expressions
+      {
+        begin: /\(/,
+        end: /\)/,
+        keywords: KEYWORDS$1,
+        contains: ["self"].concat(SUBST_AND_COMMENTS)
+      }
+    ]);
+    const PARAMS = {
+      className: 'params',
+      begin: /\(/,
+      end: /\)/,
+      excludeBegin: true,
+      excludeEnd: true,
+      keywords: KEYWORDS$1,
+      contains: PARAMS_CONTAINS
+    };
+
+    // ES6 classes
+    const CLASS_OR_EXTENDS = {
+      variants: [
+        // class Car extends vehicle
+        {
+          match: [
+            /class/,
+            /\s+/,
+            IDENT_RE$1,
+            /\s+/,
+            /extends/,
+            /\s+/,
+            regex.concat(IDENT_RE$1, "(", regex.concat(/\./, IDENT_RE$1), ")*")
+          ],
+          scope: {
+            1: "keyword",
+            3: "title.class",
+            5: "keyword",
+            7: "title.class.inherited"
+          }
+        },
+        // class Car
+        {
+          match: [
+            /class/,
+            /\s+/,
+            IDENT_RE$1
+          ],
+          scope: {
+            1: "keyword",
+            3: "title.class"
+          }
+        },
+
+      ]
+    };
+
+    const CLASS_REFERENCE = {
+      relevance: 0,
+      match:
+      regex.either(
+        // Hard coded exceptions
+        /\bJSON/,
+        // Float32Array, OutT
+        /\b[A-Z][a-z]+([A-Z][a-z]*|\d)*/,
+        // CSSFactory, CSSFactoryT
+        /\b[A-Z]{2,}([A-Z][a-z]+|\d)+([A-Z][a-z]*)*/,
+        // FPs, FPsT
+        /\b[A-Z]{2,}[a-z]+([A-Z][a-z]+|\d)*([A-Z][a-z]*)*/,
+        // P
+        // single letters are not highlighted
+        // BLAH
+        // this will be flagged as a UPPER_CASE_CONSTANT instead
+      ),
+      className: "title.class",
+      keywords: {
+        _: [
+          // se we still get relevance credit for JS library classes
+          ...TYPES,
+          ...ERROR_TYPES
+        ]
+      }
+    };
+
+    const USE_STRICT = {
+      label: "use_strict",
+      className: 'meta',
+      relevance: 10,
+      begin: /^\s*['"]use (strict|asm)['"]/
+    };
+
+    const FUNCTION_DEFINITION = {
+      variants: [
+        {
+          match: [
+            /function/,
+            /\s+/,
+            IDENT_RE$1,
+            /(?=\s*\()/
+          ]
+        },
+        // anonymous function
+        {
+          match: [
+            /function/,
+            /\s*(?=\()/
+          ]
+        }
+      ],
+      className: {
+        1: "keyword",
+        3: "title.function"
+      },
+      label: "func.def",
+      contains: [ PARAMS ],
+      illegal: /%/
+    };
+
+    const UPPER_CASE_CONSTANT = {
+      relevance: 0,
+      match: /\b[A-Z][A-Z_0-9]+\b/,
+      className: "variable.constant"
+    };
+
+    function noneOf(list) {
+      return regex.concat("(?!", list.join("|"), ")");
+    }
+
+    const FUNCTION_CALL = {
+      match: regex.concat(
+        /\b/,
+        noneOf([
+          ...BUILT_IN_GLOBALS,
+          "super",
+          "import"
+        ]),
+        IDENT_RE$1, regex.lookahead(/\(/)),
+      className: "title.function",
+      relevance: 0
+    };
+
+    const PROPERTY_ACCESS = {
+      begin: regex.concat(/\./, regex.lookahead(
+        regex.concat(IDENT_RE$1, /(?![0-9A-Za-z$_(])/)
+      )),
+      end: IDENT_RE$1,
+      excludeBegin: true,
+      keywords: "prototype",
+      className: "property",
+      relevance: 0
+    };
+
+    const GETTER_OR_SETTER = {
+      match: [
+        /get|set/,
+        /\s+/,
+        IDENT_RE$1,
+        /(?=\()/
+      ],
+      className: {
+        1: "keyword",
+        3: "title.function"
+      },
+      contains: [
+        { // eat to avoid empty params
+          begin: /\(\)/
+        },
+        PARAMS
+      ]
+    };
+
+    const FUNC_LEAD_IN_RE = '(\\(' +
+      '[^()]*(\\(' +
+      '[^()]*(\\(' +
+      '[^()]*' +
+      '\\)[^()]*)*' +
+      '\\)[^()]*)*' +
+      '\\)|' + hljs.UNDERSCORE_IDENT_RE + ')\\s*=>';
+
+    const FUNCTION_VARIABLE = {
+      match: [
+        /const|var|let/, /\s+/,
+        IDENT_RE$1, /\s*/,
+        /=\s*/,
+        /(async\s*)?/, // async is optional
+        regex.lookahead(FUNC_LEAD_IN_RE)
+      ],
+      keywords: "async",
+      className: {
+        1: "keyword",
+        3: "title.function"
+      },
+      contains: [
+        PARAMS
+      ]
+    };
+
+    return {
+      name: 'JavaScript',
+      aliases: ['js', 'jsx', 'mjs', 'cjs'],
+      keywords: KEYWORDS$1,
+      // this will be extended by TypeScript
+      exports: { PARAMS_CONTAINS, CLASS_REFERENCE },
+      illegal: /#(?![$_A-z])/,
+      contains: [
+        hljs.SHEBANG({
+          label: "shebang",
+          binary: "node",
+          relevance: 5
+        }),
+        USE_STRICT,
+        hljs.APOS_STRING_MODE,
+        hljs.QUOTE_STRING_MODE,
+        HTML_TEMPLATE,
+        CSS_TEMPLATE,
+        GRAPHQL_TEMPLATE,
+        TEMPLATE_STRING,
+        COMMENT,
+        // Skip numbers when they are part of a variable name
+        { match: /\$\d+/ },
+        NUMBER,
+        CLASS_REFERENCE,
+        {
+          className: 'attr',
+          begin: IDENT_RE$1 + regex.lookahead(':'),
+          relevance: 0
+        },
+        FUNCTION_VARIABLE,
+        { // "value" container
+          begin: '(' + hljs.RE_STARTERS_RE + '|\\b(case|return|throw)\\b)\\s*',
+          keywords: 'return throw case',
+          relevance: 0,
+          contains: [
+            COMMENT,
+            hljs.REGEXP_MODE,
+            {
+              className: 'function',
+              // we have to count the parens to make sure we actually have the
+              // correct bounding ( ) before the =>.  There could be any number of
+              // sub-expressions inside also surrounded by parens.
+              begin: FUNC_LEAD_IN_RE,
+              returnBegin: true,
+              end: '\\s*=>',
+              contains: [
+                {
+                  className: 'params',
+                  variants: [
+                    {
+                      begin: hljs.UNDERSCORE_IDENT_RE,
+                      relevance: 0
+                    },
+                    {
+                      className: null,
+                      begin: /\(\s*\)/,
+                      skip: true
+                    },
+                    {
+                      begin: /\(/,
+                      end: /\)/,
+                      excludeBegin: true,
+                      excludeEnd: true,
+                      keywords: KEYWORDS$1,
+                      contains: PARAMS_CONTAINS
+                    }
+                  ]
+                }
+              ]
+            },
+            { // could be a comma delimited list of params to a function call
+              begin: /,/,
+              relevance: 0
+            },
+            {
+              match: /\s+/,
+              relevance: 0
+            },
+            { // JSX
+              variants: [
+                { begin: FRAGMENT.begin, end: FRAGMENT.end },
+                { match: XML_SELF_CLOSING },
+                {
+                  begin: XML_TAG.begin,
+                  // we carefully check the opening tag to see if it truly
+                  // is a tag and not a false positive
+                  'on:begin': XML_TAG.isTrulyOpeningTag,
+                  end: XML_TAG.end
+                }
+              ],
+              subLanguage: 'xml',
+              contains: [
+                {
+                  begin: XML_TAG.begin,
+                  end: XML_TAG.end,
+                  skip: true,
+                  contains: ['self']
+                }
+              ]
+            }
+          ],
+        },
+        FUNCTION_DEFINITION,
+        {
+          // prevent this from getting swallowed up by function
+          // since they appear "function like"
+          beginKeywords: "while if switch catch for"
+        },
+        {
+          // we have to count the parens to make sure we actually have the correct
+          // bounding ( ).  There could be any number of sub-expressions inside
+          // also surrounded by parens.
+          begin: '\\b(?!function)' + hljs.UNDERSCORE_IDENT_RE +
+            '\\(' + // first parens
+            '[^()]*(\\(' +
+              '[^()]*(\\(' +
+                '[^()]*' +
+              '\\)[^()]*)*' +
+            '\\)[^()]*)*' +
+            '\\)\\s*\\{', // end parens
+          returnBegin:true,
+          label: "func.def",
+          contains: [
+            PARAMS,
+            hljs.inherit(hljs.TITLE_MODE, { begin: IDENT_RE$1, className: "title.function" })
+          ]
+        },
+        // catch ... so it won't trigger the property rule below
+        {
+          match: /\.\.\./,
+          relevance: 0
+        },
+        PROPERTY_ACCESS,
+        // hack: prevents detection of keywords in some circumstances
+        // .keyword()
+        // $keyword = x
+        {
+          match: '\\$' + IDENT_RE$1,
+          relevance: 0
+        },
+        {
+          match: [ /\bconstructor(?=\s*\()/ ],
+          className: { 1: "title.function" },
+          contains: [ PARAMS ]
+        },
+        FUNCTION_CALL,
+        UPPER_CASE_CONSTANT,
+        CLASS_OR_EXTENDS,
+        GETTER_OR_SETTER,
+        {
+          match: /\$[(.]/ // relevance booster for a pattern common to JS libs: `$(something)` and `$.something`
+        }
+      ]
+    };
+  }
+
+  return javascript;
+
+})();
+
+    hljs.registerLanguage('javascript', hljsGrammar);
+  })();/*! `json` grammar compiled for Highlight.js 11.9.0 */
+  (function(){
+    var hljsGrammar = (function () {
+  'use strict';
+
+  /*
+  Language: JSON
+  Description: JSON (JavaScript Object Notation) is a lightweight data-interchange format.
+  Author: Ivan Sagalaev <maniac@softwaremaniacs.org>
+  Website: http://www.json.org
+  Category: common, protocols, web
+  */
+
+  function json(hljs) {
+    const ATTRIBUTE = {
+      className: 'attr',
+      begin: /"(\\.|[^\\"\r\n])*"(?=\s*:)/,
+      relevance: 1.01
+    };
+    const PUNCTUATION = {
+      match: /[{}[\],:]/,
+      className: "punctuation",
+      relevance: 0
+    };
+    const LITERALS = [
+      "true",
+      "false",
+      "null"
+    ];
+    // NOTE: normally we would rely on `keywords` for this but using a mode here allows us
+    // - to use the very tight `illegal: \S` rule later to flag any other character
+    // - as illegal indicating that despite looking like JSON we do not truly have
+    // - JSON and thus improve false-positively greatly since JSON will try and claim
+    // - all sorts of JSON looking stuff
+    const LITERALS_MODE = {
+      scope: "literal",
+      beginKeywords: LITERALS.join(" "),
+    };
+
+    return {
+      name: 'JSON',
+      keywords:{
+        literal: LITERALS,
+      },
+      contains: [
+        ATTRIBUTE,
+        PUNCTUATION,
+        hljs.QUOTE_STRING_MODE,
+        LITERALS_MODE,
+        hljs.C_NUMBER_MODE,
+        hljs.C_LINE_COMMENT_MODE,
+        hljs.C_BLOCK_COMMENT_MODE
+      ],
+      illegal: '\\S'
+    };
+  }
+
+  return json;
+
+})();
+
+    hljs.registerLanguage('json', hljsGrammar);
+  })();/*! `kotlin` grammar compiled for Highlight.js 11.9.0 */
+  (function(){
+    var hljsGrammar = (function () {
+  'use strict';
+
+  // https://docs.oracle.com/javase/specs/jls/se15/html/jls-3.html#jls-3.10
+  var decimalDigits = '[0-9](_*[0-9])*';
+  var frac = `\\.(${decimalDigits})`;
+  var hexDigits = '[0-9a-fA-F](_*[0-9a-fA-F])*';
+  var NUMERIC = {
+    className: 'number',
+    variants: [
+      // DecimalFloatingPointLiteral
+      // including ExponentPart
+      { begin: `(\\b(${decimalDigits})((${frac})|\\.)?|(${frac}))` +
+        `[eE][+-]?(${decimalDigits})[fFdD]?\\b` },
+      // excluding ExponentPart
+      { begin: `\\b(${decimalDigits})((${frac})[fFdD]?\\b|\\.([fFdD]\\b)?)` },
+      { begin: `(${frac})[fFdD]?\\b` },
+      { begin: `\\b(${decimalDigits})[fFdD]\\b` },
+
+      // HexadecimalFloatingPointLiteral
+      { begin: `\\b0[xX]((${hexDigits})\\.?|(${hexDigits})?\\.(${hexDigits}))` +
+        `[pP][+-]?(${decimalDigits})[fFdD]?\\b` },
+
+      // DecimalIntegerLiteral
+      { begin: '\\b(0|[1-9](_*[0-9])*)[lL]?\\b' },
+
+      // HexIntegerLiteral
+      { begin: `\\b0[xX](${hexDigits})[lL]?\\b` },
+
+      // OctalIntegerLiteral
+      { begin: '\\b0(_*[0-7])*[lL]?\\b' },
+
+      // BinaryIntegerLiteral
+      { begin: '\\b0[bB][01](_*[01])*[lL]?\\b' },
+    ],
+    relevance: 0
+  };
+
+  /*
+   Language: Kotlin
+   Description: Kotlin is an OSS statically typed programming language that targets the JVM, Android, JavaScript and Native.
+   Author: Sergey Mashkov <cy6erGn0m@gmail.com>
+   Website: https://kotlinlang.org
+   Category: common
+   */
+
+
+  function kotlin(hljs) {
+    const KEYWORDS = {
+      keyword:
+        'abstract as val var vararg get set class object open private protected public noinline '
+        + 'crossinline dynamic final enum if else do while for when throw try catch finally '
+        + 'import package is in fun override companion reified inline lateinit init '
+        + 'interface annotation data sealed internal infix operator out by constructor super '
+        + 'tailrec where const inner suspend typealias external expect actual',
+      built_in:
+        'Byte Short Char Int Long Boolean Float Double Void Unit Nothing',
+      literal:
+        'true false null'
+    };
+    const KEYWORDS_WITH_LABEL = {
+      className: 'keyword',
+      begin: /\b(break|continue|return|this)\b/,
+      starts: { contains: [
+        {
+          className: 'symbol',
+          begin: /@\w+/
+        }
+      ] }
+    };
+    const LABEL = {
+      className: 'symbol',
+      begin: hljs.UNDERSCORE_IDENT_RE + '@'
+    };
+
+    // for string templates
+    const SUBST = {
+      className: 'subst',
+      begin: /\$\{/,
+      end: /\}/,
+      contains: [ hljs.C_NUMBER_MODE ]
+    };
+    const VARIABLE = {
+      className: 'variable',
+      begin: '\\$' + hljs.UNDERSCORE_IDENT_RE
+    };
+    const STRING = {
+      className: 'string',
+      variants: [
+        {
+          begin: '"""',
+          end: '"""(?=[^"])',
+          contains: [
+            VARIABLE,
+            SUBST
+          ]
+        },
+        // Can't use built-in modes easily, as we want to use STRING in the meta
+        // context as 'meta-string' and there's no syntax to remove explicitly set
+        // classNames in built-in modes.
+        {
+          begin: '\'',
+          end: '\'',
+          illegal: /\n/,
+          contains: [ hljs.BACKSLASH_ESCAPE ]
+        },
+        {
+          begin: '"',
+          end: '"',
+          illegal: /\n/,
+          contains: [
+            hljs.BACKSLASH_ESCAPE,
+            VARIABLE,
+            SUBST
+          ]
+        }
+      ]
+    };
+    SUBST.contains.push(STRING);
+
+    const ANNOTATION_USE_SITE = {
+      className: 'meta',
+      begin: '@(?:file|property|field|get|set|receiver|param|setparam|delegate)\\s*:(?:\\s*' + hljs.UNDERSCORE_IDENT_RE + ')?'
+    };
+    const ANNOTATION = {
+      className: 'meta',
+      begin: '@' + hljs.UNDERSCORE_IDENT_RE,
+      contains: [
+        {
+          begin: /\(/,
+          end: /\)/,
+          contains: [
+            hljs.inherit(STRING, { className: 'string' }),
+            "self"
+          ]
+        }
+      ]
+    };
+
+    // https://kotlinlang.org/docs/reference/whatsnew11.html#underscores-in-numeric-literals
+    // According to the doc above, the number mode of kotlin is the same as java 8,
+    // so the code below is copied from java.js
+    const KOTLIN_NUMBER_MODE = NUMERIC;
+    const KOTLIN_NESTED_COMMENT = hljs.COMMENT(
+      '/\\*', '\\*/',
+      { contains: [ hljs.C_BLOCK_COMMENT_MODE ] }
+    );
+    const KOTLIN_PAREN_TYPE = { variants: [
+      {
+        className: 'type',
+        begin: hljs.UNDERSCORE_IDENT_RE
+      },
+      {
+        begin: /\(/,
+        end: /\)/,
+        contains: [] // defined later
+      }
+    ] };
+    const KOTLIN_PAREN_TYPE2 = KOTLIN_PAREN_TYPE;
+    KOTLIN_PAREN_TYPE2.variants[1].contains = [ KOTLIN_PAREN_TYPE ];
+    KOTLIN_PAREN_TYPE.variants[1].contains = [ KOTLIN_PAREN_TYPE2 ];
+
+    return {
+      name: 'Kotlin',
+      aliases: [
+        'kt',
+        'kts'
+      ],
+      keywords: KEYWORDS,
+      contains: [
+        hljs.COMMENT(
+          '/\\*\\*',
+          '\\*/',
+          {
+            relevance: 0,
+            contains: [
+              {
+                className: 'doctag',
+                begin: '@[A-Za-z]+'
+              }
+            ]
+          }
+        ),
+        hljs.C_LINE_COMMENT_MODE,
+        KOTLIN_NESTED_COMMENT,
+        KEYWORDS_WITH_LABEL,
+        LABEL,
+        ANNOTATION_USE_SITE,
+        ANNOTATION,
+        {
+          className: 'function',
+          beginKeywords: 'fun',
+          end: '[(]|$',
+          returnBegin: true,
+          excludeEnd: true,
+          keywords: KEYWORDS,
+          relevance: 5,
+          contains: [
+            {
+              begin: hljs.UNDERSCORE_IDENT_RE + '\\s*\\(',
+              returnBegin: true,
+              relevance: 0,
+              contains: [ hljs.UNDERSCORE_TITLE_MODE ]
+            },
+            {
+              className: 'type',
+              begin: /</,
+              end: />/,
+              keywords: 'reified',
+              relevance: 0
+            },
+            {
+              className: 'params',
+              begin: /\(/,
+              end: /\)/,
+              endsParent: true,
+              keywords: KEYWORDS,
+              relevance: 0,
+              contains: [
+                {
+                  begin: /:/,
+                  end: /[=,\/]/,
+                  endsWithParent: true,
+                  contains: [
+                    KOTLIN_PAREN_TYPE,
+                    hljs.C_LINE_COMMENT_MODE,
+                    KOTLIN_NESTED_COMMENT
+                  ],
+                  relevance: 0
+                },
+                hljs.C_LINE_COMMENT_MODE,
+                KOTLIN_NESTED_COMMENT,
+                ANNOTATION_USE_SITE,
+                ANNOTATION,
+                STRING,
+                hljs.C_NUMBER_MODE
+              ]
+            },
+            KOTLIN_NESTED_COMMENT
+          ]
+        },
+        {
+          begin: [
+            /class|interface|trait/,
+            /\s+/,
+            hljs.UNDERSCORE_IDENT_RE
+          ],
+          beginScope: {
+            3: "title.class"
+          },
+          keywords: 'class interface trait',
+          end: /[:\{(]|$/,
+          excludeEnd: true,
+          illegal: 'extends implements',
+          contains: [
+            { beginKeywords: 'public protected internal private constructor' },
+            hljs.UNDERSCORE_TITLE_MODE,
+            {
+              className: 'type',
+              begin: /</,
+              end: />/,
+              excludeBegin: true,
+              excludeEnd: true,
+              relevance: 0
+            },
+            {
+              className: 'type',
+              begin: /[,:]\s*/,
+              end: /[<\(,){\s]|$/,
+              excludeBegin: true,
+              returnEnd: true
+            },
+            ANNOTATION_USE_SITE,
+            ANNOTATION
+          ]
+        },
+        STRING,
+        {
+          className: 'meta',
+          begin: "^#!/usr/bin/env",
+          end: '$',
+          illegal: '\n'
+        },
+        KOTLIN_NUMBER_MODE
+      ]
+    };
+  }
+
+  return kotlin;
+
+})();
+
+    hljs.registerLanguage('kotlin', hljsGrammar);
+  })();/*! `less` grammar compiled for Highlight.js 11.9.0 */
+  (function(){
+    var hljsGrammar = (function () {
+  'use strict';
+
+  const MODES = (hljs) => {
+    return {
+      IMPORTANT: {
+        scope: 'meta',
+        begin: '!important'
+      },
+      BLOCK_COMMENT: hljs.C_BLOCK_COMMENT_MODE,
+      HEXCOLOR: {
+        scope: 'number',
+        begin: /#(([0-9a-fA-F]{3,4})|(([0-9a-fA-F]{2}){3,4}))\b/
+      },
+      FUNCTION_DISPATCH: {
+        className: "built_in",
+        begin: /[\w-]+(?=\()/
+      },
+      ATTRIBUTE_SELECTOR_MODE: {
+        scope: 'selector-attr',
+        begin: /\[/,
+        end: /\]/,
+        illegal: '$',
+        contains: [
+          hljs.APOS_STRING_MODE,
+          hljs.QUOTE_STRING_MODE
+        ]
+      },
+      CSS_NUMBER_MODE: {
+        scope: 'number',
+        begin: hljs.NUMBER_RE + '(' +
+          '%|em|ex|ch|rem' +
+          '|vw|vh|vmin|vmax' +
+          '|cm|mm|in|pt|pc|px' +
+          '|deg|grad|rad|turn' +
+          '|s|ms' +
+          '|Hz|kHz' +
+          '|dpi|dpcm|dppx' +
+          ')?',
+        relevance: 0
+      },
+      CSS_VARIABLE: {
+        className: "attr",
+        begin: /--[A-Za-z_][A-Za-z0-9_-]*/
+      }
+    };
+  };
+
+  const HTML_TAGS = [
+    'a',
+    'abbr',
+    'address',
+    'article',
+    'aside',
+    'audio',
+    'b',
+    'blockquote',
+    'body',
+    'button',
+    'canvas',
+    'caption',
+    'cite',
+    'code',
+    'dd',
+    'del',
+    'details',
+    'dfn',
+    'div',
+    'dl',
+    'dt',
+    'em',
+    'fieldset',
+    'figcaption',
+    'figure',
+    'footer',
+    'form',
+    'h1',
+    'h2',
+    'h3',
+    'h4',
+    'h5',
+    'h6',
+    'header',
+    'hgroup',
+    'html',
+    'i',
+    'iframe',
+    'img',
+    'input',
+    'ins',
+    'kbd',
+    'label',
+    'legend',
+    'li',
+    'main',
+    'mark',
+    'menu',
+    'nav',
+    'object',
+    'ol',
+    'p',
+    'q',
+    'quote',
+    'samp',
+    'section',
+    'span',
+    'strong',
+    'summary',
+    'sup',
+    'table',
+    'tbody',
+    'td',
+    'textarea',
+    'tfoot',
+    'th',
+    'thead',
+    'time',
+    'tr',
+    'ul',
+    'var',
+    'video'
+  ];
+
+  const SVG_TAGS = [
+    'defs',
+    'g',
+    'marker',
+    'mask',
+    'pattern',
+    'svg',
+    'switch',
+    'symbol',
+    'feBlend',
+    'feColorMatrix',
+    'feComponentTransfer',
+    'feComposite',
+    'feConvolveMatrix',
+    'feDiffuseLighting',
+    'feDisplacementMap',
+    'feFlood',
+    'feGaussianBlur',
+    'feImage',
+    'feMerge',
+    'feMorphology',
+    'feOffset',
+    'feSpecularLighting',
+    'feTile',
+    'feTurbulence',
+    'linearGradient',
+    'radialGradient',
+    'stop',
+    'circle',
+    'ellipse',
+    'image',
+    'line',
+    'path',
+    'polygon',
+    'polyline',
+    'rect',
+    'text',
+    'use',
+    'textPath',
+    'tspan',
+    'foreignObject',
+    'clipPath'
+  ];
+
+  const TAGS = [
+    ...HTML_TAGS,
+    ...SVG_TAGS,
+  ];
+
+  // Sorting, then reversing makes sure longer attributes/elements like
+  // `font-weight` are matched fully instead of getting false positives on say `font`
+
+  const MEDIA_FEATURES = [
+    'any-hover',
+    'any-pointer',
+    'aspect-ratio',
+    'color',
+    'color-gamut',
+    'color-index',
+    'device-aspect-ratio',
+    'device-height',
+    'device-width',
+    'display-mode',
+    'forced-colors',
+    'grid',
+    'height',
+    'hover',
+    'inverted-colors',
+    'monochrome',
+    'orientation',
+    'overflow-block',
+    'overflow-inline',
+    'pointer',
+    'prefers-color-scheme',
+    'prefers-contrast',
+    'prefers-reduced-motion',
+    'prefers-reduced-transparency',
+    'resolution',
+    'scan',
+    'scripting',
+    'update',
+    'width',
+    // TODO: find a better solution?
+    'min-width',
+    'max-width',
+    'min-height',
+    'max-height'
+  ].sort().reverse();
+
+  // https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes
+  const PSEUDO_CLASSES = [
+    'active',
+    'any-link',
+    'blank',
+    'checked',
+    'current',
+    'default',
+    'defined',
+    'dir', // dir()
+    'disabled',
+    'drop',
+    'empty',
+    'enabled',
+    'first',
+    'first-child',
+    'first-of-type',
+    'fullscreen',
+    'future',
+    'focus',
+    'focus-visible',
+    'focus-within',
+    'has', // has()
+    'host', // host or host()
+    'host-context', // host-context()
+    'hover',
+    'indeterminate',
+    'in-range',
+    'invalid',
+    'is', // is()
+    'lang', // lang()
+    'last-child',
+    'last-of-type',
+    'left',
+    'link',
+    'local-link',
+    'not', // not()
+    'nth-child', // nth-child()
+    'nth-col', // nth-col()
+    'nth-last-child', // nth-last-child()
+    'nth-last-col', // nth-last-col()
+    'nth-last-of-type', //nth-last-of-type()
+    'nth-of-type', //nth-of-type()
+    'only-child',
+    'only-of-type',
+    'optional',
+    'out-of-range',
+    'past',
+    'placeholder-shown',
+    'read-only',
+    'read-write',
+    'required',
+    'right',
+    'root',
+    'scope',
+    'target',
+    'target-within',
+    'user-invalid',
+    'valid',
+    'visited',
+    'where' // where()
+  ].sort().reverse();
+
+  // https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-elements
+  const PSEUDO_ELEMENTS = [
+    'after',
+    'backdrop',
+    'before',
+    'cue',
+    'cue-region',
+    'first-letter',
+    'first-line',
+    'grammar-error',
+    'marker',
+    'part',
+    'placeholder',
+    'selection',
+    'slotted',
+    'spelling-error'
+  ].sort().reverse();
+
+  const ATTRIBUTES = [
+    'align-content',
+    'align-items',
+    'align-self',
+    'alignment-baseline',
+    'all',
+    'animation',
+    'animation-delay',
+    'animation-direction',
+    'animation-duration',
+    'animation-fill-mode',
+    'animation-iteration-count',
+    'animation-name',
+    'animation-play-state',
+    'animation-timing-function',
+    'backface-visibility',
+    'background',
+    'background-attachment',
+    'background-blend-mode',
+    'background-clip',
+    'background-color',
+    'background-image',
+    'background-origin',
+    'background-position',
+    'background-repeat',
+    'background-size',
+    'baseline-shift',
+    'block-size',
+    'border',
+    'border-block',
+    'border-block-color',
+    'border-block-end',
+    'border-block-end-color',
+    'border-block-end-style',
+    'border-block-end-width',
+    'border-block-start',
+    'border-block-start-color',
+    'border-block-start-style',
+    'border-block-start-width',
+    'border-block-style',
+    'border-block-width',
+    'border-bottom',
+    'border-bottom-color',
+    'border-bottom-left-radius',
+    'border-bottom-right-radius',
+    'border-bottom-style',
+    'border-bottom-width',
+    'border-collapse',
+    'border-color',
+    'border-image',
+    'border-image-outset',
+    'border-image-repeat',
+    'border-image-slice',
+    'border-image-source',
+    'border-image-width',
+    'border-inline',
+    'border-inline-color',
+    'border-inline-end',
+    'border-inline-end-color',
+    'border-inline-end-style',
+    'border-inline-end-width',
+    'border-inline-start',
+    'border-inline-start-color',
+    'border-inline-start-style',
+    'border-inline-start-width',
+    'border-inline-style',
+    'border-inline-width',
+    'border-left',
+    'border-left-color',
+    'border-left-style',
+    'border-left-width',
+    'border-radius',
+    'border-right',
+    'border-right-color',
+    'border-right-style',
+    'border-right-width',
+    'border-spacing',
+    'border-style',
+    'border-top',
+    'border-top-color',
+    'border-top-left-radius',
+    'border-top-right-radius',
+    'border-top-style',
+    'border-top-width',
+    'border-width',
+    'bottom',
+    'box-decoration-break',
+    'box-shadow',
+    'box-sizing',
+    'break-after',
+    'break-before',
+    'break-inside',
+    'cx',
+    'cy',
+    'caption-side',
+    'caret-color',
+    'clear',
+    'clip',
+    'clip-path',
+    'clip-rule',
+    'color',
+    'color-interpolation',
+    'color-interpolation-filters',
+    'color-profile',
+    'color-rendering',
+    'column-count',
+    'column-fill',
+    'column-gap',
+    'column-rule',
+    'column-rule-color',
+    'column-rule-style',
+    'column-rule-width',
+    'column-span',
+    'column-width',
+    'columns',
+    'contain',
+    'content',
+    'content-visibility',
+    'counter-increment',
+    'counter-reset',
+    'cue',
+    'cue-after',
+    'cue-before',
+    'cursor',
+    'direction',
+    'display',
+    'dominant-baseline',
+    'empty-cells',
+    'enable-background',
+    'fill',
+    'fill-opacity',
+    'fill-rule',
+    'filter',
+    'flex',
+    'flex-basis',
+    'flex-direction',
+    'flex-flow',
+    'flex-grow',
+    'flex-shrink',
+    'flex-wrap',
+    'float',
+    'flow',
+    'flood-color',
+    'flood-opacity',
+    'font',
+    'font-display',
+    'font-family',
+    'font-feature-settings',
+    'font-kerning',
+    'font-language-override',
+    'font-size',
+    'font-size-adjust',
+    'font-smoothing',
+    'font-stretch',
+    'font-style',
+    'font-synthesis',
+    'font-variant',
+    'font-variant-caps',
+    'font-variant-east-asian',
+    'font-variant-ligatures',
+    'font-variant-numeric',
+    'font-variant-position',
+    'font-variation-settings',
+    'font-weight',
+    'gap',
+    'glyph-orientation-horizontal',
+    'glyph-orientation-vertical',
+    'grid',
+    'grid-area',
+    'grid-auto-columns',
+    'grid-auto-flow',
+    'grid-auto-rows',
+    'grid-column',
+    'grid-column-end',
+    'grid-column-start',
+    'grid-gap',
+    'grid-row',
+    'grid-row-end',
+    'grid-row-start',
+    'grid-template',
+    'grid-template-areas',
+    'grid-template-columns',
+    'grid-template-rows',
+    'hanging-punctuation',
+    'height',
+    'hyphens',
+    'icon',
+    'image-orientation',
+    'image-rendering',
+    'image-resolution',
+    'ime-mode',
+    'inline-size',
+    'isolation',
+    'kerning',
+    'justify-content',
+    'left',
+    'letter-spacing',
+    'lighting-color',
+    'line-break',
+    'line-height',
+    'list-style',
+    'list-style-image',
+    'list-style-position',
+    'list-style-type',
+    'marker',
+    'marker-end',
+    'marker-mid',
+    'marker-start',
+    'mask',
+    'margin',
+    'margin-block',
+    'margin-block-end',
+    'margin-block-start',
+    'margin-bottom',
+    'margin-inline',
+    'margin-inline-end',
+    'margin-inline-start',
+    'margin-left',
+    'margin-right',
+    'margin-top',
+    'marks',
+    'mask',
+    'mask-border',
+    'mask-border-mode',
+    'mask-border-outset',
+    'mask-border-repeat',
+    'mask-border-slice',
+    'mask-border-source',
+    'mask-border-width',
+    'mask-clip',
+    'mask-composite',
+    'mask-image',
+    'mask-mode',
+    'mask-origin',
+    'mask-position',
+    'mask-repeat',
+    'mask-size',
+    'mask-type',
+    'max-block-size',
+    'max-height',
+    'max-inline-size',
+    'max-width',
+    'min-block-size',
+    'min-height',
+    'min-inline-size',
+    'min-width',
+    'mix-blend-mode',
+    'nav-down',
+    'nav-index',
+    'nav-left',
+    'nav-right',
+    'nav-up',
+    'none',
+    'normal',
+    'object-fit',
+    'object-position',
+    'opacity',
+    'order',
+    'orphans',
+    'outline',
+    'outline-color',
+    'outline-offset',
+    'outline-style',
+    'outline-width',
+    'overflow',
+    'overflow-wrap',
+    'overflow-x',
+    'overflow-y',
+    'padding',
+    'padding-block',
+    'padding-block-end',
+    'padding-block-start',
+    'padding-bottom',
+    'padding-inline',
+    'padding-inline-end',
+    'padding-inline-start',
+    'padding-left',
+    'padding-right',
+    'padding-top',
+    'page-break-after',
+    'page-break-before',
+    'page-break-inside',
+    'pause',
+    'pause-after',
+    'pause-before',
+    'perspective',
+    'perspective-origin',
+    'pointer-events',
+    'position',
+    'quotes',
+    'r',
+    'resize',
+    'rest',
+    'rest-after',
+    'rest-before',
+    'right',
+    'row-gap',
+    'scroll-margin',
+    'scroll-margin-block',
+    'scroll-margin-block-end',
+    'scroll-margin-block-start',
+    'scroll-margin-bottom',
+    'scroll-margin-inline',
+    'scroll-margin-inline-end',
+    'scroll-margin-inline-start',
+    'scroll-margin-left',
+    'scroll-margin-right',
+    'scroll-margin-top',
+    'scroll-padding',
+    'scroll-padding-block',
+    'scroll-padding-block-end',
+    'scroll-padding-block-start',
+    'scroll-padding-bottom',
+    'scroll-padding-inline',
+    'scroll-padding-inline-end',
+    'scroll-padding-inline-start',
+    'scroll-padding-left',
+    'scroll-padding-right',
+    'scroll-padding-top',
+    'scroll-snap-align',
+    'scroll-snap-stop',
+    'scroll-snap-type',
+    'scrollbar-color',
+    'scrollbar-gutter',
+    'scrollbar-width',
+    'shape-image-threshold',
+    'shape-margin',
+    'shape-outside',
+    'shape-rendering',
+    'stop-color',
+    'stop-opacity',
+    'stroke',
+    'stroke-dasharray',
+    'stroke-dashoffset',
+    'stroke-linecap',
+    'stroke-linejoin',
+    'stroke-miterlimit',
+    'stroke-opacity',
+    'stroke-width',
+    'speak',
+    'speak-as',
+    'src', // @font-face
+    'tab-size',
+    'table-layout',
+    'text-anchor',
+    'text-align',
+    'text-align-all',
+    'text-align-last',
+    'text-combine-upright',
+    'text-decoration',
+    'text-decoration-color',
+    'text-decoration-line',
+    'text-decoration-style',
+    'text-emphasis',
+    'text-emphasis-color',
+    'text-emphasis-position',
+    'text-emphasis-style',
+    'text-indent',
+    'text-justify',
+    'text-orientation',
+    'text-overflow',
+    'text-rendering',
+    'text-shadow',
+    'text-transform',
+    'text-underline-position',
+    'top',
+    'transform',
+    'transform-box',
+    'transform-origin',
+    'transform-style',
+    'transition',
+    'transition-delay',
+    'transition-duration',
+    'transition-property',
+    'transition-timing-function',
+    'unicode-bidi',
+    'vector-effect',
+    'vertical-align',
+    'visibility',
+    'voice-balance',
+    'voice-duration',
+    'voice-family',
+    'voice-pitch',
+    'voice-range',
+    'voice-rate',
+    'voice-stress',
+    'voice-volume',
+    'white-space',
+    'widows',
+    'width',
+    'will-change',
+    'word-break',
+    'word-spacing',
+    'word-wrap',
+    'writing-mode',
+    'x',
+    'y',
+    'z-index'
+  ].sort().reverse();
+
+  // some grammars use them all as a single group
+  const PSEUDO_SELECTORS = PSEUDO_CLASSES.concat(PSEUDO_ELEMENTS).sort().reverse();
+
+  /*
+  Language: Less
+  Description: It's CSS, with just a little more.
+  Author:   Max Mikhailov <seven.phases.max@gmail.com>
+  Website: http://lesscss.org
+  Category: common, css, web
+  */
+
+
+  /** @type LanguageFn */
+  function less(hljs) {
+    const modes = MODES(hljs);
+    const PSEUDO_SELECTORS$1 = PSEUDO_SELECTORS;
+
+    const AT_MODIFIERS = "and or not only";
+    const IDENT_RE = '[\\w-]+'; // yes, Less identifiers may begin with a digit
+    const INTERP_IDENT_RE = '(' + IDENT_RE + '|@\\{' + IDENT_RE + '\\})';
+
+    /* Generic Modes */
+
+    const RULES = []; const VALUE_MODES = []; // forward def. for recursive modes
+
+    const STRING_MODE = function(c) {
+      return {
+      // Less strings are not multiline (also include '~' for more consistent coloring of "escaped" strings)
+        className: 'string',
+        begin: '~?' + c + '.*?' + c
+      };
+    };
+
+    const IDENT_MODE = function(name, begin, relevance) {
+      return {
+        className: name,
+        begin: begin,
+        relevance: relevance
+      };
+    };
+
+    const AT_KEYWORDS = {
+      $pattern: /[a-z-]+/,
+      keyword: AT_MODIFIERS,
+      attribute: MEDIA_FEATURES.join(" ")
+    };
+
+    const PARENS_MODE = {
+      // used only to properly balance nested parens inside mixin call, def. arg list
+      begin: '\\(',
+      end: '\\)',
+      contains: VALUE_MODES,
+      keywords: AT_KEYWORDS,
+      relevance: 0
+    };
+
+    // generic Less highlighter (used almost everywhere except selectors):
+    VALUE_MODES.push(
+      hljs.C_LINE_COMMENT_MODE,
+      hljs.C_BLOCK_COMMENT_MODE,
+      STRING_MODE("'"),
+      STRING_MODE('"'),
+      modes.CSS_NUMBER_MODE, // fixme: it does not include dot for numbers like .5em :(
+      {
+        begin: '(url|data-uri)\\(',
+        starts: {
+          className: 'string',
+          end: '[\\)\\n]',
+          excludeEnd: true
+        }
+      },
+      modes.HEXCOLOR,
+      PARENS_MODE,
+      IDENT_MODE('variable', '@@?' + IDENT_RE, 10),
+      IDENT_MODE('variable', '@\\{' + IDENT_RE + '\\}'),
+      IDENT_MODE('built_in', '~?`[^`]*?`'), // inline javascript (or whatever host language) *multiline* string
+      { // @media features (it’s here to not duplicate things in AT_RULE_MODE with extra PARENS_MODE overriding):
+        className: 'attribute',
+        begin: IDENT_RE + '\\s*:',
+        end: ':',
+        returnBegin: true,
+        excludeEnd: true
+      },
+      modes.IMPORTANT,
+      { beginKeywords: 'and not' },
+      modes.FUNCTION_DISPATCH
+    );
+
+    const VALUE_WITH_RULESETS = VALUE_MODES.concat({
+      begin: /\{/,
+      end: /\}/,
+      contains: RULES
+    });
+
+    const MIXIN_GUARD_MODE = {
+      beginKeywords: 'when',
+      endsWithParent: true,
+      contains: [ { beginKeywords: 'and not' } ].concat(VALUE_MODES) // using this form to override VALUE’s 'function' match
+    };
+
+    /* Rule-Level Modes */
+
+    const RULE_MODE = {
+      begin: INTERP_IDENT_RE + '\\s*:',
+      returnBegin: true,
+      end: /[;}]/,
+      relevance: 0,
+      contains: [
+        { begin: /-(webkit|moz|ms|o)-/ },
+        modes.CSS_VARIABLE,
+        {
+          className: 'attribute',
+          begin: '\\b(' + ATTRIBUTES.join('|') + ')\\b',
+          end: /(?=:)/,
+          starts: {
+            endsWithParent: true,
+            illegal: '[<=$]',
+            relevance: 0,
+            contains: VALUE_MODES
+          }
+        }
+      ]
+    };
+
+    const AT_RULE_MODE = {
+      className: 'keyword',
+      begin: '@(import|media|charset|font-face|(-[a-z]+-)?keyframes|supports|document|namespace|page|viewport|host)\\b',
+      starts: {
+        end: '[;{}]',
+        keywords: AT_KEYWORDS,
+        returnEnd: true,
+        contains: VALUE_MODES,
+        relevance: 0
+      }
+    };
+
+    // variable definitions and calls
+    const VAR_RULE_MODE = {
+      className: 'variable',
+      variants: [
+        // using more strict pattern for higher relevance to increase chances of Less detection.
+        // this is *the only* Less specific statement used in most of the sources, so...
+        // (we’ll still often loose to the css-parser unless there's '//' comment,
+        // simply because 1 variable just can't beat 99 properties :)
+        {
+          begin: '@' + IDENT_RE + '\\s*:',
+          relevance: 15
+        },
+        { begin: '@' + IDENT_RE }
+      ],
+      starts: {
+        end: '[;}]',
+        returnEnd: true,
+        contains: VALUE_WITH_RULESETS
+      }
+    };
+
+    const SELECTOR_MODE = {
+      // first parse unambiguous selectors (i.e. those not starting with tag)
+      // then fall into the scary lookahead-discriminator variant.
+      // this mode also handles mixin definitions and calls
+      variants: [
+        {
+          begin: '[\\.#:&\\[>]',
+          end: '[;{}]' // mixin calls end with ';'
+        },
+        {
+          begin: INTERP_IDENT_RE,
+          end: /\{/
+        }
+      ],
+      returnBegin: true,
+      returnEnd: true,
+      illegal: '[<=\'$"]',
+      relevance: 0,
+      contains: [
+        hljs.C_LINE_COMMENT_MODE,
+        hljs.C_BLOCK_COMMENT_MODE,
+        MIXIN_GUARD_MODE,
+        IDENT_MODE('keyword', 'all\\b'),
+        IDENT_MODE('variable', '@\\{' + IDENT_RE + '\\}'), // otherwise it’s identified as tag
+        
+        {
+          begin: '\\b(' + TAGS.join('|') + ')\\b',
+          className: 'selector-tag'
+        },
+        modes.CSS_NUMBER_MODE,
+        IDENT_MODE('selector-tag', INTERP_IDENT_RE, 0),
+        IDENT_MODE('selector-id', '#' + INTERP_IDENT_RE),
+        IDENT_MODE('selector-class', '\\.' + INTERP_IDENT_RE, 0),
+        IDENT_MODE('selector-tag', '&', 0),
+        modes.ATTRIBUTE_SELECTOR_MODE,
+        {
+          className: 'selector-pseudo',
+          begin: ':(' + PSEUDO_CLASSES.join('|') + ')'
+        },
+        {
+          className: 'selector-pseudo',
+          begin: ':(:)?(' + PSEUDO_ELEMENTS.join('|') + ')'
+        },
+        {
+          begin: /\(/,
+          end: /\)/,
+          relevance: 0,
+          contains: VALUE_WITH_RULESETS
+        }, // argument list of parametric mixins
+        { begin: '!important' }, // eat !important after mixin call or it will be colored as tag
+        modes.FUNCTION_DISPATCH
+      ]
+    };
+
+    const PSEUDO_SELECTOR_MODE = {
+      begin: IDENT_RE + ':(:)?' + `(${PSEUDO_SELECTORS$1.join('|')})`,
+      returnBegin: true,
+      contains: [ SELECTOR_MODE ]
+    };
+
+    RULES.push(
+      hljs.C_LINE_COMMENT_MODE,
+      hljs.C_BLOCK_COMMENT_MODE,
+      AT_RULE_MODE,
+      VAR_RULE_MODE,
+      PSEUDO_SELECTOR_MODE,
+      RULE_MODE,
+      SELECTOR_MODE,
+      MIXIN_GUARD_MODE,
+      modes.FUNCTION_DISPATCH
+    );
+
+    return {
+      name: 'Less',
+      case_insensitive: true,
+      illegal: '[=>\'/<($"]',
+      contains: RULES
+    };
+  }
+
+  return less;
+
+})();
+
+    hljs.registerLanguage('less', hljsGrammar);
+  })();/*! `lua` grammar compiled for Highlight.js 11.9.0 */
+  (function(){
+    var hljsGrammar = (function () {
+  'use strict';
+
+  /*
+  Language: Lua
+  Description: Lua is a powerful, efficient, lightweight, embeddable scripting language.
+  Author: Andrew Fedorov <dmmdrs@mail.ru>
+  Category: common, gaming, scripting
+  Website: https://www.lua.org
+  */
+
+  function lua(hljs) {
+    const OPENING_LONG_BRACKET = '\\[=*\\[';
+    const CLOSING_LONG_BRACKET = '\\]=*\\]';
+    const LONG_BRACKETS = {
+      begin: OPENING_LONG_BRACKET,
+      end: CLOSING_LONG_BRACKET,
+      contains: [ 'self' ]
+    };
+    const COMMENTS = [
+      hljs.COMMENT('--(?!' + OPENING_LONG_BRACKET + ')', '$'),
+      hljs.COMMENT(
+        '--' + OPENING_LONG_BRACKET,
+        CLOSING_LONG_BRACKET,
+        {
+          contains: [ LONG_BRACKETS ],
+          relevance: 10
+        }
+      )
+    ];
+    return {
+      name: 'Lua',
+      keywords: {
+        $pattern: hljs.UNDERSCORE_IDENT_RE,
+        literal: "true false nil",
+        keyword: "and break do else elseif end for goto if in local not or repeat return then until while",
+        built_in:
+          // Metatags and globals:
+          '_G _ENV _VERSION __index __newindex __mode __call __metatable __tostring __len '
+          + '__gc __add __sub __mul __div __mod __pow __concat __unm __eq __lt __le assert '
+          // Standard methods and properties:
+          + 'collectgarbage dofile error getfenv getmetatable ipairs load loadfile loadstring '
+          + 'module next pairs pcall print rawequal rawget rawset require select setfenv '
+          + 'setmetatable tonumber tostring type unpack xpcall arg self '
+          // Library methods and properties (one line per library):
+          + 'coroutine resume yield status wrap create running debug getupvalue '
+          + 'debug sethook getmetatable gethook setmetatable setlocal traceback setfenv getinfo setupvalue getlocal getregistry getfenv '
+          + 'io lines write close flush open output type read stderr stdin input stdout popen tmpfile '
+          + 'math log max acos huge ldexp pi cos tanh pow deg tan cosh sinh random randomseed frexp ceil floor rad abs sqrt modf asin min mod fmod log10 atan2 exp sin atan '
+          + 'os exit setlocale date getenv difftime remove time clock tmpname rename execute package preload loadlib loaded loaders cpath config path seeall '
+          + 'string sub upper len gfind rep find match char dump gmatch reverse byte format gsub lower '
+          + 'table setn insert getn foreachi maxn foreach concat sort remove'
+      },
+      contains: COMMENTS.concat([
+        {
+          className: 'function',
+          beginKeywords: 'function',
+          end: '\\)',
+          contains: [
+            hljs.inherit(hljs.TITLE_MODE, { begin: '([_a-zA-Z]\\w*\\.)*([_a-zA-Z]\\w*:)?[_a-zA-Z]\\w*' }),
+            {
+              className: 'params',
+              begin: '\\(',
+              endsWithParent: true,
+              contains: COMMENTS
+            }
+          ].concat(COMMENTS)
+        },
+        hljs.C_NUMBER_MODE,
+        hljs.APOS_STRING_MODE,
+        hljs.QUOTE_STRING_MODE,
+        {
+          className: 'string',
+          begin: OPENING_LONG_BRACKET,
+          end: CLOSING_LONG_BRACKET,
+          contains: [ LONG_BRACKETS ],
+          relevance: 5
+        }
+      ])
+    };
+  }
+
+  return lua;
+
+})();
+
+    hljs.registerLanguage('lua', hljsGrammar);
+  })();/*! `makefile` grammar compiled for Highlight.js 11.9.0 */
+  (function(){
+    var hljsGrammar = (function () {
+  'use strict';
+
+  /*
+  Language: Makefile
+  Author: Ivan Sagalaev <maniac@softwaremaniacs.org>
+  Contributors: Joël Porquet <joel@porquet.org>
+  Website: https://www.gnu.org/software/make/manual/html_node/Introduction.html
+  Category: common, build-system
+  */
+
+  function makefile(hljs) {
+    /* Variables: simple (eg $(var)) and special (eg $@) */
+    const VARIABLE = {
+      className: 'variable',
+      variants: [
+        {
+          begin: '\\$\\(' + hljs.UNDERSCORE_IDENT_RE + '\\)',
+          contains: [ hljs.BACKSLASH_ESCAPE ]
+        },
+        { begin: /\$[@%<?\^\+\*]/ }
+      ]
+    };
+    /* Quoted string with variables inside */
+    const QUOTE_STRING = {
+      className: 'string',
+      begin: /"/,
+      end: /"/,
+      contains: [
+        hljs.BACKSLASH_ESCAPE,
+        VARIABLE
+      ]
+    };
+    /* Function: $(func arg,...) */
+    const FUNC = {
+      className: 'variable',
+      begin: /\$\([\w-]+\s/,
+      end: /\)/,
+      keywords: { built_in:
+          'subst patsubst strip findstring filter filter-out sort '
+          + 'word wordlist firstword lastword dir notdir suffix basename '
+          + 'addsuffix addprefix join wildcard realpath abspath error warning '
+          + 'shell origin flavor foreach if or and call eval file value' },
+      contains: [ VARIABLE ]
+    };
+    /* Variable assignment */
+    const ASSIGNMENT = { begin: '^' + hljs.UNDERSCORE_IDENT_RE + '\\s*(?=[:+?]?=)' };
+    /* Meta targets (.PHONY) */
+    const META = {
+      className: 'meta',
+      begin: /^\.PHONY:/,
+      end: /$/,
+      keywords: {
+        $pattern: /[\.\w]+/,
+        keyword: '.PHONY'
+      }
+    };
+    /* Targets */
+    const TARGET = {
+      className: 'section',
+      begin: /^[^\s]+:/,
+      end: /$/,
+      contains: [ VARIABLE ]
+    };
+    return {
+      name: 'Makefile',
+      aliases: [
+        'mk',
+        'mak',
+        'make',
+      ],
+      keywords: {
+        $pattern: /[\w-]+/,
+        keyword: 'define endef undefine ifdef ifndef ifeq ifneq else endif '
+        + 'include -include sinclude override export unexport private vpath'
+      },
+      contains: [
+        hljs.HASH_COMMENT_MODE,
+        VARIABLE,
+        QUOTE_STRING,
+        FUNC,
+        ASSIGNMENT,
+        META,
+        TARGET
+      ]
+    };
+  }
+
+  return makefile;
+
+})();
+
+    hljs.registerLanguage('makefile', hljsGrammar);
+  })();/*! `markdown` grammar compiled for Highlight.js 11.9.0 */
+  (function(){
+    var hljsGrammar = (function () {
+  'use strict';
+
+  /*
+  Language: Markdown
+  Requires: xml.js
+  Author: John Crepezzi <john.crepezzi@gmail.com>
+  Website: https://daringfireball.net/projects/markdown/
+  Category: common, markup
+  */
+
+  function markdown(hljs) {
+    const regex = hljs.regex;
+    const INLINE_HTML = {
+      begin: /<\/?[A-Za-z_]/,
+      end: '>',
+      subLanguage: 'xml',
+      relevance: 0
+    };
+    const HORIZONTAL_RULE = {
+      begin: '^[-\\*]{3,}',
+      end: '$'
+    };
+    const CODE = {
+      className: 'code',
+      variants: [
+        // TODO: fix to allow these to work with sublanguage also
+        { begin: '(`{3,})[^`](.|\\n)*?\\1`*[ ]*' },
+        { begin: '(~{3,})[^~](.|\\n)*?\\1~*[ ]*' },
+        // needed to allow markdown as a sublanguage to work
+        {
+          begin: '```',
+          end: '```+[ ]*$'
+        },
+        {
+          begin: '~~~',
+          end: '~~~+[ ]*$'
+        },
+        { begin: '`.+?`' },
+        {
+          begin: '(?=^( {4}|\\t))',
+          // use contains to gobble up multiple lines to allow the block to be whatever size
+          // but only have a single open/close tag vs one per line
+          contains: [
+            {
+              begin: '^( {4}|\\t)',
+              end: '(\\n)$'
+            }
+          ],
+          relevance: 0
+        }
+      ]
+    };
+    const LIST = {
+      className: 'bullet',
+      begin: '^[ \t]*([*+-]|(\\d+\\.))(?=\\s+)',
+      end: '\\s+',
+      excludeEnd: true
+    };
+    const LINK_REFERENCE = {
+      begin: /^\[[^\n]+\]:/,
+      returnBegin: true,
+      contains: [
+        {
+          className: 'symbol',
+          begin: /\[/,
+          end: /\]/,
+          excludeBegin: true,
+          excludeEnd: true
+        },
+        {
+          className: 'link',
+          begin: /:\s*/,
+          end: /$/,
+          excludeBegin: true
+        }
+      ]
+    };
+    const URL_SCHEME = /[A-Za-z][A-Za-z0-9+.-]*/;
+    const LINK = {
+      variants: [
+        // too much like nested array access in so many languages
+        // to have any real relevance
+        {
+          begin: /\[.+?\]\[.*?\]/,
+          relevance: 0
+        },
+        // popular internet URLs
+        {
+          begin: /\[.+?\]\(((data|javascript|mailto):|(?:http|ftp)s?:\/\/).*?\)/,
+          relevance: 2
+        },
+        {
+          begin: regex.concat(/\[.+?\]\(/, URL_SCHEME, /:\/\/.*?\)/),
+          relevance: 2
+        },
+        // relative urls
+        {
+          begin: /\[.+?\]\([./?&#].*?\)/,
+          relevance: 1
+        },
+        // whatever else, lower relevance (might not be a link at all)
+        {
+          begin: /\[.*?\]\(.*?\)/,
+          relevance: 0
+        }
+      ],
+      returnBegin: true,
+      contains: [
+        {
+          // empty strings for alt or link text
+          match: /\[(?=\])/ },
+        {
+          className: 'string',
+          relevance: 0,
+          begin: '\\[',
+          end: '\\]',
+          excludeBegin: true,
+          returnEnd: true
+        },
+        {
+          className: 'link',
+          relevance: 0,
+          begin: '\\]\\(',
+          end: '\\)',
+          excludeBegin: true,
+          excludeEnd: true
+        },
+        {
+          className: 'symbol',
+          relevance: 0,
+          begin: '\\]\\[',
+          end: '\\]',
+          excludeBegin: true,
+          excludeEnd: true
+        }
+      ]
+    };
+    const BOLD = {
+      className: 'strong',
+      contains: [], // defined later
+      variants: [
+        {
+          begin: /_{2}(?!\s)/,
+          end: /_{2}/
+        },
+        {
+          begin: /\*{2}(?!\s)/,
+          end: /\*{2}/
+        }
+      ]
+    };
+    const ITALIC = {
+      className: 'emphasis',
+      contains: [], // defined later
+      variants: [
+        {
+          begin: /\*(?![*\s])/,
+          end: /\*/
+        },
+        {
+          begin: /_(?![_\s])/,
+          end: /_/,
+          relevance: 0
+        }
+      ]
+    };
+
+    // 3 level deep nesting is not allowed because it would create confusion
+    // in cases like `***testing***` because where we don't know if the last
+    // `***` is starting a new bold/italic or finishing the last one
+    const BOLD_WITHOUT_ITALIC = hljs.inherit(BOLD, { contains: [] });
+    const ITALIC_WITHOUT_BOLD = hljs.inherit(ITALIC, { contains: [] });
+    BOLD.contains.push(ITALIC_WITHOUT_BOLD);
+    ITALIC.contains.push(BOLD_WITHOUT_ITALIC);
+
+    let CONTAINABLE = [
+      INLINE_HTML,
+      LINK
+    ];
+
+    [
+      BOLD,
+      ITALIC,
+      BOLD_WITHOUT_ITALIC,
+      ITALIC_WITHOUT_BOLD
+    ].forEach(m => {
+      m.contains = m.contains.concat(CONTAINABLE);
+    });
+
+    CONTAINABLE = CONTAINABLE.concat(BOLD, ITALIC);
+
+    const HEADER = {
+      className: 'section',
+      variants: [
+        {
+          begin: '^#{1,6}',
+          end: '$',
+          contains: CONTAINABLE
+        },
+        {
+          begin: '(?=^.+?\\n[=-]{2,}$)',
+          contains: [
+            { begin: '^[=-]*$' },
+            {
+              begin: '^',
+              end: "\\n",
+              contains: CONTAINABLE
+            }
+          ]
+        }
+      ]
+    };
+
+    const BLOCKQUOTE = {
+      className: 'quote',
+      begin: '^>\\s+',
+      contains: CONTAINABLE,
+      end: '$'
+    };
+
+    return {
+      name: 'Markdown',
+      aliases: [
+        'md',
+        'mkdown',
+        'mkd'
+      ],
+      contains: [
+        HEADER,
+        INLINE_HTML,
+        LIST,
+        BOLD,
+        ITALIC,
+        BLOCKQUOTE,
+        CODE,
+        HORIZONTAL_RULE,
+        LINK,
+        LINK_REFERENCE
+      ]
+    };
+  }
+
+  return markdown;
+
+})();
+
+    hljs.registerLanguage('markdown', hljsGrammar);
+  })();/*! `objectivec` grammar compiled for Highlight.js 11.9.0 */
+  (function(){
+    var hljsGrammar = (function () {
+  'use strict';
+
+  /*
+  Language: Objective-C
+  Author: Valerii Hiora <valerii.hiora@gmail.com>
+  Contributors: Angel G. Olloqui <angelgarcia.mail@gmail.com>, Matt Diephouse <matt@diephouse.com>, Andrew Farmer <ahfarmer@gmail.com>, Minh Nguyễn <mxn@1ec5.org>
+  Website: https://developer.apple.com/documentation/objectivec
+  Category: common
+  */
+
+  function objectivec(hljs) {
+    const API_CLASS = {
+      className: 'built_in',
+      begin: '\\b(AV|CA|CF|CG|CI|CL|CM|CN|CT|MK|MP|MTK|MTL|NS|SCN|SK|UI|WK|XC)\\w+'
+    };
+    const IDENTIFIER_RE = /[a-zA-Z@][a-zA-Z0-9_]*/;
+    const TYPES = [
+      "int",
+      "float",
+      "char",
+      "unsigned",
+      "signed",
+      "short",
+      "long",
+      "double",
+      "wchar_t",
+      "unichar",
+      "void",
+      "bool",
+      "BOOL",
+      "id|0",
+      "_Bool"
+    ];
+    const KWS = [
+      "while",
+      "export",
+      "sizeof",
+      "typedef",
+      "const",
+      "struct",
+      "for",
+      "union",
+      "volatile",
+      "static",
+      "mutable",
+      "if",
+      "do",
+      "return",
+      "goto",
+      "enum",
+      "else",
+      "break",
+      "extern",
+      "asm",
+      "case",
+      "default",
+      "register",
+      "explicit",
+      "typename",
+      "switch",
+      "continue",
+      "inline",
+      "readonly",
+      "assign",
+      "readwrite",
+      "self",
+      "@synchronized",
+      "id",
+      "typeof",
+      "nonatomic",
+      "IBOutlet",
+      "IBAction",
+      "strong",
+      "weak",
+      "copy",
+      "in",
+      "out",
+      "inout",
+      "bycopy",
+      "byref",
+      "oneway",
+      "__strong",
+      "__weak",
+      "__block",
+      "__autoreleasing",
+      "@private",
+      "@protected",
+      "@public",
+      "@try",
+      "@property",
+      "@end",
+      "@throw",
+      "@catch",
+      "@finally",
+      "@autoreleasepool",
+      "@synthesize",
+      "@dynamic",
+      "@selector",
+      "@optional",
+      "@required",
+      "@encode",
+      "@package",
+      "@import",
+      "@defs",
+      "@compatibility_alias",
+      "__bridge",
+      "__bridge_transfer",
+      "__bridge_retained",
+      "__bridge_retain",
+      "__covariant",
+      "__contravariant",
+      "__kindof",
+      "_Nonnull",
+      "_Nullable",
+      "_Null_unspecified",
+      "__FUNCTION__",
+      "__PRETTY_FUNCTION__",
+      "__attribute__",
+      "getter",
+      "setter",
+      "retain",
+      "unsafe_unretained",
+      "nonnull",
+      "nullable",
+      "null_unspecified",
+      "null_resettable",
+      "class",
+      "instancetype",
+      "NS_DESIGNATED_INITIALIZER",
+      "NS_UNAVAILABLE",
+      "NS_REQUIRES_SUPER",
+      "NS_RETURNS_INNER_POINTER",
+      "NS_INLINE",
+      "NS_AVAILABLE",
+      "NS_DEPRECATED",
+      "NS_ENUM",
+      "NS_OPTIONS",
+      "NS_SWIFT_UNAVAILABLE",
+      "NS_ASSUME_NONNULL_BEGIN",
+      "NS_ASSUME_NONNULL_END",
+      "NS_REFINED_FOR_SWIFT",
+      "NS_SWIFT_NAME",
+      "NS_SWIFT_NOTHROW",
+      "NS_DURING",
+      "NS_HANDLER",
+      "NS_ENDHANDLER",
+      "NS_VALUERETURN",
+      "NS_VOIDRETURN"
+    ];
+    const LITERALS = [
+      "false",
+      "true",
+      "FALSE",
+      "TRUE",
+      "nil",
+      "YES",
+      "NO",
+      "NULL"
+    ];
+    const BUILT_INS = [
+      "dispatch_once_t",
+      "dispatch_queue_t",
+      "dispatch_sync",
+      "dispatch_async",
+      "dispatch_once"
+    ];
+    const KEYWORDS = {
+      "variable.language": [
+        "this",
+        "super"
+      ],
+      $pattern: IDENTIFIER_RE,
+      keyword: KWS,
+      literal: LITERALS,
+      built_in: BUILT_INS,
+      type: TYPES
+    };
+    const CLASS_KEYWORDS = {
+      $pattern: IDENTIFIER_RE,
+      keyword: [
+        "@interface",
+        "@class",
+        "@protocol",
+        "@implementation"
+      ]
+    };
+    return {
+      name: 'Objective-C',
+      aliases: [
+        'mm',
+        'objc',
+        'obj-c',
+        'obj-c++',
+        'objective-c++'
+      ],
+      keywords: KEYWORDS,
+      illegal: '</',
+      contains: [
+        API_CLASS,
+        hljs.C_LINE_COMMENT_MODE,
+        hljs.C_BLOCK_COMMENT_MODE,
+        hljs.C_NUMBER_MODE,
+        hljs.QUOTE_STRING_MODE,
+        hljs.APOS_STRING_MODE,
+        {
+          className: 'string',
+          variants: [
+            {
+              begin: '@"',
+              end: '"',
+              illegal: '\\n',
+              contains: [ hljs.BACKSLASH_ESCAPE ]
+            }
+          ]
+        },
+        {
+          className: 'meta',
+          begin: /#\s*[a-z]+\b/,
+          end: /$/,
+          keywords: { keyword:
+              'if else elif endif define undef warning error line '
+              + 'pragma ifdef ifndef include' },
+          contains: [
+            {
+              begin: /\\\n/,
+              relevance: 0
+            },
+            hljs.inherit(hljs.QUOTE_STRING_MODE, { className: 'string' }),
+            {
+              className: 'string',
+              begin: /<.*?>/,
+              end: /$/,
+              illegal: '\\n'
+            },
+            hljs.C_LINE_COMMENT_MODE,
+            hljs.C_BLOCK_COMMENT_MODE
+          ]
+        },
+        {
+          className: 'class',
+          begin: '(' + CLASS_KEYWORDS.keyword.join('|') + ')\\b',
+          end: /(\{|$)/,
+          excludeEnd: true,
+          keywords: CLASS_KEYWORDS,
+          contains: [ hljs.UNDERSCORE_TITLE_MODE ]
+        },
+        {
+          begin: '\\.' + hljs.UNDERSCORE_IDENT_RE,
+          relevance: 0
+        }
+      ]
+    };
+  }
+
+  return objectivec;
+
+})();
+
+    hljs.registerLanguage('objectivec', hljsGrammar);
+  })();/*! `perl` grammar compiled for Highlight.js 11.9.0 */
+  (function(){
+    var hljsGrammar = (function () {
+  'use strict';
+
+  /*
+  Language: Perl
+  Author: Peter Leonov <gojpeg@yandex.ru>
+  Website: https://www.perl.org
+  Category: common
+  */
+
+  /** @type LanguageFn */
+  function perl(hljs) {
+    const regex = hljs.regex;
+    const KEYWORDS = [
+      'abs',
+      'accept',
+      'alarm',
+      'and',
+      'atan2',
+      'bind',
+      'binmode',
+      'bless',
+      'break',
+      'caller',
+      'chdir',
+      'chmod',
+      'chomp',
+      'chop',
+      'chown',
+      'chr',
+      'chroot',
+      'class',
+      'close',
+      'closedir',
+      'connect',
+      'continue',
+      'cos',
+      'crypt',
+      'dbmclose',
+      'dbmopen',
+      'defined',
+      'delete',
+      'die',
+      'do',
+      'dump',
+      'each',
+      'else',
+      'elsif',
+      'endgrent',
+      'endhostent',
+      'endnetent',
+      'endprotoent',
+      'endpwent',
+      'endservent',
+      'eof',
+      'eval',
+      'exec',
+      'exists',
+      'exit',
+      'exp',
+      'fcntl',
+      'field',
+      'fileno',
+      'flock',
+      'for',
+      'foreach',
+      'fork',
+      'format',
+      'formline',
+      'getc',
+      'getgrent',
+      'getgrgid',
+      'getgrnam',
+      'gethostbyaddr',
+      'gethostbyname',
+      'gethostent',
+      'getlogin',
+      'getnetbyaddr',
+      'getnetbyname',
+      'getnetent',
+      'getpeername',
+      'getpgrp',
+      'getpriority',
+      'getprotobyname',
+      'getprotobynumber',
+      'getprotoent',
+      'getpwent',
+      'getpwnam',
+      'getpwuid',
+      'getservbyname',
+      'getservbyport',
+      'getservent',
+      'getsockname',
+      'getsockopt',
+      'given',
+      'glob',
+      'gmtime',
+      'goto',
+      'grep',
+      'gt',
+      'hex',
+      'if',
+      'index',
+      'int',
+      'ioctl',
+      'join',
+      'keys',
+      'kill',
+      'last',
+      'lc',
+      'lcfirst',
+      'length',
+      'link',
+      'listen',
+      'local',
+      'localtime',
+      'log',
+      'lstat',
+      'lt',
+      'ma',
+      'map',
+      'method',
+      'mkdir',
+      'msgctl',
+      'msgget',
+      'msgrcv',
+      'msgsnd',
+      'my',
+      'ne',
+      'next',
+      'no',
+      'not',
+      'oct',
+      'open',
+      'opendir',
+      'or',
+      'ord',
+      'our',
+      'pack',
+      'package',
+      'pipe',
+      'pop',
+      'pos',
+      'print',
+      'printf',
+      'prototype',
+      'push',
+      'q|0',
+      'qq',
+      'quotemeta',
+      'qw',
+      'qx',
+      'rand',
+      'read',
+      'readdir',
+      'readline',
+      'readlink',
+      'readpipe',
+      'recv',
+      'redo',
+      'ref',
+      'rename',
+      'require',
+      'reset',
+      'return',
+      'reverse',
+      'rewinddir',
+      'rindex',
+      'rmdir',
+      'say',
+      'scalar',
+      'seek',
+      'seekdir',
+      'select',
+      'semctl',
+      'semget',
+      'semop',
+      'send',
+      'setgrent',
+      'sethostent',
+      'setnetent',
+      'setpgrp',
+      'setpriority',
+      'setprotoent',
+      'setpwent',
+      'setservent',
+      'setsockopt',
+      'shift',
+      'shmctl',
+      'shmget',
+      'shmread',
+      'shmwrite',
+      'shutdown',
+      'sin',
+      'sleep',
+      'socket',
+      'socketpair',
+      'sort',
+      'splice',
+      'split',
+      'sprintf',
+      'sqrt',
+      'srand',
+      'stat',
+      'state',
+      'study',
+      'sub',
+      'substr',
+      'symlink',
+      'syscall',
+      'sysopen',
+      'sysread',
+      'sysseek',
+      'system',
+      'syswrite',
+      'tell',
+      'telldir',
+      'tie',
+      'tied',
+      'time',
+      'times',
+      'tr',
+      'truncate',
+      'uc',
+      'ucfirst',
+      'umask',
+      'undef',
+      'unless',
+      'unlink',
+      'unpack',
+      'unshift',
+      'untie',
+      'until',
+      'use',
+      'utime',
+      'values',
+      'vec',
+      'wait',
+      'waitpid',
+      'wantarray',
+      'warn',
+      'when',
+      'while',
+      'write',
+      'x|0',
+      'xor',
+      'y|0'
+    ];
+
+    // https://perldoc.perl.org/perlre#Modifiers
+    const REGEX_MODIFIERS = /[dualxmsipngr]{0,12}/; // aa and xx are valid, making max length 12
+    const PERL_KEYWORDS = {
+      $pattern: /[\w.]+/,
+      keyword: KEYWORDS.join(" ")
+    };
+    const SUBST = {
+      className: 'subst',
+      begin: '[$@]\\{',
+      end: '\\}',
+      keywords: PERL_KEYWORDS
+    };
+    const METHOD = {
+      begin: /->\{/,
+      end: /\}/
+      // contains defined later
+    };
+    const ATTR = {
+      scope: 'attr',
+      match: /\s+:\s*\w+(\s*\(.*?\))?/,
+    };
+    const VAR = {
+      scope: 'variable',
+      variants: [
+        { begin: /\$\d/ },
+        { begin: regex.concat(
+          /[$%@](\^\w\b|#\w+(::\w+)*|\{\w+\}|\w+(::\w*)*)/,
+          // negative look-ahead tries to avoid matching patterns that are not
+          // Perl at all like $ident$, @ident@, etc.
+          `(?![A-Za-z])(?![@$%])`
+          )
+        },
+        {
+          // Only $= is a special Perl variable and one can't declare @= or %=.
+          begin: /[$%@][^\s\w{=]|\$=/,
+          relevance: 0
+        }
+      ],
+      contains: [ ATTR ],
+    };
+    const NUMBER = {
+      className: 'number',
+      variants: [
+        // decimal numbers:
+        // include the case where a number starts with a dot (eg. .9), and
+        // the leading 0? avoids mixing the first and second match on 0.x cases
+        { match: /0?\.[0-9][0-9_]+\b/ },
+        // include the special versioned number (eg. v5.38)
+        { match: /\bv?(0|[1-9][0-9_]*(\.[0-9_]+)?|[1-9][0-9_]*)\b/ },
+        // non-decimal numbers:
+        { match: /\b0[0-7][0-7_]*\b/ },
+        { match: /\b0x[0-9a-fA-F][0-9a-fA-F_]*\b/ },
+        { match: /\b0b[0-1][0-1_]*\b/ },
+      ],
+      relevance: 0
+    };
+    const STRING_CONTAINS = [
+      hljs.BACKSLASH_ESCAPE,
+      SUBST,
+      VAR
+    ];
+    const REGEX_DELIMS = [
+      /!/,
+      /\//,
+      /\|/,
+      /\?/,
+      /'/,
+      /"/, // valid but infrequent and weird
+      /#/ // valid but infrequent and weird
+    ];
+    /**
+     * @param {string|RegExp} prefix
+     * @param {string|RegExp} open
+     * @param {string|RegExp} close
+     */
+    const PAIRED_DOUBLE_RE = (prefix, open, close = '\\1') => {
+      const middle = (close === '\\1')
+        ? close
+        : regex.concat(close, open);
+      return regex.concat(
+        regex.concat("(?:", prefix, ")"),
+        open,
+        /(?:\\.|[^\\\/])*?/,
+        middle,
+        /(?:\\.|[^\\\/])*?/,
+        close,
+        REGEX_MODIFIERS
+      );
+    };
+    /**
+     * @param {string|RegExp} prefix
+     * @param {string|RegExp} open
+     * @param {string|RegExp} close
+     */
+    const PAIRED_RE = (prefix, open, close) => {
+      return regex.concat(
+        regex.concat("(?:", prefix, ")"),
+        open,
+        /(?:\\.|[^\\\/])*?/,
+        close,
+        REGEX_MODIFIERS
+      );
+    };
+    const PERL_DEFAULT_CONTAINS = [
+      VAR,
+      hljs.HASH_COMMENT_MODE,
+      hljs.COMMENT(
+        /^=\w/,
+        /=cut/,
+        { endsWithParent: true }
+      ),
+      METHOD,
+      {
+        className: 'string',
+        contains: STRING_CONTAINS,
+        variants: [
+          {
+            begin: 'q[qwxr]?\\s*\\(',
+            end: '\\)',
+            relevance: 5
+          },
+          {
+            begin: 'q[qwxr]?\\s*\\[',
+            end: '\\]',
+            relevance: 5
+          },
+          {
+            begin: 'q[qwxr]?\\s*\\{',
+            end: '\\}',
+            relevance: 5
+          },
+          {
+            begin: 'q[qwxr]?\\s*\\|',
+            end: '\\|',
+            relevance: 5
+          },
+          {
+            begin: 'q[qwxr]?\\s*<',
+            end: '>',
+            relevance: 5
+          },
+          {
+            begin: 'qw\\s+q',
+            end: 'q',
+            relevance: 5
+          },
+          {
+            begin: '\'',
+            end: '\'',
+            contains: [ hljs.BACKSLASH_ESCAPE ]
+          },
+          {
+            begin: '"',
+            end: '"'
+          },
+          {
+            begin: '`',
+            end: '`',
+            contains: [ hljs.BACKSLASH_ESCAPE ]
+          },
+          {
+            begin: /\{\w+\}/,
+            relevance: 0
+          },
+          {
+            begin: '-?\\w+\\s*=>',
+            relevance: 0
+          }
+        ]
+      },
+      NUMBER,
+      { // regexp container
+        begin: '(\\/\\/|' + hljs.RE_STARTERS_RE + '|\\b(split|return|print|reverse|grep)\\b)\\s*',
+        keywords: 'split return print reverse grep',
+        relevance: 0,
+        contains: [
+          hljs.HASH_COMMENT_MODE,
+          {
+            className: 'regexp',
+            variants: [
+              // allow matching common delimiters
+              { begin: PAIRED_DOUBLE_RE("s|tr|y", regex.either(...REGEX_DELIMS, { capture: true })) },
+              // and then paired delmis
+              { begin: PAIRED_DOUBLE_RE("s|tr|y", "\\(", "\\)") },
+              { begin: PAIRED_DOUBLE_RE("s|tr|y", "\\[", "\\]") },
+              { begin: PAIRED_DOUBLE_RE("s|tr|y", "\\{", "\\}") }
+            ],
+            relevance: 2
+          },
+          {
+            className: 'regexp',
+            variants: [
+              {
+                // could be a comment in many languages so do not count
+                // as relevant
+                begin: /(m|qr)\/\//,
+                relevance: 0
+              },
+              // prefix is optional with /regex/
+              { begin: PAIRED_RE("(?:m|qr)?", /\//, /\//) },
+              // allow matching common delimiters
+              { begin: PAIRED_RE("m|qr", regex.either(...REGEX_DELIMS, { capture: true }), /\1/) },
+              // allow common paired delmins
+              { begin: PAIRED_RE("m|qr", /\(/, /\)/) },
+              { begin: PAIRED_RE("m|qr", /\[/, /\]/) },
+              { begin: PAIRED_RE("m|qr", /\{/, /\}/) }
+            ]
+          }
+        ]
+      },
+      {
+        className: 'function',
+        beginKeywords: 'sub method',
+        end: '(\\s*\\(.*?\\))?[;{]',
+        excludeEnd: true,
+        relevance: 5,
+        contains: [ hljs.TITLE_MODE, ATTR ]
+      },
+      {
+        className: 'class',
+        beginKeywords: 'class',
+        end: '[;{]',
+        excludeEnd: true,
+        relevance: 5,
+        contains: [ hljs.TITLE_MODE, ATTR, NUMBER ]
+      },
+      {
+        begin: '-\\w\\b',
+        relevance: 0
+      },
+      {
+        begin: "^__DATA__$",
+        end: "^__END__$",
+        subLanguage: 'mojolicious',
+        contains: [
+          {
+            begin: "^@@.*",
+            end: "$",
+            className: "comment"
+          }
+        ]
+      }
+    ];
+    SUBST.contains = PERL_DEFAULT_CONTAINS;
+    METHOD.contains = PERL_DEFAULT_CONTAINS;
+
+    return {
+      name: 'Perl',
+      aliases: [
+        'pl',
+        'pm'
+      ],
+      keywords: PERL_KEYWORDS,
+      contains: PERL_DEFAULT_CONTAINS
+    };
+  }
+
+  return perl;
+
+})();
+
+    hljs.registerLanguage('perl', hljsGrammar);
+  })();/*! `php` grammar compiled for Highlight.js 11.9.0 */
+  (function(){
+    var hljsGrammar = (function () {
+  'use strict';
+
+  /*
+  Language: PHP
+  Author: Victor Karamzin <Victor.Karamzin@enterra-inc.com>
+  Contributors: Evgeny Stepanischev <imbolk@gmail.com>, Ivan Sagalaev <maniac@softwaremaniacs.org>
+  Website: https://www.php.net
+  Category: common
+  */
+
+  /**
+   * @param {HLJSApi} hljs
+   * @returns {LanguageDetail}
+   * */
+  function php(hljs) {
+    const regex = hljs.regex;
+    // negative look-ahead tries to avoid matching patterns that are not
+    // Perl at all like $ident$, @ident@, etc.
+    const NOT_PERL_ETC = /(?![A-Za-z0-9])(?![$])/;
+    const IDENT_RE = regex.concat(
+      /[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/,
+      NOT_PERL_ETC);
+    // Will not detect camelCase classes
+    const PASCAL_CASE_CLASS_NAME_RE = regex.concat(
+      /(\\?[A-Z][a-z0-9_\x7f-\xff]+|\\?[A-Z]+(?=[A-Z][a-z0-9_\x7f-\xff])){1,}/,
+      NOT_PERL_ETC);
+    const VARIABLE = {
+      scope: 'variable',
+      match: '\\$+' + IDENT_RE,
+    };
+    const PREPROCESSOR = {
+      scope: 'meta',
+      variants: [
+        { begin: /<\?php/, relevance: 10 }, // boost for obvious PHP
+        { begin: /<\?=/ },
+        // less relevant per PSR-1 which says not to use short-tags
+        { begin: /<\?/, relevance: 0.1 },
+        { begin: /\?>/ } // end php tag
+      ]
+    };
+    const SUBST = {
+      scope: 'subst',
+      variants: [
+        { begin: /\$\w+/ },
+        {
+          begin: /\{\$/,
+          end: /\}/
+        }
+      ]
+    };
+    const SINGLE_QUOTED = hljs.inherit(hljs.APOS_STRING_MODE, { illegal: null, });
+    const DOUBLE_QUOTED = hljs.inherit(hljs.QUOTE_STRING_MODE, {
+      illegal: null,
+      contains: hljs.QUOTE_STRING_MODE.contains.concat(SUBST),
+    });
+
+    const HEREDOC = {
+      begin: /<<<[ \t]*(?:(\w+)|"(\w+)")\n/,
+      end: /[ \t]*(\w+)\b/,
+      contains: hljs.QUOTE_STRING_MODE.contains.concat(SUBST),
+      'on:begin': (m, resp) => { resp.data._beginMatch = m[1] || m[2]; },
+      'on:end': (m, resp) => { if (resp.data._beginMatch !== m[1]) resp.ignoreMatch(); },
+    };
+
+    const NOWDOC = hljs.END_SAME_AS_BEGIN({
+      begin: /<<<[ \t]*'(\w+)'\n/,
+      end: /[ \t]*(\w+)\b/,
+    });
+    // list of valid whitespaces because non-breaking space might be part of a IDENT_RE
+    const WHITESPACE = '[ \t\n]';
+    const STRING = {
+      scope: 'string',
+      variants: [
+        DOUBLE_QUOTED,
+        SINGLE_QUOTED,
+        HEREDOC,
+        NOWDOC
+      ]
+    };
+    const NUMBER = {
+      scope: 'number',
+      variants: [
+        { begin: `\\b0[bB][01]+(?:_[01]+)*\\b` }, // Binary w/ underscore support
+        { begin: `\\b0[oO][0-7]+(?:_[0-7]+)*\\b` }, // Octals w/ underscore support
+        { begin: `\\b0[xX][\\da-fA-F]+(?:_[\\da-fA-F]+)*\\b` }, // Hex w/ underscore support
+        // Decimals w/ underscore support, with optional fragments and scientific exponent (e) suffix.
+        { begin: `(?:\\b\\d+(?:_\\d+)*(\\.(?:\\d+(?:_\\d+)*))?|\\B\\.\\d+)(?:[eE][+-]?\\d+)?` }
+      ],
+      relevance: 0
+    };
+    const LITERALS = [
+      "false",
+      "null",
+      "true"
+    ];
+    const KWS = [
+      // Magic constants:
+      // <https://www.php.net/manual/en/language.constants.predefined.php>
+      "__CLASS__",
+      "__DIR__",
+      "__FILE__",
+      "__FUNCTION__",
+      "__COMPILER_HALT_OFFSET__",
+      "__LINE__",
+      "__METHOD__",
+      "__NAMESPACE__",
+      "__TRAIT__",
+      // Function that look like language construct or language construct that look like function:
+      // List of keywords that may not require parenthesis
+      "die",
+      "echo",
+      "exit",
+      "include",
+      "include_once",
+      "print",
+      "require",
+      "require_once",
+      // These are not language construct (function) but operate on the currently-executing function and can access the current symbol table
+      // 'compact extract func_get_arg func_get_args func_num_args get_called_class get_parent_class ' +
+      // Other keywords:
+      // <https://www.php.net/manual/en/reserved.php>
+      // <https://www.php.net/manual/en/language.types.type-juggling.php>
+      "array",
+      "abstract",
+      "and",
+      "as",
+      "binary",
+      "bool",
+      "boolean",
+      "break",
+      "callable",
+      "case",
+      "catch",
+      "class",
+      "clone",
+      "const",
+      "continue",
+      "declare",
+      "default",
+      "do",
+      "double",
+      "else",
+      "elseif",
+      "empty",
+      "enddeclare",
+      "endfor",
+      "endforeach",
+      "endif",
+      "endswitch",
+      "endwhile",
+      "enum",
+      "eval",
+      "extends",
+      "final",
+      "finally",
+      "float",
+      "for",
+      "foreach",
+      "from",
+      "global",
+      "goto",
+      "if",
+      "implements",
+      "instanceof",
+      "insteadof",
+      "int",
+      "integer",
+      "interface",
+      "isset",
+      "iterable",
+      "list",
+      "match|0",
+      "mixed",
+      "new",
+      "never",
+      "object",
+      "or",
+      "private",
+      "protected",
+      "public",
+      "readonly",
+      "real",
+      "return",
+      "string",
+      "switch",
+      "throw",
+      "trait",
+      "try",
+      "unset",
+      "use",
+      "var",
+      "void",
+      "while",
+      "xor",
+      "yield"
+    ];
+
+    const BUILT_INS = [
+      // Standard PHP library:
+      // <https://www.php.net/manual/en/book.spl.php>
+      "Error|0",
+      "AppendIterator",
+      "ArgumentCountError",
+      "ArithmeticError",
+      "ArrayIterator",
+      "ArrayObject",
+      "AssertionError",
+      "BadFunctionCallException",
+      "BadMethodCallException",
+      "CachingIterator",
+      "CallbackFilterIterator",
+      "CompileError",
+      "Countable",
+      "DirectoryIterator",
+      "DivisionByZeroError",
+      "DomainException",
+      "EmptyIterator",
+      "ErrorException",
+      "Exception",
+      "FilesystemIterator",
+      "FilterIterator",
+      "GlobIterator",
+      "InfiniteIterator",
+      "InvalidArgumentException",
+      "IteratorIterator",
+      "LengthException",
+      "LimitIterator",
+      "LogicException",
+      "MultipleIterator",
+      "NoRewindIterator",
+      "OutOfBoundsException",
+      "OutOfRangeException",
+      "OuterIterator",
+      "OverflowException",
+      "ParentIterator",
+      "ParseError",
+      "RangeException",
+      "RecursiveArrayIterator",
+      "RecursiveCachingIterator",
+      "RecursiveCallbackFilterIterator",
+      "RecursiveDirectoryIterator",
+      "RecursiveFilterIterator",
+      "RecursiveIterator",
+      "RecursiveIteratorIterator",
+      "RecursiveRegexIterator",
+      "RecursiveTreeIterator",
+      "RegexIterator",
+      "RuntimeException",
+      "SeekableIterator",
+      "SplDoublyLinkedList",
+      "SplFileInfo",
+      "SplFileObject",
+      "SplFixedArray",
+      "SplHeap",
+      "SplMaxHeap",
+      "SplMinHeap",
+      "SplObjectStorage",
+      "SplObserver",
+      "SplPriorityQueue",
+      "SplQueue",
+      "SplStack",
+      "SplSubject",
+      "SplTempFileObject",
+      "TypeError",
+      "UnderflowException",
+      "UnexpectedValueException",
+      "UnhandledMatchError",
+      // Reserved interfaces:
+      // <https://www.php.net/manual/en/reserved.interfaces.php>
+      "ArrayAccess",
+      "BackedEnum",
+      "Closure",
+      "Fiber",
+      "Generator",
+      "Iterator",
+      "IteratorAggregate",
+      "Serializable",
+      "Stringable",
+      "Throwable",
+      "Traversable",
+      "UnitEnum",
+      "WeakReference",
+      "WeakMap",
+      // Reserved classes:
+      // <https://www.php.net/manual/en/reserved.classes.php>
+      "Directory",
+      "__PHP_Incomplete_Class",
+      "parent",
+      "php_user_filter",
+      "self",
+      "static",
+      "stdClass"
+    ];
+
+    /** Dual-case keywords
+     *
+     * ["then","FILE"] =>
+     *     ["then", "THEN", "FILE", "file"]
+     *
+     * @param {string[]} items */
+    const dualCase = (items) => {
+      /** @type string[] */
+      const result = [];
+      items.forEach(item => {
+        result.push(item);
+        if (item.toLowerCase() === item) {
+          result.push(item.toUpperCase());
+        } else {
+          result.push(item.toLowerCase());
+        }
+      });
+      return result;
+    };
+
+    const KEYWORDS = {
+      keyword: KWS,
+      literal: dualCase(LITERALS),
+      built_in: BUILT_INS,
+    };
+
+    /**
+     * @param {string[]} items */
+    const normalizeKeywords = (items) => {
+      return items.map(item => {
+        return item.replace(/\|\d+$/, "");
+      });
+    };
+
+    const CONSTRUCTOR_CALL = { variants: [
+      {
+        match: [
+          /new/,
+          regex.concat(WHITESPACE, "+"),
+          // to prevent built ins from being confused as the class constructor call
+          regex.concat("(?!", normalizeKeywords(BUILT_INS).join("\\b|"), "\\b)"),
+          PASCAL_CASE_CLASS_NAME_RE,
+        ],
+        scope: {
+          1: "keyword",
+          4: "title.class",
+        },
+      }
+    ] };
+
+    const CONSTANT_REFERENCE = regex.concat(IDENT_RE, "\\b(?!\\()");
+
+    const LEFT_AND_RIGHT_SIDE_OF_DOUBLE_COLON = { variants: [
+      {
+        match: [
+          regex.concat(
+            /::/,
+            regex.lookahead(/(?!class\b)/)
+          ),
+          CONSTANT_REFERENCE,
+        ],
+        scope: { 2: "variable.constant", },
+      },
+      {
+        match: [
+          /::/,
+          /class/,
+        ],
+        scope: { 2: "variable.language", },
+      },
+      {
+        match: [
+          PASCAL_CASE_CLASS_NAME_RE,
+          regex.concat(
+            /::/,
+            regex.lookahead(/(?!class\b)/)
+          ),
+          CONSTANT_REFERENCE,
+        ],
+        scope: {
+          1: "title.class",
+          3: "variable.constant",
+        },
+      },
+      {
+        match: [
+          PASCAL_CASE_CLASS_NAME_RE,
+          regex.concat(
+            "::",
+            regex.lookahead(/(?!class\b)/)
+          ),
+        ],
+        scope: { 1: "title.class", },
+      },
+      {
+        match: [
+          PASCAL_CASE_CLASS_NAME_RE,
+          /::/,
+          /class/,
+        ],
+        scope: {
+          1: "title.class",
+          3: "variable.language",
+        },
+      }
+    ] };
+
+    const NAMED_ARGUMENT = {
+      scope: 'attr',
+      match: regex.concat(IDENT_RE, regex.lookahead(':'), regex.lookahead(/(?!::)/)),
+    };
+    const PARAMS_MODE = {
+      relevance: 0,
+      begin: /\(/,
+      end: /\)/,
+      keywords: KEYWORDS,
+      contains: [
+        NAMED_ARGUMENT,
+        VARIABLE,
+        LEFT_AND_RIGHT_SIDE_OF_DOUBLE_COLON,
+        hljs.C_BLOCK_COMMENT_MODE,
+        STRING,
+        NUMBER,
+        CONSTRUCTOR_CALL,
+      ],
+    };
+    const FUNCTION_INVOKE = {
+      relevance: 0,
+      match: [
+        /\b/,
+        // to prevent keywords from being confused as the function title
+        regex.concat("(?!fn\\b|function\\b|", normalizeKeywords(KWS).join("\\b|"), "|", normalizeKeywords(BUILT_INS).join("\\b|"), "\\b)"),
+        IDENT_RE,
+        regex.concat(WHITESPACE, "*"),
+        regex.lookahead(/(?=\()/)
+      ],
+      scope: { 3: "title.function.invoke", },
+      contains: [ PARAMS_MODE ]
+    };
+    PARAMS_MODE.contains.push(FUNCTION_INVOKE);
+
+    const ATTRIBUTE_CONTAINS = [
+      NAMED_ARGUMENT,
+      LEFT_AND_RIGHT_SIDE_OF_DOUBLE_COLON,
+      hljs.C_BLOCK_COMMENT_MODE,
+      STRING,
+      NUMBER,
+      CONSTRUCTOR_CALL,
+    ];
+
+    const ATTRIBUTES = {
+      begin: regex.concat(/#\[\s*/, PASCAL_CASE_CLASS_NAME_RE),
+      beginScope: "meta",
+      end: /]/,
+      endScope: "meta",
+      keywords: {
+        literal: LITERALS,
+        keyword: [
+          'new',
+          'array',
+        ]
+      },
+      contains: [
+        {
+          begin: /\[/,
+          end: /]/,
+          keywords: {
+            literal: LITERALS,
+            keyword: [
+              'new',
+              'array',
+            ]
+          },
+          contains: [
+            'self',
+            ...ATTRIBUTE_CONTAINS,
+          ]
+        },
+        ...ATTRIBUTE_CONTAINS,
+        {
+          scope: 'meta',
+          match: PASCAL_CASE_CLASS_NAME_RE
+        }
+      ]
+    };
+
+    return {
+      case_insensitive: false,
+      keywords: KEYWORDS,
+      contains: [
+        ATTRIBUTES,
+        hljs.HASH_COMMENT_MODE,
+        hljs.COMMENT('//', '$'),
+        hljs.COMMENT(
+          '/\\*',
+          '\\*/',
+          { contains: [
+            {
+              scope: 'doctag',
+              match: '@[A-Za-z]+'
+            }
+          ] }
+        ),
+        {
+          match: /__halt_compiler\(\);/,
+          keywords: '__halt_compiler',
+          starts: {
+            scope: "comment",
+            end: hljs.MATCH_NOTHING_RE,
+            contains: [
+              {
+                match: /\?>/,
+                scope: "meta",
+                endsParent: true
+              }
+            ]
+          }
+        },
+        PREPROCESSOR,
+        {
+          scope: 'variable.language',
+          match: /\$this\b/
+        },
+        VARIABLE,
+        FUNCTION_INVOKE,
+        LEFT_AND_RIGHT_SIDE_OF_DOUBLE_COLON,
+        {
+          match: [
+            /const/,
+            /\s/,
+            IDENT_RE,
+          ],
+          scope: {
+            1: "keyword",
+            3: "variable.constant",
+          },
+        },
+        CONSTRUCTOR_CALL,
+        {
+          scope: 'function',
+          relevance: 0,
+          beginKeywords: 'fn function',
+          end: /[;{]/,
+          excludeEnd: true,
+          illegal: '[$%\\[]',
+          contains: [
+            { beginKeywords: 'use', },
+            hljs.UNDERSCORE_TITLE_MODE,
+            {
+              begin: '=>', // No markup, just a relevance booster
+              endsParent: true
+            },
+            {
+              scope: 'params',
+              begin: '\\(',
+              end: '\\)',
+              excludeBegin: true,
+              excludeEnd: true,
+              keywords: KEYWORDS,
+              contains: [
+                'self',
+                VARIABLE,
+                LEFT_AND_RIGHT_SIDE_OF_DOUBLE_COLON,
+                hljs.C_BLOCK_COMMENT_MODE,
+                STRING,
+                NUMBER
+              ]
+            },
+          ]
+        },
+        {
+          scope: 'class',
+          variants: [
+            {
+              beginKeywords: "enum",
+              illegal: /[($"]/
+            },
+            {
+              beginKeywords: "class interface trait",
+              illegal: /[:($"]/
+            }
+          ],
+          relevance: 0,
+          end: /\{/,
+          excludeEnd: true,
+          contains: [
+            { beginKeywords: 'extends implements' },
+            hljs.UNDERSCORE_TITLE_MODE
+          ]
+        },
+        // both use and namespace still use "old style" rules (vs multi-match)
+        // because the namespace name can include `\` and we still want each
+        // element to be treated as its own *individual* title
+        {
+          beginKeywords: 'namespace',
+          relevance: 0,
+          end: ';',
+          illegal: /[.']/,
+          contains: [ hljs.inherit(hljs.UNDERSCORE_TITLE_MODE, { scope: "title.class" }) ]
+        },
+        {
+          beginKeywords: 'use',
+          relevance: 0,
+          end: ';',
+          contains: [
+            // TODO: title.function vs title.class
+            {
+              match: /\b(as|const|function)\b/,
+              scope: "keyword"
+            },
+            // TODO: could be title.class or title.function
+            hljs.UNDERSCORE_TITLE_MODE
+          ]
+        },
+        STRING,
+        NUMBER,
+      ]
+    };
+  }
+
+  return php;
+
+})();
+
+    hljs.registerLanguage('php', hljsGrammar);
+  })();/*! `php-template` grammar compiled for Highlight.js 11.9.0 */
+  (function(){
+    var hljsGrammar = (function () {
+  'use strict';
+
+  /*
+  Language: PHP Template
+  Requires: xml.js, php.js
+  Author: Josh Goebel <hello@joshgoebel.com>
+  Website: https://www.php.net
+  Category: common
+  */
+
+  function phpTemplate(hljs) {
+    return {
+      name: "PHP template",
+      subLanguage: 'xml',
+      contains: [
+        {
+          begin: /<\?(php|=)?/,
+          end: /\?>/,
+          subLanguage: 'php',
+          contains: [
+            // We don't want the php closing tag ?> to close the PHP block when
+            // inside any of the following blocks:
+            {
+              begin: '/\\*',
+              end: '\\*/',
+              skip: true
+            },
+            {
+              begin: 'b"',
+              end: '"',
+              skip: true
+            },
+            {
+              begin: 'b\'',
+              end: '\'',
+              skip: true
+            },
+            hljs.inherit(hljs.APOS_STRING_MODE, {
+              illegal: null,
+              className: null,
+              contains: null,
+              skip: true
+            }),
+            hljs.inherit(hljs.QUOTE_STRING_MODE, {
+              illegal: null,
+              className: null,
+              contains: null,
+              skip: true
+            })
+          ]
+        }
+      ]
+    };
+  }
+
+  return phpTemplate;
+
+})();
+
+    hljs.registerLanguage('php-template', hljsGrammar);
+  })();/*! `plaintext` grammar compiled for Highlight.js 11.9.0 */
+  (function(){
+    var hljsGrammar = (function () {
+  'use strict';
+
+  /*
+  Language: Plain text
+  Author: Egor Rogov (e.rogov@postgrespro.ru)
+  Description: Plain text without any highlighting.
+  Category: common
+  */
+
+  function plaintext(hljs) {
+    return {
+      name: 'Plain text',
+      aliases: [
+        'text',
+        'txt'
+      ],
+      disableAutodetect: true
+    };
+  }
+
+  return plaintext;
+
+})();
+
+    hljs.registerLanguage('plaintext', hljsGrammar);
+  })();/*! `python` grammar compiled for Highlight.js 11.9.0 */
+  (function(){
+    var hljsGrammar = (function () {
+  'use strict';
+
+  /*
+  Language: Python
+  Description: Python is an interpreted, object-oriented, high-level programming language with dynamic semantics.
+  Website: https://www.python.org
+  Category: common
+  */
+
+  function python(hljs) {
+    const regex = hljs.regex;
+    const IDENT_RE = /[\p{XID_Start}_]\p{XID_Continue}*/u;
+    const RESERVED_WORDS = [
+      'and',
+      'as',
+      'assert',
+      'async',
+      'await',
+      'break',
+      'case',
+      'class',
+      'continue',
+      'def',
+      'del',
+      'elif',
+      'else',
+      'except',
+      'finally',
+      'for',
+      'from',
+      'global',
+      'if',
+      'import',
+      'in',
+      'is',
+      'lambda',
+      'match',
+      'nonlocal|10',
+      'not',
+      'or',
+      'pass',
+      'raise',
+      'return',
+      'try',
+      'while',
+      'with',
+      'yield'
+    ];
+
+    const BUILT_INS = [
+      '__import__',
+      'abs',
+      'all',
+      'any',
+      'ascii',
+      'bin',
+      'bool',
+      'breakpoint',
+      'bytearray',
+      'bytes',
+      'callable',
+      'chr',
+      'classmethod',
+      'compile',
+      'complex',
+      'delattr',
+      'dict',
+      'dir',
+      'divmod',
+      'enumerate',
+      'eval',
+      'exec',
+      'filter',
+      'float',
+      'format',
+      'frozenset',
+      'getattr',
+      'globals',
+      'hasattr',
+      'hash',
+      'help',
+      'hex',
+      'id',
+      'input',
+      'int',
+      'isinstance',
+      'issubclass',
+      'iter',
+      'len',
+      'list',
+      'locals',
+      'map',
+      'max',
+      'memoryview',
+      'min',
+      'next',
+      'object',
+      'oct',
+      'open',
+      'ord',
+      'pow',
+      'print',
+      'property',
+      'range',
+      'repr',
+      'reversed',
+      'round',
+      'set',
+      'setattr',
+      'slice',
+      'sorted',
+      'staticmethod',
+      'str',
+      'sum',
+      'super',
+      'tuple',
+      'type',
+      'vars',
+      'zip'
+    ];
+
+    const LITERALS = [
+      '__debug__',
+      'Ellipsis',
+      'False',
+      'None',
+      'NotImplemented',
+      'True'
+    ];
+
+    // https://docs.python.org/3/library/typing.html
+    // TODO: Could these be supplemented by a CamelCase matcher in certain
+    // contexts, leaving these remaining only for relevance hinting?
+    const TYPES = [
+      "Any",
+      "Callable",
+      "Coroutine",
+      "Dict",
+      "List",
+      "Literal",
+      "Generic",
+      "Optional",
+      "Sequence",
+      "Set",
+      "Tuple",
+      "Type",
+      "Union"
+    ];
+
+    const KEYWORDS = {
+      $pattern: /[A-Za-z]\w+|__\w+__/,
+      keyword: RESERVED_WORDS,
+      built_in: BUILT_INS,
+      literal: LITERALS,
+      type: TYPES
+    };
+
+    const PROMPT = {
+      className: 'meta',
+      begin: /^(>>>|\.\.\.) /
+    };
+
+    const SUBST = {
+      className: 'subst',
+      begin: /\{/,
+      end: /\}/,
+      keywords: KEYWORDS,
+      illegal: /#/
+    };
+
+    const LITERAL_BRACKET = {
+      begin: /\{\{/,
+      relevance: 0
+    };
+
+    const STRING = {
+      className: 'string',
+      contains: [ hljs.BACKSLASH_ESCAPE ],
+      variants: [
+        {
+          begin: /([uU]|[bB]|[rR]|[bB][rR]|[rR][bB])?'''/,
+          end: /'''/,
+          contains: [
+            hljs.BACKSLASH_ESCAPE,
+            PROMPT
+          ],
+          relevance: 10
+        },
+        {
+          begin: /([uU]|[bB]|[rR]|[bB][rR]|[rR][bB])?"""/,
+          end: /"""/,
+          contains: [
+            hljs.BACKSLASH_ESCAPE,
+            PROMPT
+          ],
+          relevance: 10
+        },
+        {
+          begin: /([fF][rR]|[rR][fF]|[fF])'''/,
+          end: /'''/,
+          contains: [
+            hljs.BACKSLASH_ESCAPE,
+            PROMPT,
+            LITERAL_BRACKET,
+            SUBST
+          ]
+        },
+        {
+          begin: /([fF][rR]|[rR][fF]|[fF])"""/,
+          end: /"""/,
+          contains: [
+            hljs.BACKSLASH_ESCAPE,
+            PROMPT,
+            LITERAL_BRACKET,
+            SUBST
+          ]
+        },
+        {
+          begin: /([uU]|[rR])'/,
+          end: /'/,
+          relevance: 10
+        },
+        {
+          begin: /([uU]|[rR])"/,
+          end: /"/,
+          relevance: 10
+        },
+        {
+          begin: /([bB]|[bB][rR]|[rR][bB])'/,
+          end: /'/
+        },
+        {
+          begin: /([bB]|[bB][rR]|[rR][bB])"/,
+          end: /"/
+        },
+        {
+          begin: /([fF][rR]|[rR][fF]|[fF])'/,
+          end: /'/,
+          contains: [
+            hljs.BACKSLASH_ESCAPE,
+            LITERAL_BRACKET,
+            SUBST
+          ]
+        },
+        {
+          begin: /([fF][rR]|[rR][fF]|[fF])"/,
+          end: /"/,
+          contains: [
+            hljs.BACKSLASH_ESCAPE,
+            LITERAL_BRACKET,
+            SUBST
+          ]
+        },
+        hljs.APOS_STRING_MODE,
+        hljs.QUOTE_STRING_MODE
+      ]
+    };
+
+    // https://docs.python.org/3.9/reference/lexical_analysis.html#numeric-literals
+    const digitpart = '[0-9](_?[0-9])*';
+    const pointfloat = `(\\b(${digitpart}))?\\.(${digitpart})|\\b(${digitpart})\\.`;
+    // Whitespace after a number (or any lexical token) is needed only if its absence
+    // would change the tokenization
+    // https://docs.python.org/3.9/reference/lexical_analysis.html#whitespace-between-tokens
+    // We deviate slightly, requiring a word boundary or a keyword
+    // to avoid accidentally recognizing *prefixes* (e.g., `0` in `0x41` or `08` or `0__1`)
+    const lookahead = `\\b|${RESERVED_WORDS.join('|')}`;
+    const NUMBER = {
+      className: 'number',
+      relevance: 0,
+      variants: [
+        // exponentfloat, pointfloat
+        // https://docs.python.org/3.9/reference/lexical_analysis.html#floating-point-literals
+        // optionally imaginary
+        // https://docs.python.org/3.9/reference/lexical_analysis.html#imaginary-literals
+        // Note: no leading \b because floats can start with a decimal point
+        // and we don't want to mishandle e.g. `fn(.5)`,
+        // no trailing \b for pointfloat because it can end with a decimal point
+        // and we don't want to mishandle e.g. `0..hex()`; this should be safe
+        // because both MUST contain a decimal point and so cannot be confused with
+        // the interior part of an identifier
+        {
+          begin: `(\\b(${digitpart})|(${pointfloat}))[eE][+-]?(${digitpart})[jJ]?(?=${lookahead})`
+        },
+        {
+          begin: `(${pointfloat})[jJ]?`
+        },
+
+        // decinteger, bininteger, octinteger, hexinteger
+        // https://docs.python.org/3.9/reference/lexical_analysis.html#integer-literals
+        // optionally "long" in Python 2
+        // https://docs.python.org/2.7/reference/lexical_analysis.html#integer-and-long-integer-literals
+        // decinteger is optionally imaginary
+        // https://docs.python.org/3.9/reference/lexical_analysis.html#imaginary-literals
+        {
+          begin: `\\b([1-9](_?[0-9])*|0+(_?0)*)[lLjJ]?(?=${lookahead})`
+        },
+        {
+          begin: `\\b0[bB](_?[01])+[lL]?(?=${lookahead})`
+        },
+        {
+          begin: `\\b0[oO](_?[0-7])+[lL]?(?=${lookahead})`
+        },
+        {
+          begin: `\\b0[xX](_?[0-9a-fA-F])+[lL]?(?=${lookahead})`
+        },
+
+        // imagnumber (digitpart-based)
+        // https://docs.python.org/3.9/reference/lexical_analysis.html#imaginary-literals
+        {
+          begin: `\\b(${digitpart})[jJ](?=${lookahead})`
+        }
+      ]
+    };
+    const COMMENT_TYPE = {
+      className: "comment",
+      begin: regex.lookahead(/# type:/),
+      end: /$/,
+      keywords: KEYWORDS,
+      contains: [
+        { // prevent keywords from coloring `type`
+          begin: /# type:/
+        },
+        // comment within a datatype comment includes no keywords
+        {
+          begin: /#/,
+          end: /\b\B/,
+          endsWithParent: true
+        }
+      ]
+    };
+    const PARAMS = {
+      className: 'params',
+      variants: [
+        // Exclude params in functions without params
+        {
+          className: "",
+          begin: /\(\s*\)/,
+          skip: true
+        },
+        {
+          begin: /\(/,
+          end: /\)/,
+          excludeBegin: true,
+          excludeEnd: true,
+          keywords: KEYWORDS,
+          contains: [
+            'self',
+            PROMPT,
+            NUMBER,
+            STRING,
+            hljs.HASH_COMMENT_MODE
+          ]
+        }
+      ]
+    };
+    SUBST.contains = [
+      STRING,
+      NUMBER,
+      PROMPT
+    ];
+
+    return {
+      name: 'Python',
+      aliases: [
+        'py',
+        'gyp',
+        'ipython'
+      ],
+      unicodeRegex: true,
+      keywords: KEYWORDS,
+      illegal: /(<\/|\?)|=>/,
+      contains: [
+        PROMPT,
+        NUMBER,
+        {
+          // very common convention
+          begin: /\bself\b/
+        },
+        {
+          // eat "if" prior to string so that it won't accidentally be
+          // labeled as an f-string
+          beginKeywords: "if",
+          relevance: 0
+        },
+        { match: /\bor\b/, scope: "keyword" },
+        STRING,
+        COMMENT_TYPE,
+        hljs.HASH_COMMENT_MODE,
+        {
+          match: [
+            /\bdef/, /\s+/,
+            IDENT_RE,
+          ],
+          scope: {
+            1: "keyword",
+            3: "title.function"
+          },
+          contains: [ PARAMS ]
+        },
+        {
+          variants: [
+            {
+              match: [
+                /\bclass/, /\s+/,
+                IDENT_RE, /\s*/,
+                /\(\s*/, IDENT_RE,/\s*\)/
+              ],
+            },
+            {
+              match: [
+                /\bclass/, /\s+/,
+                IDENT_RE
+              ],
+            }
+          ],
+          scope: {
+            1: "keyword",
+            3: "title.class",
+            6: "title.class.inherited",
+          }
+        },
+        {
+          className: 'meta',
+          begin: /^[\t ]*@/,
+          end: /(?=#)|$/,
+          contains: [
+            NUMBER,
+            PARAMS,
+            STRING
+          ]
+        }
+      ]
+    };
+  }
+
+  return python;
+
+})();
+
+    hljs.registerLanguage('python', hljsGrammar);
+  })();/*! `python-repl` grammar compiled for Highlight.js 11.9.0 */
+  (function(){
+    var hljsGrammar = (function () {
+  'use strict';
+
+  /*
+  Language: Python REPL
+  Requires: python.js
+  Author: Josh Goebel <hello@joshgoebel.com>
+  Category: common
+  */
+
+  function pythonRepl(hljs) {
+    return {
+      aliases: [ 'pycon' ],
+      contains: [
+        {
+          className: 'meta.prompt',
+          starts: {
+            // a space separates the REPL prefix from the actual code
+            // this is purely for cleaner HTML output
+            end: / |$/,
+            starts: {
+              end: '$',
+              subLanguage: 'python'
+            }
+          },
+          variants: [
+            { begin: /^>>>(?=[ ]|$)/ },
+            { begin: /^\.\.\.(?=[ ]|$)/ }
+          ]
+        }
+      ]
+    };
+  }
+
+  return pythonRepl;
+
+})();
+
+    hljs.registerLanguage('python-repl', hljsGrammar);
+  })();/*! `r` grammar compiled for Highlight.js 11.9.0 */
+  (function(){
+    var hljsGrammar = (function () {
+  'use strict';
+
+  /*
+  Language: R
+  Description: R is a free software environment for statistical computing and graphics.
+  Author: Joe Cheng <joe@rstudio.org>
+  Contributors: Konrad Rudolph <konrad.rudolph@gmail.com>
+  Website: https://www.r-project.org
+  Category: common,scientific
+  */
+
+  /** @type LanguageFn */
+  function r(hljs) {
+    const regex = hljs.regex;
+    // Identifiers in R cannot start with `_`, but they can start with `.` if it
+    // is not immediately followed by a digit.
+    // R also supports quoted identifiers, which are near-arbitrary sequences
+    // delimited by backticks (`…`), which may contain escape sequences. These are
+    // handled in a separate mode. See `test/markup/r/names.txt` for examples.
+    // FIXME: Support Unicode identifiers.
+    const IDENT_RE = /(?:(?:[a-zA-Z]|\.[._a-zA-Z])[._a-zA-Z0-9]*)|\.(?!\d)/;
+    const NUMBER_TYPES_RE = regex.either(
+      // Special case: only hexadecimal binary powers can contain fractions
+      /0[xX][0-9a-fA-F]+\.[0-9a-fA-F]*[pP][+-]?\d+i?/,
+      // Hexadecimal numbers without fraction and optional binary power
+      /0[xX][0-9a-fA-F]+(?:[pP][+-]?\d+)?[Li]?/,
+      // Decimal numbers
+      /(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?[Li]?/
+    );
+    const OPERATORS_RE = /[=!<>:]=|\|\||&&|:::?|<-|<<-|->>|->|\|>|[-+*\/?!$&|:<=>@^~]|\*\*/;
+    const PUNCTUATION_RE = regex.either(
+      /[()]/,
+      /[{}]/,
+      /\[\[/,
+      /[[\]]/,
+      /\\/,
+      /,/
+    );
+
+    return {
+      name: 'R',
+
+      keywords: {
+        $pattern: IDENT_RE,
+        keyword:
+          'function if in break next repeat else for while',
+        literal:
+          'NULL NA TRUE FALSE Inf NaN NA_integer_|10 NA_real_|10 '
+          + 'NA_character_|10 NA_complex_|10',
+        built_in:
+          // Builtin constants
+          'LETTERS letters month.abb month.name pi T F '
+          // Primitive functions
+          // These are all the functions in `base` that are implemented as a
+          // `.Primitive`, minus those functions that are also keywords.
+          + 'abs acos acosh all any anyNA Arg as.call as.character '
+          + 'as.complex as.double as.environment as.integer as.logical '
+          + 'as.null.default as.numeric as.raw asin asinh atan atanh attr '
+          + 'attributes baseenv browser c call ceiling class Conj cos cosh '
+          + 'cospi cummax cummin cumprod cumsum digamma dim dimnames '
+          + 'emptyenv exp expression floor forceAndCall gamma gc.time '
+          + 'globalenv Im interactive invisible is.array is.atomic is.call '
+          + 'is.character is.complex is.double is.environment is.expression '
+          + 'is.finite is.function is.infinite is.integer is.language '
+          + 'is.list is.logical is.matrix is.na is.name is.nan is.null '
+          + 'is.numeric is.object is.pairlist is.raw is.recursive is.single '
+          + 'is.symbol lazyLoadDBfetch length lgamma list log max min '
+          + 'missing Mod names nargs nzchar oldClass on.exit pos.to.env '
+          + 'proc.time prod quote range Re rep retracemem return round '
+          + 'seq_along seq_len seq.int sign signif sin sinh sinpi sqrt '
+          + 'standardGeneric substitute sum switch tan tanh tanpi tracemem '
+          + 'trigamma trunc unclass untracemem UseMethod xtfrm',
+      },
+
+      contains: [
+        // Roxygen comments
+        hljs.COMMENT(
+          /#'/,
+          /$/,
+          { contains: [
+            {
+              // Handle `@examples` separately to cause all subsequent code
+              // until the next `@`-tag on its own line to be kept as-is,
+              // preventing highlighting. This code is example R code, so nested
+              // doctags shouldn’t be treated as such. See
+              // `test/markup/r/roxygen.txt` for an example.
+              scope: 'doctag',
+              match: /@examples/,
+              starts: {
+                end: regex.lookahead(regex.either(
+                  // end if another doc comment
+                  /\n^#'\s*(?=@[a-zA-Z]+)/,
+                  // or a line with no comment
+                  /\n^(?!#')/
+                )),
+                endsParent: true
+              }
+            },
+            {
+              // Handle `@param` to highlight the parameter name following
+              // after.
+              scope: 'doctag',
+              begin: '@param',
+              end: /$/,
+              contains: [
+                {
+                  scope: 'variable',
+                  variants: [
+                    { match: IDENT_RE },
+                    { match: /`(?:\\.|[^`\\])+`/ }
+                  ],
+                  endsParent: true
+                }
+              ]
+            },
+            {
+              scope: 'doctag',
+              match: /@[a-zA-Z]+/
+            },
+            {
+              scope: 'keyword',
+              match: /\\[a-zA-Z]+/
+            }
+          ] }
+        ),
+
+        hljs.HASH_COMMENT_MODE,
+
+        {
+          scope: 'string',
+          contains: [ hljs.BACKSLASH_ESCAPE ],
+          variants: [
+            hljs.END_SAME_AS_BEGIN({
+              begin: /[rR]"(-*)\(/,
+              end: /\)(-*)"/
+            }),
+            hljs.END_SAME_AS_BEGIN({
+              begin: /[rR]"(-*)\{/,
+              end: /\}(-*)"/
+            }),
+            hljs.END_SAME_AS_BEGIN({
+              begin: /[rR]"(-*)\[/,
+              end: /\](-*)"/
+            }),
+            hljs.END_SAME_AS_BEGIN({
+              begin: /[rR]'(-*)\(/,
+              end: /\)(-*)'/
+            }),
+            hljs.END_SAME_AS_BEGIN({
+              begin: /[rR]'(-*)\{/,
+              end: /\}(-*)'/
+            }),
+            hljs.END_SAME_AS_BEGIN({
+              begin: /[rR]'(-*)\[/,
+              end: /\](-*)'/
+            }),
+            {
+              begin: '"',
+              end: '"',
+              relevance: 0
+            },
+            {
+              begin: "'",
+              end: "'",
+              relevance: 0
+            }
+          ],
+        },
+
+        // Matching numbers immediately following punctuation and operators is
+        // tricky since we need to look at the character ahead of a number to
+        // ensure the number is not part of an identifier, and we cannot use
+        // negative look-behind assertions. So instead we explicitly handle all
+        // possible combinations of (operator|punctuation), number.
+        // TODO: replace with negative look-behind when available
+        // { begin: /(?<![a-zA-Z0-9._])0[xX][0-9a-fA-F]+\.[0-9a-fA-F]*[pP][+-]?\d+i?/ },
+        // { begin: /(?<![a-zA-Z0-9._])0[xX][0-9a-fA-F]+([pP][+-]?\d+)?[Li]?/ },
+        // { begin: /(?<![a-zA-Z0-9._])(\d+(\.\d*)?|\.\d+)([eE][+-]?\d+)?[Li]?/ }
+        {
+          relevance: 0,
+          variants: [
+            {
+              scope: {
+                1: 'operator',
+                2: 'number'
+              },
+              match: [
+                OPERATORS_RE,
+                NUMBER_TYPES_RE
+              ]
+            },
+            {
+              scope: {
+                1: 'operator',
+                2: 'number'
+              },
+              match: [
+                /%[^%]*%/,
+                NUMBER_TYPES_RE
+              ]
+            },
+            {
+              scope: {
+                1: 'punctuation',
+                2: 'number'
+              },
+              match: [
+                PUNCTUATION_RE,
+                NUMBER_TYPES_RE
+              ]
+            },
+            {
+              scope: { 2: 'number' },
+              match: [
+                /[^a-zA-Z0-9._]|^/, // not part of an identifier, or start of document
+                NUMBER_TYPES_RE
+              ]
+            }
+          ]
+        },
+
+        // Operators/punctuation when they're not directly followed by numbers
+        {
+          // Relevance boost for the most common assignment form.
+          scope: { 3: 'operator' },
+          match: [
+            IDENT_RE,
+            /\s+/,
+            /<-/,
+            /\s+/
+          ]
+        },
+
+        {
+          scope: 'operator',
+          relevance: 0,
+          variants: [
+            { match: OPERATORS_RE },
+            { match: /%[^%]*%/ }
+          ]
+        },
+
+        {
+          scope: 'punctuation',
+          relevance: 0,
+          match: PUNCTUATION_RE
+        },
+
+        {
+          // Escaped identifier
+          begin: '`',
+          end: '`',
+          contains: [ { begin: /\\./ } ]
+        }
+      ]
+    };
+  }
+
+  return r;
+
+})();
+
+    hljs.registerLanguage('r', hljsGrammar);
+  })();/*! `ruby` grammar compiled for Highlight.js 11.9.0 */
+  (function(){
+    var hljsGrammar = (function () {
+  'use strict';
+
+  /*
+  Language: Ruby
+  Description: Ruby is a dynamic, open source programming language with a focus on simplicity and productivity.
+  Website: https://www.ruby-lang.org/
+  Author: Anton Kovalyov <anton@kovalyov.net>
+  Contributors: Peter Leonov <gojpeg@yandex.ru>, Vasily Polovnyov <vast@whiteants.net>, Loren Segal <lsegal@soen.ca>, Pascal Hurni <phi@ruby-reactive.org>, Cedric Sohrauer <sohrauer@googlemail.com>
+  Category: common, scripting
+  */
+
+  function ruby(hljs) {
+    const regex = hljs.regex;
+    const RUBY_METHOD_RE = '([a-zA-Z_]\\w*[!?=]?|[-+~]@|<<|>>|=~|===?|<=>|[<>]=?|\\*\\*|[-/+%^&*~`|]|\\[\\]=?)';
+    // TODO: move concepts like CAMEL_CASE into `modes.js`
+    const CLASS_NAME_RE = regex.either(
+      /\b([A-Z]+[a-z0-9]+)+/,
+      // ends in caps
+      /\b([A-Z]+[a-z0-9]+)+[A-Z]+/,
+    )
+    ;
+    const CLASS_NAME_WITH_NAMESPACE_RE = regex.concat(CLASS_NAME_RE, /(::\w+)*/);
+    // very popular ruby built-ins that one might even assume
+    // are actual keywords (despite that not being the case)
+    const PSEUDO_KWS = [
+      "include",
+      "extend",
+      "prepend",
+      "public",
+      "private",
+      "protected",
+      "raise",
+      "throw"
+    ];
+    const RUBY_KEYWORDS = {
+      "variable.constant": [
+        "__FILE__",
+        "__LINE__",
+        "__ENCODING__"
+      ],
+      "variable.language": [
+        "self",
+        "super",
+      ],
+      keyword: [
+        "alias",
+        "and",
+        "begin",
+        "BEGIN",
+        "break",
+        "case",
+        "class",
+        "defined",
+        "do",
+        "else",
+        "elsif",
+        "end",
+        "END",
+        "ensure",
+        "for",
+        "if",
+        "in",
+        "module",
+        "next",
+        "not",
+        "or",
+        "redo",
+        "require",
+        "rescue",
+        "retry",
+        "return",
+        "then",
+        "undef",
+        "unless",
+        "until",
+        "when",
+        "while",
+        "yield",
+        ...PSEUDO_KWS
+      ],
+      built_in: [
+        "proc",
+        "lambda",
+        "attr_accessor",
+        "attr_reader",
+        "attr_writer",
+        "define_method",
+        "private_constant",
+        "module_function"
+      ],
+      literal: [
+        "true",
+        "false",
+        "nil"
+      ]
+    };
+    const YARDOCTAG = {
+      className: 'doctag',
+      begin: '@[A-Za-z]+'
+    };
+    const IRB_OBJECT = {
+      begin: '#<',
+      end: '>'
+    };
+    const COMMENT_MODES = [
+      hljs.COMMENT(
+        '#',
+        '$',
+        { contains: [ YARDOCTAG ] }
+      ),
+      hljs.COMMENT(
+        '^=begin',
+        '^=end',
+        {
+          contains: [ YARDOCTAG ],
+          relevance: 10
+        }
+      ),
+      hljs.COMMENT('^__END__', hljs.MATCH_NOTHING_RE)
+    ];
+    const SUBST = {
+      className: 'subst',
+      begin: /#\{/,
+      end: /\}/,
+      keywords: RUBY_KEYWORDS
+    };
+    const STRING = {
+      className: 'string',
+      contains: [
+        hljs.BACKSLASH_ESCAPE,
+        SUBST
+      ],
+      variants: [
+        {
+          begin: /'/,
+          end: /'/
+        },
+        {
+          begin: /"/,
+          end: /"/
+        },
+        {
+          begin: /`/,
+          end: /`/
+        },
+        {
+          begin: /%[qQwWx]?\(/,
+          end: /\)/
+        },
+        {
+          begin: /%[qQwWx]?\[/,
+          end: /\]/
+        },
+        {
+          begin: /%[qQwWx]?\{/,
+          end: /\}/
+        },
+        {
+          begin: /%[qQwWx]?</,
+          end: />/
+        },
+        {
+          begin: /%[qQwWx]?\//,
+          end: /\//
+        },
+        {
+          begin: /%[qQwWx]?%/,
+          end: /%/
+        },
+        {
+          begin: /%[qQwWx]?-/,
+          end: /-/
+        },
+        {
+          begin: /%[qQwWx]?\|/,
+          end: /\|/
+        },
+        // in the following expressions, \B in the beginning suppresses recognition of ?-sequences
+        // where ? is the last character of a preceding identifier, as in: `func?4`
+        { begin: /\B\?(\\\d{1,3})/ },
+        { begin: /\B\?(\\x[A-Fa-f0-9]{1,2})/ },
+        { begin: /\B\?(\\u\{?[A-Fa-f0-9]{1,6}\}?)/ },
+        { begin: /\B\?(\\M-\\C-|\\M-\\c|\\c\\M-|\\M-|\\C-\\M-)[\x20-\x7e]/ },
+        { begin: /\B\?\\(c|C-)[\x20-\x7e]/ },
+        { begin: /\B\?\\?\S/ },
+        // heredocs
+        {
+          // this guard makes sure that we have an entire heredoc and not a false
+          // positive (auto-detect, etc.)
+          begin: regex.concat(
+            /<<[-~]?'?/,
+            regex.lookahead(/(\w+)(?=\W)[^\n]*\n(?:[^\n]*\n)*?\s*\1\b/)
+          ),
+          contains: [
+            hljs.END_SAME_AS_BEGIN({
+              begin: /(\w+)/,
+              end: /(\w+)/,
+              contains: [
+                hljs.BACKSLASH_ESCAPE,
+                SUBST
+              ]
+            })
+          ]
+        }
+      ]
+    };
+
+    // Ruby syntax is underdocumented, but this grammar seems to be accurate
+    // as of version 2.7.2 (confirmed with (irb and `Ripper.sexp(...)`)
+    // https://docs.ruby-lang.org/en/2.7.0/doc/syntax/literals_rdoc.html#label-Numbers
+    const decimal = '[1-9](_?[0-9])*|0';
+    const digits = '[0-9](_?[0-9])*';
+    const NUMBER = {
+      className: 'number',
+      relevance: 0,
+      variants: [
+        // decimal integer/float, optionally exponential or rational, optionally imaginary
+        { begin: `\\b(${decimal})(\\.(${digits}))?([eE][+-]?(${digits})|r)?i?\\b` },
+
+        // explicit decimal/binary/octal/hexadecimal integer,
+        // optionally rational and/or imaginary
+        { begin: "\\b0[dD][0-9](_?[0-9])*r?i?\\b" },
+        { begin: "\\b0[bB][0-1](_?[0-1])*r?i?\\b" },
+        { begin: "\\b0[oO][0-7](_?[0-7])*r?i?\\b" },
+        { begin: "\\b0[xX][0-9a-fA-F](_?[0-9a-fA-F])*r?i?\\b" },
+
+        // 0-prefixed implicit octal integer, optionally rational and/or imaginary
+        { begin: "\\b0(_?[0-7])+r?i?\\b" }
+      ]
+    };
+
+    const PARAMS = {
+      variants: [
+        {
+          match: /\(\)/,
+        },
+        {
+          className: 'params',
+          begin: /\(/,
+          end: /(?=\))/,
+          excludeBegin: true,
+          endsParent: true,
+          keywords: RUBY_KEYWORDS,
+        }
+      ]
+    };
+
+    const INCLUDE_EXTEND = {
+      match: [
+        /(include|extend)\s+/,
+        CLASS_NAME_WITH_NAMESPACE_RE
+      ],
+      scope: {
+        2: "title.class"
+      },
+      keywords: RUBY_KEYWORDS
+    };
+
+    const CLASS_DEFINITION = {
+      variants: [
+        {
+          match: [
+            /class\s+/,
+            CLASS_NAME_WITH_NAMESPACE_RE,
+            /\s+<\s+/,
+            CLASS_NAME_WITH_NAMESPACE_RE
+          ]
+        },
+        {
+          match: [
+            /\b(class|module)\s+/,
+            CLASS_NAME_WITH_NAMESPACE_RE
+          ]
+        }
+      ],
+      scope: {
+        2: "title.class",
+        4: "title.class.inherited"
+      },
+      keywords: RUBY_KEYWORDS
+    };
+
+    const UPPER_CASE_CONSTANT = {
+      relevance: 0,
+      match: /\b[A-Z][A-Z_0-9]+\b/,
+      className: "variable.constant"
+    };
+
+    const METHOD_DEFINITION = {
+      match: [
+        /def/, /\s+/,
+        RUBY_METHOD_RE
+      ],
+      scope: {
+        1: "keyword",
+        3: "title.function"
+      },
+      contains: [
+        PARAMS
+      ]
+    };
+
+    const OBJECT_CREATION = {
+      relevance: 0,
+      match: [
+        CLASS_NAME_WITH_NAMESPACE_RE,
+        /\.new[. (]/
+      ],
+      scope: {
+        1: "title.class"
+      }
+    };
+
+    // CamelCase
+    const CLASS_REFERENCE = {
+      relevance: 0,
+      match: CLASS_NAME_RE,
+      scope: "title.class"
+    };
+
+    const RUBY_DEFAULT_CONTAINS = [
+      STRING,
+      CLASS_DEFINITION,
+      INCLUDE_EXTEND,
+      OBJECT_CREATION,
+      UPPER_CASE_CONSTANT,
+      CLASS_REFERENCE,
+      METHOD_DEFINITION,
+      {
+        // swallow namespace qualifiers before symbols
+        begin: hljs.IDENT_RE + '::' },
+      {
+        className: 'symbol',
+        begin: hljs.UNDERSCORE_IDENT_RE + '(!|\\?)?:',
+        relevance: 0
+      },
+      {
+        className: 'symbol',
+        begin: ':(?!\\s)',
+        contains: [
+          STRING,
+          { begin: RUBY_METHOD_RE }
+        ],
+        relevance: 0
+      },
+      NUMBER,
+      {
+        // negative-look forward attempts to prevent false matches like:
+        // @ident@ or $ident$ that might indicate this is not ruby at all
+        className: "variable",
+        begin: '(\\$\\W)|((\\$|@@?)(\\w+))(?=[^@$?])' + `(?![A-Za-z])(?![@$?'])`
+      },
+      {
+        className: 'params',
+        begin: /\|/,
+        end: /\|/,
+        excludeBegin: true,
+        excludeEnd: true,
+        relevance: 0, // this could be a lot of things (in other languages) other than params
+        keywords: RUBY_KEYWORDS
+      },
+      { // regexp container
+        begin: '(' + hljs.RE_STARTERS_RE + '|unless)\\s*',
+        keywords: 'unless',
+        contains: [
+          {
+            className: 'regexp',
+            contains: [
+              hljs.BACKSLASH_ESCAPE,
+              SUBST
+            ],
+            illegal: /\n/,
+            variants: [
+              {
+                begin: '/',
+                end: '/[a-z]*'
+              },
+              {
+                begin: /%r\{/,
+                end: /\}[a-z]*/
+              },
+              {
+                begin: '%r\\(',
+                end: '\\)[a-z]*'
+              },
+              {
+                begin: '%r!',
+                end: '![a-z]*'
+              },
+              {
+                begin: '%r\\[',
+                end: '\\][a-z]*'
+              }
+            ]
+          }
+        ].concat(IRB_OBJECT, COMMENT_MODES),
+        relevance: 0
+      }
+    ].concat(IRB_OBJECT, COMMENT_MODES);
+
+    SUBST.contains = RUBY_DEFAULT_CONTAINS;
+    PARAMS.contains = RUBY_DEFAULT_CONTAINS;
+
+    // >>
+    // ?>
+    const SIMPLE_PROMPT = "[>?]>";
+    // irb(main):001:0>
+    const DEFAULT_PROMPT = "[\\w#]+\\(\\w+\\):\\d+:\\d+[>*]";
+    const RVM_PROMPT = "(\\w+-)?\\d+\\.\\d+\\.\\d+(p\\d+)?[^\\d][^>]+>";
+
+    const IRB_DEFAULT = [
+      {
+        begin: /^\s*=>/,
+        starts: {
+          end: '$',
+          contains: RUBY_DEFAULT_CONTAINS
+        }
+      },
+      {
+        className: 'meta.prompt',
+        begin: '^(' + SIMPLE_PROMPT + "|" + DEFAULT_PROMPT + '|' + RVM_PROMPT + ')(?=[ ])',
+        starts: {
+          end: '$',
+          keywords: RUBY_KEYWORDS,
+          contains: RUBY_DEFAULT_CONTAINS
+        }
+      }
+    ];
+
+    COMMENT_MODES.unshift(IRB_OBJECT);
+
+    return {
+      name: 'Ruby',
+      aliases: [
+        'rb',
+        'gemspec',
+        'podspec',
+        'thor',
+        'irb'
+      ],
+      keywords: RUBY_KEYWORDS,
+      illegal: /\/\*/,
+      contains: [ hljs.SHEBANG({ binary: "ruby" }) ]
+        .concat(IRB_DEFAULT)
+        .concat(COMMENT_MODES)
+        .concat(RUBY_DEFAULT_CONTAINS)
+    };
+  }
+
+  return ruby;
+
+})();
+
+    hljs.registerLanguage('ruby', hljsGrammar);
+  })();/*! `rust` grammar compiled for Highlight.js 11.9.0 */
+  (function(){
+    var hljsGrammar = (function () {
+  'use strict';
+
+  /*
+  Language: Rust
+  Author: Andrey Vlasovskikh <andrey.vlasovskikh@gmail.com>
+  Contributors: Roman Shmatov <romanshmatov@gmail.com>, Kasper Andersen <kma_untrusted@protonmail.com>
+  Website: https://www.rust-lang.org
+  Category: common, system
+  */
+
+  /** @type LanguageFn */
+  function rust(hljs) {
+    const regex = hljs.regex;
+    const FUNCTION_INVOKE = {
+      className: "title.function.invoke",
+      relevance: 0,
+      begin: regex.concat(
+        /\b/,
+        /(?!let|for|while|if|else|match\b)/,
+        hljs.IDENT_RE,
+        regex.lookahead(/\s*\(/))
+    };
+    const NUMBER_SUFFIX = '([ui](8|16|32|64|128|size)|f(32|64))\?';
+    const KEYWORDS = [
+      "abstract",
+      "as",
+      "async",
+      "await",
+      "become",
+      "box",
+      "break",
+      "const",
+      "continue",
+      "crate",
+      "do",
+      "dyn",
+      "else",
+      "enum",
+      "extern",
+      "false",
+      "final",
+      "fn",
+      "for",
+      "if",
+      "impl",
+      "in",
+      "let",
+      "loop",
+      "macro",
+      "match",
+      "mod",
+      "move",
+      "mut",
+      "override",
+      "priv",
+      "pub",
+      "ref",
+      "return",
+      "self",
+      "Self",
+      "static",
+      "struct",
+      "super",
+      "trait",
+      "true",
+      "try",
+      "type",
+      "typeof",
+      "unsafe",
+      "unsized",
+      "use",
+      "virtual",
+      "where",
+      "while",
+      "yield"
+    ];
+    const LITERALS = [
+      "true",
+      "false",
+      "Some",
+      "None",
+      "Ok",
+      "Err"
+    ];
+    const BUILTINS = [
+      // functions
+      'drop ',
+      // traits
+      "Copy",
+      "Send",
+      "Sized",
+      "Sync",
+      "Drop",
+      "Fn",
+      "FnMut",
+      "FnOnce",
+      "ToOwned",
+      "Clone",
+      "Debug",
+      "PartialEq",
+      "PartialOrd",
+      "Eq",
+      "Ord",
+      "AsRef",
+      "AsMut",
+      "Into",
+      "From",
+      "Default",
+      "Iterator",
+      "Extend",
+      "IntoIterator",
+      "DoubleEndedIterator",
+      "ExactSizeIterator",
+      "SliceConcatExt",
+      "ToString",
+      // macros
+      "assert!",
+      "assert_eq!",
+      "bitflags!",
+      "bytes!",
+      "cfg!",
+      "col!",
+      "concat!",
+      "concat_idents!",
+      "debug_assert!",
+      "debug_assert_eq!",
+      "env!",
+      "eprintln!",
+      "panic!",
+      "file!",
+      "format!",
+      "format_args!",
+      "include_bytes!",
+      "include_str!",
+      "line!",
+      "local_data_key!",
+      "module_path!",
+      "option_env!",
+      "print!",
+      "println!",
+      "select!",
+      "stringify!",
+      "try!",
+      "unimplemented!",
+      "unreachable!",
+      "vec!",
+      "write!",
+      "writeln!",
+      "macro_rules!",
+      "assert_ne!",
+      "debug_assert_ne!"
+    ];
+    const TYPES = [
+      "i8",
+      "i16",
+      "i32",
+      "i64",
+      "i128",
+      "isize",
+      "u8",
+      "u16",
+      "u32",
+      "u64",
+      "u128",
+      "usize",
+      "f32",
+      "f64",
+      "str",
+      "char",
+      "bool",
+      "Box",
+      "Option",
+      "Result",
+      "String",
+      "Vec"
+    ];
+    return {
+      name: 'Rust',
+      aliases: [ 'rs' ],
+      keywords: {
+        $pattern: hljs.IDENT_RE + '!?',
+        type: TYPES,
+        keyword: KEYWORDS,
+        literal: LITERALS,
+        built_in: BUILTINS
+      },
+      illegal: '</',
+      contains: [
+        hljs.C_LINE_COMMENT_MODE,
+        hljs.COMMENT('/\\*', '\\*/', { contains: [ 'self' ] }),
+        hljs.inherit(hljs.QUOTE_STRING_MODE, {
+          begin: /b?"/,
+          illegal: null
+        }),
+        {
+          className: 'string',
+          variants: [
+            { begin: /b?r(#*)"(.|\n)*?"\1(?!#)/ },
+            { begin: /b?'\\?(x\w{2}|u\w{4}|U\w{8}|.)'/ }
+          ]
+        },
+        {
+          className: 'symbol',
+          begin: /'[a-zA-Z_][a-zA-Z0-9_]*/
+        },
+        {
+          className: 'number',
+          variants: [
+            { begin: '\\b0b([01_]+)' + NUMBER_SUFFIX },
+            { begin: '\\b0o([0-7_]+)' + NUMBER_SUFFIX },
+            { begin: '\\b0x([A-Fa-f0-9_]+)' + NUMBER_SUFFIX },
+            { begin: '\\b(\\d[\\d_]*(\\.[0-9_]+)?([eE][+-]?[0-9_]+)?)'
+                     + NUMBER_SUFFIX }
+          ],
+          relevance: 0
+        },
+        {
+          begin: [
+            /fn/,
+            /\s+/,
+            hljs.UNDERSCORE_IDENT_RE
+          ],
+          className: {
+            1: "keyword",
+            3: "title.function"
+          }
+        },
+        {
+          className: 'meta',
+          begin: '#!?\\[',
+          end: '\\]',
+          contains: [
+            {
+              className: 'string',
+              begin: /"/,
+              end: /"/,
+              contains: [
+                hljs.BACKSLASH_ESCAPE
+              ]
+            }
+          ]
+        },
+        {
+          begin: [
+            /let/,
+            /\s+/,
+            /(?:mut\s+)?/,
+            hljs.UNDERSCORE_IDENT_RE
+          ],
+          className: {
+            1: "keyword",
+            3: "keyword",
+            4: "variable"
+          }
+        },
+        // must come before impl/for rule later
+        {
+          begin: [
+            /for/,
+            /\s+/,
+            hljs.UNDERSCORE_IDENT_RE,
+            /\s+/,
+            /in/
+          ],
+          className: {
+            1: "keyword",
+            3: "variable",
+            5: "keyword"
+          }
+        },
+        {
+          begin: [
+            /type/,
+            /\s+/,
+            hljs.UNDERSCORE_IDENT_RE
+          ],
+          className: {
+            1: "keyword",
+            3: "title.class"
+          }
+        },
+        {
+          begin: [
+            /(?:trait|enum|struct|union|impl|for)/,
+            /\s+/,
+            hljs.UNDERSCORE_IDENT_RE
+          ],
+          className: {
+            1: "keyword",
+            3: "title.class"
+          }
+        },
+        {
+          begin: hljs.IDENT_RE + '::',
+          keywords: {
+            keyword: "Self",
+            built_in: BUILTINS,
+            type: TYPES
+          }
+        },
+        {
+          className: "punctuation",
+          begin: '->'
+        },
+        FUNCTION_INVOKE
+      ]
+    };
+  }
+
+  return rust;
+
+})();
+
+    hljs.registerLanguage('rust', hljsGrammar);
+  })();/*! `scss` grammar compiled for Highlight.js 11.9.0 */
+  (function(){
+    var hljsGrammar = (function () {
+  'use strict';
+
+  const MODES = (hljs) => {
+    return {
+      IMPORTANT: {
+        scope: 'meta',
+        begin: '!important'
+      },
+      BLOCK_COMMENT: hljs.C_BLOCK_COMMENT_MODE,
+      HEXCOLOR: {
+        scope: 'number',
+        begin: /#(([0-9a-fA-F]{3,4})|(([0-9a-fA-F]{2}){3,4}))\b/
+      },
+      FUNCTION_DISPATCH: {
+        className: "built_in",
+        begin: /[\w-]+(?=\()/
+      },
+      ATTRIBUTE_SELECTOR_MODE: {
+        scope: 'selector-attr',
+        begin: /\[/,
+        end: /\]/,
+        illegal: '$',
+        contains: [
+          hljs.APOS_STRING_MODE,
+          hljs.QUOTE_STRING_MODE
+        ]
+      },
+      CSS_NUMBER_MODE: {
+        scope: 'number',
+        begin: hljs.NUMBER_RE + '(' +
+          '%|em|ex|ch|rem' +
+          '|vw|vh|vmin|vmax' +
+          '|cm|mm|in|pt|pc|px' +
+          '|deg|grad|rad|turn' +
+          '|s|ms' +
+          '|Hz|kHz' +
+          '|dpi|dpcm|dppx' +
+          ')?',
+        relevance: 0
+      },
+      CSS_VARIABLE: {
+        className: "attr",
+        begin: /--[A-Za-z_][A-Za-z0-9_-]*/
+      }
+    };
+  };
+
+  const HTML_TAGS = [
+    'a',
+    'abbr',
+    'address',
+    'article',
+    'aside',
+    'audio',
+    'b',
+    'blockquote',
+    'body',
+    'button',
+    'canvas',
+    'caption',
+    'cite',
+    'code',
+    'dd',
+    'del',
+    'details',
+    'dfn',
+    'div',
+    'dl',
+    'dt',
+    'em',
+    'fieldset',
+    'figcaption',
+    'figure',
+    'footer',
+    'form',
+    'h1',
+    'h2',
+    'h3',
+    'h4',
+    'h5',
+    'h6',
+    'header',
+    'hgroup',
+    'html',
+    'i',
+    'iframe',
+    'img',
+    'input',
+    'ins',
+    'kbd',
+    'label',
+    'legend',
+    'li',
+    'main',
+    'mark',
+    'menu',
+    'nav',
+    'object',
+    'ol',
+    'p',
+    'q',
+    'quote',
+    'samp',
+    'section',
+    'span',
+    'strong',
+    'summary',
+    'sup',
+    'table',
+    'tbody',
+    'td',
+    'textarea',
+    'tfoot',
+    'th',
+    'thead',
+    'time',
+    'tr',
+    'ul',
+    'var',
+    'video'
+  ];
+
+  const SVG_TAGS = [
+    'defs',
+    'g',
+    'marker',
+    'mask',
+    'pattern',
+    'svg',
+    'switch',
+    'symbol',
+    'feBlend',
+    'feColorMatrix',
+    'feComponentTransfer',
+    'feComposite',
+    'feConvolveMatrix',
+    'feDiffuseLighting',
+    'feDisplacementMap',
+    'feFlood',
+    'feGaussianBlur',
+    'feImage',
+    'feMerge',
+    'feMorphology',
+    'feOffset',
+    'feSpecularLighting',
+    'feTile',
+    'feTurbulence',
+    'linearGradient',
+    'radialGradient',
+    'stop',
+    'circle',
+    'ellipse',
+    'image',
+    'line',
+    'path',
+    'polygon',
+    'polyline',
+    'rect',
+    'text',
+    'use',
+    'textPath',
+    'tspan',
+    'foreignObject',
+    'clipPath'
+  ];
+
+  const TAGS = [
+    ...HTML_TAGS,
+    ...SVG_TAGS,
+  ];
+
+  // Sorting, then reversing makes sure longer attributes/elements like
+  // `font-weight` are matched fully instead of getting false positives on say `font`
+
+  const MEDIA_FEATURES = [
+    'any-hover',
+    'any-pointer',
+    'aspect-ratio',
+    'color',
+    'color-gamut',
+    'color-index',
+    'device-aspect-ratio',
+    'device-height',
+    'device-width',
+    'display-mode',
+    'forced-colors',
+    'grid',
+    'height',
+    'hover',
+    'inverted-colors',
+    'monochrome',
+    'orientation',
+    'overflow-block',
+    'overflow-inline',
+    'pointer',
+    'prefers-color-scheme',
+    'prefers-contrast',
+    'prefers-reduced-motion',
+    'prefers-reduced-transparency',
+    'resolution',
+    'scan',
+    'scripting',
+    'update',
+    'width',
+    // TODO: find a better solution?
+    'min-width',
+    'max-width',
+    'min-height',
+    'max-height'
+  ].sort().reverse();
+
+  // https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes
+  const PSEUDO_CLASSES = [
+    'active',
+    'any-link',
+    'blank',
+    'checked',
+    'current',
+    'default',
+    'defined',
+    'dir', // dir()
+    'disabled',
+    'drop',
+    'empty',
+    'enabled',
+    'first',
+    'first-child',
+    'first-of-type',
+    'fullscreen',
+    'future',
+    'focus',
+    'focus-visible',
+    'focus-within',
+    'has', // has()
+    'host', // host or host()
+    'host-context', // host-context()
+    'hover',
+    'indeterminate',
+    'in-range',
+    'invalid',
+    'is', // is()
+    'lang', // lang()
+    'last-child',
+    'last-of-type',
+    'left',
+    'link',
+    'local-link',
+    'not', // not()
+    'nth-child', // nth-child()
+    'nth-col', // nth-col()
+    'nth-last-child', // nth-last-child()
+    'nth-last-col', // nth-last-col()
+    'nth-last-of-type', //nth-last-of-type()
+    'nth-of-type', //nth-of-type()
+    'only-child',
+    'only-of-type',
+    'optional',
+    'out-of-range',
+    'past',
+    'placeholder-shown',
+    'read-only',
+    'read-write',
+    'required',
+    'right',
+    'root',
+    'scope',
+    'target',
+    'target-within',
+    'user-invalid',
+    'valid',
+    'visited',
+    'where' // where()
+  ].sort().reverse();
+
+  // https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-elements
+  const PSEUDO_ELEMENTS = [
+    'after',
+    'backdrop',
+    'before',
+    'cue',
+    'cue-region',
+    'first-letter',
+    'first-line',
+    'grammar-error',
+    'marker',
+    'part',
+    'placeholder',
+    'selection',
+    'slotted',
+    'spelling-error'
+  ].sort().reverse();
+
+  const ATTRIBUTES = [
+    'align-content',
+    'align-items',
+    'align-self',
+    'alignment-baseline',
+    'all',
+    'animation',
+    'animation-delay',
+    'animation-direction',
+    'animation-duration',
+    'animation-fill-mode',
+    'animation-iteration-count',
+    'animation-name',
+    'animation-play-state',
+    'animation-timing-function',
+    'backface-visibility',
+    'background',
+    'background-attachment',
+    'background-blend-mode',
+    'background-clip',
+    'background-color',
+    'background-image',
+    'background-origin',
+    'background-position',
+    'background-repeat',
+    'background-size',
+    'baseline-shift',
+    'block-size',
+    'border',
+    'border-block',
+    'border-block-color',
+    'border-block-end',
+    'border-block-end-color',
+    'border-block-end-style',
+    'border-block-end-width',
+    'border-block-start',
+    'border-block-start-color',
+    'border-block-start-style',
+    'border-block-start-width',
+    'border-block-style',
+    'border-block-width',
+    'border-bottom',
+    'border-bottom-color',
+    'border-bottom-left-radius',
+    'border-bottom-right-radius',
+    'border-bottom-style',
+    'border-bottom-width',
+    'border-collapse',
+    'border-color',
+    'border-image',
+    'border-image-outset',
+    'border-image-repeat',
+    'border-image-slice',
+    'border-image-source',
+    'border-image-width',
+    'border-inline',
+    'border-inline-color',
+    'border-inline-end',
+    'border-inline-end-color',
+    'border-inline-end-style',
+    'border-inline-end-width',
+    'border-inline-start',
+    'border-inline-start-color',
+    'border-inline-start-style',
+    'border-inline-start-width',
+    'border-inline-style',
+    'border-inline-width',
+    'border-left',
+    'border-left-color',
+    'border-left-style',
+    'border-left-width',
+    'border-radius',
+    'border-right',
+    'border-right-color',
+    'border-right-style',
+    'border-right-width',
+    'border-spacing',
+    'border-style',
+    'border-top',
+    'border-top-color',
+    'border-top-left-radius',
+    'border-top-right-radius',
+    'border-top-style',
+    'border-top-width',
+    'border-width',
+    'bottom',
+    'box-decoration-break',
+    'box-shadow',
+    'box-sizing',
+    'break-after',
+    'break-before',
+    'break-inside',
+    'cx',
+    'cy',
+    'caption-side',
+    'caret-color',
+    'clear',
+    'clip',
+    'clip-path',
+    'clip-rule',
+    'color',
+    'color-interpolation',
+    'color-interpolation-filters',
+    'color-profile',
+    'color-rendering',
+    'column-count',
+    'column-fill',
+    'column-gap',
+    'column-rule',
+    'column-rule-color',
+    'column-rule-style',
+    'column-rule-width',
+    'column-span',
+    'column-width',
+    'columns',
+    'contain',
+    'content',
+    'content-visibility',
+    'counter-increment',
+    'counter-reset',
+    'cue',
+    'cue-after',
+    'cue-before',
+    'cursor',
+    'direction',
+    'display',
+    'dominant-baseline',
+    'empty-cells',
+    'enable-background',
+    'fill',
+    'fill-opacity',
+    'fill-rule',
+    'filter',
+    'flex',
+    'flex-basis',
+    'flex-direction',
+    'flex-flow',
+    'flex-grow',
+    'flex-shrink',
+    'flex-wrap',
+    'float',
+    'flow',
+    'flood-color',
+    'flood-opacity',
+    'font',
+    'font-display',
+    'font-family',
+    'font-feature-settings',
+    'font-kerning',
+    'font-language-override',
+    'font-size',
+    'font-size-adjust',
+    'font-smoothing',
+    'font-stretch',
+    'font-style',
+    'font-synthesis',
+    'font-variant',
+    'font-variant-caps',
+    'font-variant-east-asian',
+    'font-variant-ligatures',
+    'font-variant-numeric',
+    'font-variant-position',
+    'font-variation-settings',
+    'font-weight',
+    'gap',
+    'glyph-orientation-horizontal',
+    'glyph-orientation-vertical',
+    'grid',
+    'grid-area',
+    'grid-auto-columns',
+    'grid-auto-flow',
+    'grid-auto-rows',
+    'grid-column',
+    'grid-column-end',
+    'grid-column-start',
+    'grid-gap',
+    'grid-row',
+    'grid-row-end',
+    'grid-row-start',
+    'grid-template',
+    'grid-template-areas',
+    'grid-template-columns',
+    'grid-template-rows',
+    'hanging-punctuation',
+    'height',
+    'hyphens',
+    'icon',
+    'image-orientation',
+    'image-rendering',
+    'image-resolution',
+    'ime-mode',
+    'inline-size',
+    'isolation',
+    'kerning',
+    'justify-content',
+    'left',
+    'letter-spacing',
+    'lighting-color',
+    'line-break',
+    'line-height',
+    'list-style',
+    'list-style-image',
+    'list-style-position',
+    'list-style-type',
+    'marker',
+    'marker-end',
+    'marker-mid',
+    'marker-start',
+    'mask',
+    'margin',
+    'margin-block',
+    'margin-block-end',
+    'margin-block-start',
+    'margin-bottom',
+    'margin-inline',
+    'margin-inline-end',
+    'margin-inline-start',
+    'margin-left',
+    'margin-right',
+    'margin-top',
+    'marks',
+    'mask',
+    'mask-border',
+    'mask-border-mode',
+    'mask-border-outset',
+    'mask-border-repeat',
+    'mask-border-slice',
+    'mask-border-source',
+    'mask-border-width',
+    'mask-clip',
+    'mask-composite',
+    'mask-image',
+    'mask-mode',
+    'mask-origin',
+    'mask-position',
+    'mask-repeat',
+    'mask-size',
+    'mask-type',
+    'max-block-size',
+    'max-height',
+    'max-inline-size',
+    'max-width',
+    'min-block-size',
+    'min-height',
+    'min-inline-size',
+    'min-width',
+    'mix-blend-mode',
+    'nav-down',
+    'nav-index',
+    'nav-left',
+    'nav-right',
+    'nav-up',
+    'none',
+    'normal',
+    'object-fit',
+    'object-position',
+    'opacity',
+    'order',
+    'orphans',
+    'outline',
+    'outline-color',
+    'outline-offset',
+    'outline-style',
+    'outline-width',
+    'overflow',
+    'overflow-wrap',
+    'overflow-x',
+    'overflow-y',
+    'padding',
+    'padding-block',
+    'padding-block-end',
+    'padding-block-start',
+    'padding-bottom',
+    'padding-inline',
+    'padding-inline-end',
+    'padding-inline-start',
+    'padding-left',
+    'padding-right',
+    'padding-top',
+    'page-break-after',
+    'page-break-before',
+    'page-break-inside',
+    'pause',
+    'pause-after',
+    'pause-before',
+    'perspective',
+    'perspective-origin',
+    'pointer-events',
+    'position',
+    'quotes',
+    'r',
+    'resize',
+    'rest',
+    'rest-after',
+    'rest-before',
+    'right',
+    'row-gap',
+    'scroll-margin',
+    'scroll-margin-block',
+    'scroll-margin-block-end',
+    'scroll-margin-block-start',
+    'scroll-margin-bottom',
+    'scroll-margin-inline',
+    'scroll-margin-inline-end',
+    'scroll-margin-inline-start',
+    'scroll-margin-left',
+    'scroll-margin-right',
+    'scroll-margin-top',
+    'scroll-padding',
+    'scroll-padding-block',
+    'scroll-padding-block-end',
+    'scroll-padding-block-start',
+    'scroll-padding-bottom',
+    'scroll-padding-inline',
+    'scroll-padding-inline-end',
+    'scroll-padding-inline-start',
+    'scroll-padding-left',
+    'scroll-padding-right',
+    'scroll-padding-top',
+    'scroll-snap-align',
+    'scroll-snap-stop',
+    'scroll-snap-type',
+    'scrollbar-color',
+    'scrollbar-gutter',
+    'scrollbar-width',
+    'shape-image-threshold',
+    'shape-margin',
+    'shape-outside',
+    'shape-rendering',
+    'stop-color',
+    'stop-opacity',
+    'stroke',
+    'stroke-dasharray',
+    'stroke-dashoffset',
+    'stroke-linecap',
+    'stroke-linejoin',
+    'stroke-miterlimit',
+    'stroke-opacity',
+    'stroke-width',
+    'speak',
+    'speak-as',
+    'src', // @font-face
+    'tab-size',
+    'table-layout',
+    'text-anchor',
+    'text-align',
+    'text-align-all',
+    'text-align-last',
+    'text-combine-upright',
+    'text-decoration',
+    'text-decoration-color',
+    'text-decoration-line',
+    'text-decoration-style',
+    'text-emphasis',
+    'text-emphasis-color',
+    'text-emphasis-position',
+    'text-emphasis-style',
+    'text-indent',
+    'text-justify',
+    'text-orientation',
+    'text-overflow',
+    'text-rendering',
+    'text-shadow',
+    'text-transform',
+    'text-underline-position',
+    'top',
+    'transform',
+    'transform-box',
+    'transform-origin',
+    'transform-style',
+    'transition',
+    'transition-delay',
+    'transition-duration',
+    'transition-property',
+    'transition-timing-function',
+    'unicode-bidi',
+    'vector-effect',
+    'vertical-align',
+    'visibility',
+    'voice-balance',
+    'voice-duration',
+    'voice-family',
+    'voice-pitch',
+    'voice-range',
+    'voice-rate',
+    'voice-stress',
+    'voice-volume',
+    'white-space',
+    'widows',
+    'width',
+    'will-change',
+    'word-break',
+    'word-spacing',
+    'word-wrap',
+    'writing-mode',
+    'x',
+    'y',
+    'z-index'
+  ].sort().reverse();
+
+  /*
+  Language: SCSS
+  Description: Scss is an extension of the syntax of CSS.
+  Author: Kurt Emch <kurt@kurtemch.com>
+  Website: https://sass-lang.com
+  Category: common, css, web
+  */
+
+
+  /** @type LanguageFn */
+  function scss(hljs) {
+    const modes = MODES(hljs);
+    const PSEUDO_ELEMENTS$1 = PSEUDO_ELEMENTS;
+    const PSEUDO_CLASSES$1 = PSEUDO_CLASSES;
+
+    const AT_IDENTIFIER = '@[a-z-]+'; // @font-face
+    const AT_MODIFIERS = "and or not only";
+    const IDENT_RE = '[a-zA-Z-][a-zA-Z0-9_-]*';
+    const VARIABLE = {
+      className: 'variable',
+      begin: '(\\$' + IDENT_RE + ')\\b',
+      relevance: 0
+    };
+
+    return {
+      name: 'SCSS',
+      case_insensitive: true,
+      illegal: '[=/|\']',
+      contains: [
+        hljs.C_LINE_COMMENT_MODE,
+        hljs.C_BLOCK_COMMENT_MODE,
+        // to recognize keyframe 40% etc which are outside the scope of our
+        // attribute value mode
+        modes.CSS_NUMBER_MODE,
+        {
+          className: 'selector-id',
+          begin: '#[A-Za-z0-9_-]+',
+          relevance: 0
+        },
+        {
+          className: 'selector-class',
+          begin: '\\.[A-Za-z0-9_-]+',
+          relevance: 0
+        },
+        modes.ATTRIBUTE_SELECTOR_MODE,
+        {
+          className: 'selector-tag',
+          begin: '\\b(' + TAGS.join('|') + ')\\b',
+          // was there, before, but why?
+          relevance: 0
+        },
+        {
+          className: 'selector-pseudo',
+          begin: ':(' + PSEUDO_CLASSES$1.join('|') + ')'
+        },
+        {
+          className: 'selector-pseudo',
+          begin: ':(:)?(' + PSEUDO_ELEMENTS$1.join('|') + ')'
+        },
+        VARIABLE,
+        { // pseudo-selector params
+          begin: /\(/,
+          end: /\)/,
+          contains: [ modes.CSS_NUMBER_MODE ]
+        },
+        modes.CSS_VARIABLE,
+        {
+          className: 'attribute',
+          begin: '\\b(' + ATTRIBUTES.join('|') + ')\\b'
+        },
+        { begin: '\\b(whitespace|wait|w-resize|visible|vertical-text|vertical-ideographic|uppercase|upper-roman|upper-alpha|underline|transparent|top|thin|thick|text|text-top|text-bottom|tb-rl|table-header-group|table-footer-group|sw-resize|super|strict|static|square|solid|small-caps|separate|se-resize|scroll|s-resize|rtl|row-resize|ridge|right|repeat|repeat-y|repeat-x|relative|progress|pointer|overline|outside|outset|oblique|nowrap|not-allowed|normal|none|nw-resize|no-repeat|no-drop|newspaper|ne-resize|n-resize|move|middle|medium|ltr|lr-tb|lowercase|lower-roman|lower-alpha|loose|list-item|line|line-through|line-edge|lighter|left|keep-all|justify|italic|inter-word|inter-ideograph|inside|inset|inline|inline-block|inherit|inactive|ideograph-space|ideograph-parenthesis|ideograph-numeric|ideograph-alpha|horizontal|hidden|help|hand|groove|fixed|ellipsis|e-resize|double|dotted|distribute|distribute-space|distribute-letter|distribute-all-lines|disc|disabled|default|decimal|dashed|crosshair|collapse|col-resize|circle|char|center|capitalize|break-word|break-all|bottom|both|bolder|bold|block|bidi-override|below|baseline|auto|always|all-scroll|absolute|table|table-cell)\\b' },
+        {
+          begin: /:/,
+          end: /[;}{]/,
+          relevance: 0,
+          contains: [
+            modes.BLOCK_COMMENT,
+            VARIABLE,
+            modes.HEXCOLOR,
+            modes.CSS_NUMBER_MODE,
+            hljs.QUOTE_STRING_MODE,
+            hljs.APOS_STRING_MODE,
+            modes.IMPORTANT,
+            modes.FUNCTION_DISPATCH
+          ]
+        },
+        // matching these here allows us to treat them more like regular CSS
+        // rules so everything between the {} gets regular rule highlighting,
+        // which is what we want for page and font-face
+        {
+          begin: '@(page|font-face)',
+          keywords: {
+            $pattern: AT_IDENTIFIER,
+            keyword: '@page @font-face'
+          }
+        },
+        {
+          begin: '@',
+          end: '[{;]',
+          returnBegin: true,
+          keywords: {
+            $pattern: /[a-z-]+/,
+            keyword: AT_MODIFIERS,
+            attribute: MEDIA_FEATURES.join(" ")
+          },
+          contains: [
+            {
+              begin: AT_IDENTIFIER,
+              className: "keyword"
+            },
+            {
+              begin: /[a-z-]+(?=:)/,
+              className: "attribute"
+            },
+            VARIABLE,
+            hljs.QUOTE_STRING_MODE,
+            hljs.APOS_STRING_MODE,
+            modes.HEXCOLOR,
+            modes.CSS_NUMBER_MODE
+          ]
+        },
+        modes.FUNCTION_DISPATCH
+      ]
+    };
+  }
+
+  return scss;
+
+})();
+
+    hljs.registerLanguage('scss', hljsGrammar);
+  })();/*! `shell` grammar compiled for Highlight.js 11.9.0 */
+  (function(){
+    var hljsGrammar = (function () {
+  'use strict';
+
+  /*
+  Language: Shell Session
+  Requires: bash.js
+  Author: TSUYUSATO Kitsune <make.just.on@gmail.com>
+  Category: common
+  Audit: 2020
+  */
+
+  /** @type LanguageFn */
+  function shell(hljs) {
+    return {
+      name: 'Shell Session',
+      aliases: [
+        'console',
+        'shellsession'
+      ],
+      contains: [
+        {
+          className: 'meta.prompt',
+          // We cannot add \s (spaces) in the regular expression otherwise it will be too broad and produce unexpected result.
+          // For instance, in the following example, it would match "echo /path/to/home >" as a prompt:
+          // echo /path/to/home > t.exe
+          begin: /^\s{0,3}[/~\w\d[\]()@-]*[>%$#][ ]?/,
+          starts: {
+            end: /[^\\](?=\s*$)/,
+            subLanguage: 'bash'
+          }
+        }
+      ]
+    };
+  }
+
+  return shell;
+
+})();
+
+    hljs.registerLanguage('shell', hljsGrammar);
+  })();/*! `sql` grammar compiled for Highlight.js 11.9.0 */
+  (function(){
+    var hljsGrammar = (function () {
+  'use strict';
+
+  /*
+   Language: SQL
+   Website: https://en.wikipedia.org/wiki/SQL
+   Category: common, database
+   */
+
+  /*
+
+  Goals:
+
+  SQL is intended to highlight basic/common SQL keywords and expressions
+
+  - If pretty much every single SQL server includes supports, then it's a canidate.
+  - It is NOT intended to include tons of vendor specific keywords (Oracle, MySQL,
+    PostgreSQL) although the list of data types is purposely a bit more expansive.
+  - For more specific SQL grammars please see:
+    - PostgreSQL and PL/pgSQL - core
+    - T-SQL - https://github.com/highlightjs/highlightjs-tsql
+    - sql_more (core)
+
+   */
+
+  function sql(hljs) {
+    const regex = hljs.regex;
+    const COMMENT_MODE = hljs.COMMENT('--', '$');
+    const STRING = {
+      className: 'string',
+      variants: [
+        {
+          begin: /'/,
+          end: /'/,
+          contains: [ { begin: /''/ } ]
+        }
+      ]
+    };
+    const QUOTED_IDENTIFIER = {
+      begin: /"/,
+      end: /"/,
+      contains: [ { begin: /""/ } ]
+    };
+
+    const LITERALS = [
+      "true",
+      "false",
+      // Not sure it's correct to call NULL literal, and clauses like IS [NOT] NULL look strange that way.
+      // "null",
+      "unknown"
+    ];
+
+    const MULTI_WORD_TYPES = [
+      "double precision",
+      "large object",
+      "with timezone",
+      "without timezone"
+    ];
+
+    const TYPES = [
+      'bigint',
+      'binary',
+      'blob',
+      'boolean',
+      'char',
+      'character',
+      'clob',
+      'date',
+      'dec',
+      'decfloat',
+      'decimal',
+      'float',
+      'int',
+      'integer',
+      'interval',
+      'nchar',
+      'nclob',
+      'national',
+      'numeric',
+      'real',
+      'row',
+      'smallint',
+      'time',
+      'timestamp',
+      'varchar',
+      'varying', // modifier (character varying)
+      'varbinary'
+    ];
+
+    const NON_RESERVED_WORDS = [
+      "add",
+      "asc",
+      "collation",
+      "desc",
+      "final",
+      "first",
+      "last",
+      "view"
+    ];
+
+    // https://jakewheat.github.io/sql-overview/sql-2016-foundation-grammar.html#reserved-word
+    const RESERVED_WORDS = [
+      "abs",
+      "acos",
+      "all",
+      "allocate",
+      "alter",
+      "and",
+      "any",
+      "are",
+      "array",
+      "array_agg",
+      "array_max_cardinality",
+      "as",
+      "asensitive",
+      "asin",
+      "asymmetric",
+      "at",
+      "atan",
+      "atomic",
+      "authorization",
+      "avg",
+      "begin",
+      "begin_frame",
+      "begin_partition",
+      "between",
+      "bigint",
+      "binary",
+      "blob",
+      "boolean",
+      "both",
+      "by",
+      "call",
+      "called",
+      "cardinality",
+      "cascaded",
+      "case",
+      "cast",
+      "ceil",
+      "ceiling",
+      "char",
+      "char_length",
+      "character",
+      "character_length",
+      "check",
+      "classifier",
+      "clob",
+      "close",
+      "coalesce",
+      "collate",
+      "collect",
+      "column",
+      "commit",
+      "condition",
+      "connect",
+      "constraint",
+      "contains",
+      "convert",
+      "copy",
+      "corr",
+      "corresponding",
+      "cos",
+      "cosh",
+      "count",
+      "covar_pop",
+      "covar_samp",
+      "create",
+      "cross",
+      "cube",
+      "cume_dist",
+      "current",
+      "current_catalog",
+      "current_date",
+      "current_default_transform_group",
+      "current_path",
+      "current_role",
+      "current_row",
+      "current_schema",
+      "current_time",
+      "current_timestamp",
+      "current_path",
+      "current_role",
+      "current_transform_group_for_type",
+      "current_user",
+      "cursor",
+      "cycle",
+      "date",
+      "day",
+      "deallocate",
+      "dec",
+      "decimal",
+      "decfloat",
+      "declare",
+      "default",
+      "define",
+      "delete",
+      "dense_rank",
+      "deref",
+      "describe",
+      "deterministic",
+      "disconnect",
+      "distinct",
+      "double",
+      "drop",
+      "dynamic",
+      "each",
+      "element",
+      "else",
+      "empty",
+      "end",
+      "end_frame",
+      "end_partition",
+      "end-exec",
+      "equals",
+      "escape",
+      "every",
+      "except",
+      "exec",
+      "execute",
+      "exists",
+      "exp",
+      "external",
+      "extract",
+      "false",
+      "fetch",
+      "filter",
+      "first_value",
+      "float",
+      "floor",
+      "for",
+      "foreign",
+      "frame_row",
+      "free",
+      "from",
+      "full",
+      "function",
+      "fusion",
+      "get",
+      "global",
+      "grant",
+      "group",
+      "grouping",
+      "groups",
+      "having",
+      "hold",
+      "hour",
+      "identity",
+      "in",
+      "indicator",
+      "initial",
+      "inner",
+      "inout",
+      "insensitive",
+      "insert",
+      "int",
+      "integer",
+      "intersect",
+      "intersection",
+      "interval",
+      "into",
+      "is",
+      "join",
+      "json_array",
+      "json_arrayagg",
+      "json_exists",
+      "json_object",
+      "json_objectagg",
+      "json_query",
+      "json_table",
+      "json_table_primitive",
+      "json_value",
+      "lag",
+      "language",
+      "large",
+      "last_value",
+      "lateral",
+      "lead",
+      "leading",
+      "left",
+      "like",
+      "like_regex",
+      "listagg",
+      "ln",
+      "local",
+      "localtime",
+      "localtimestamp",
+      "log",
+      "log10",
+      "lower",
+      "match",
+      "match_number",
+      "match_recognize",
+      "matches",
+      "max",
+      "member",
+      "merge",
+      "method",
+      "min",
+      "minute",
+      "mod",
+      "modifies",
+      "module",
+      "month",
+      "multiset",
+      "national",
+      "natural",
+      "nchar",
+      "nclob",
+      "new",
+      "no",
+      "none",
+      "normalize",
+      "not",
+      "nth_value",
+      "ntile",
+      "null",
+      "nullif",
+      "numeric",
+      "octet_length",
+      "occurrences_regex",
+      "of",
+      "offset",
+      "old",
+      "omit",
+      "on",
+      "one",
+      "only",
+      "open",
+      "or",
+      "order",
+      "out",
+      "outer",
+      "over",
+      "overlaps",
+      "overlay",
+      "parameter",
+      "partition",
+      "pattern",
+      "per",
+      "percent",
+      "percent_rank",
+      "percentile_cont",
+      "percentile_disc",
+      "period",
+      "portion",
+      "position",
+      "position_regex",
+      "power",
+      "precedes",
+      "precision",
+      "prepare",
+      "primary",
+      "procedure",
+      "ptf",
+      "range",
+      "rank",
+      "reads",
+      "real",
+      "recursive",
+      "ref",
+      "references",
+      "referencing",
+      "regr_avgx",
+      "regr_avgy",
+      "regr_count",
+      "regr_intercept",
+      "regr_r2",
+      "regr_slope",
+      "regr_sxx",
+      "regr_sxy",
+      "regr_syy",
+      "release",
+      "result",
+      "return",
+      "returns",
+      "revoke",
+      "right",
+      "rollback",
+      "rollup",
+      "row",
+      "row_number",
+      "rows",
+      "running",
+      "savepoint",
+      "scope",
+      "scroll",
+      "search",
+      "second",
+      "seek",
+      "select",
+      "sensitive",
+      "session_user",
+      "set",
+      "show",
+      "similar",
+      "sin",
+      "sinh",
+      "skip",
+      "smallint",
+      "some",
+      "specific",
+      "specifictype",
+      "sql",
+      "sqlexception",
+      "sqlstate",
+      "sqlwarning",
+      "sqrt",
+      "start",
+      "static",
+      "stddev_pop",
+      "stddev_samp",
+      "submultiset",
+      "subset",
+      "substring",
+      "substring_regex",
+      "succeeds",
+      "sum",
+      "symmetric",
+      "system",
+      "system_time",
+      "system_user",
+      "table",
+      "tablesample",
+      "tan",
+      "tanh",
+      "then",
+      "time",
+      "timestamp",
+      "timezone_hour",
+      "timezone_minute",
+      "to",
+      "trailing",
+      "translate",
+      "translate_regex",
+      "translation",
+      "treat",
+      "trigger",
+      "trim",
+      "trim_array",
+      "true",
+      "truncate",
+      "uescape",
+      "union",
+      "unique",
+      "unknown",
+      "unnest",
+      "update",
+      "upper",
+      "user",
+      "using",
+      "value",
+      "values",
+      "value_of",
+      "var_pop",
+      "var_samp",
+      "varbinary",
+      "varchar",
+      "varying",
+      "versioning",
+      "when",
+      "whenever",
+      "where",
+      "width_bucket",
+      "window",
+      "with",
+      "within",
+      "without",
+      "year",
+    ];
+
+    // these are reserved words we have identified to be functions
+    // and should only be highlighted in a dispatch-like context
+    // ie, array_agg(...), etc.
+    const RESERVED_FUNCTIONS = [
+      "abs",
+      "acos",
+      "array_agg",
+      "asin",
+      "atan",
+      "avg",
+      "cast",
+      "ceil",
+      "ceiling",
+      "coalesce",
+      "corr",
+      "cos",
+      "cosh",
+      "count",
+      "covar_pop",
+      "covar_samp",
+      "cume_dist",
+      "dense_rank",
+      "deref",
+      "element",
+      "exp",
+      "extract",
+      "first_value",
+      "floor",
+      "json_array",
+      "json_arrayagg",
+      "json_exists",
+      "json_object",
+      "json_objectagg",
+      "json_query",
+      "json_table",
+      "json_table_primitive",
+      "json_value",
+      "lag",
+      "last_value",
+      "lead",
+      "listagg",
+      "ln",
+      "log",
+      "log10",
+      "lower",
+      "max",
+      "min",
+      "mod",
+      "nth_value",
+      "ntile",
+      "nullif",
+      "percent_rank",
+      "percentile_cont",
+      "percentile_disc",
+      "position",
+      "position_regex",
+      "power",
+      "rank",
+      "regr_avgx",
+      "regr_avgy",
+      "regr_count",
+      "regr_intercept",
+      "regr_r2",
+      "regr_slope",
+      "regr_sxx",
+      "regr_sxy",
+      "regr_syy",
+      "row_number",
+      "sin",
+      "sinh",
+      "sqrt",
+      "stddev_pop",
+      "stddev_samp",
+      "substring",
+      "substring_regex",
+      "sum",
+      "tan",
+      "tanh",
+      "translate",
+      "translate_regex",
+      "treat",
+      "trim",
+      "trim_array",
+      "unnest",
+      "upper",
+      "value_of",
+      "var_pop",
+      "var_samp",
+      "width_bucket",
+    ];
+
+    // these functions can
+    const POSSIBLE_WITHOUT_PARENS = [
+      "current_catalog",
+      "current_date",
+      "current_default_transform_group",
+      "current_path",
+      "current_role",
+      "current_schema",
+      "current_transform_group_for_type",
+      "current_user",
+      "session_user",
+      "system_time",
+      "system_user",
+      "current_time",
+      "localtime",
+      "current_timestamp",
+      "localtimestamp"
+    ];
+
+    // those exist to boost relevance making these very
+    // "SQL like" keyword combos worth +1 extra relevance
+    const COMBOS = [
+      "create table",
+      "insert into",
+      "primary key",
+      "foreign key",
+      "not null",
+      "alter table",
+      "add constraint",
+      "grouping sets",
+      "on overflow",
+      "character set",
+      "respect nulls",
+      "ignore nulls",
+      "nulls first",
+      "nulls last",
+      "depth first",
+      "breadth first"
+    ];
+
+    const FUNCTIONS = RESERVED_FUNCTIONS;
+
+    const KEYWORDS = [
+      ...RESERVED_WORDS,
+      ...NON_RESERVED_WORDS
+    ].filter((keyword) => {
+      return !RESERVED_FUNCTIONS.includes(keyword);
+    });
+
+    const VARIABLE = {
+      className: "variable",
+      begin: /@[a-z0-9][a-z0-9_]*/,
+    };
+
+    const OPERATOR = {
+      className: "operator",
+      begin: /[-+*/=%^~]|&&?|\|\|?|!=?|<(?:=>?|<|>)?|>[>=]?/,
+      relevance: 0,
+    };
+
+    const FUNCTION_CALL = {
+      begin: regex.concat(/\b/, regex.either(...FUNCTIONS), /\s*\(/),
+      relevance: 0,
+      keywords: { built_in: FUNCTIONS }
+    };
+
+    // keywords with less than 3 letters are reduced in relevancy
+    function reduceRelevancy(list, {
+      exceptions, when
+    } = {}) {
+      const qualifyFn = when;
+      exceptions = exceptions || [];
+      return list.map((item) => {
+        if (item.match(/\|\d+$/) || exceptions.includes(item)) {
+          return item;
+        } else if (qualifyFn(item)) {
+          return `${item}|0`;
+        } else {
+          return item;
+        }
+      });
+    }
+
+    return {
+      name: 'SQL',
+      case_insensitive: true,
+      // does not include {} or HTML tags `</`
+      illegal: /[{}]|<\//,
+      keywords: {
+        $pattern: /\b[\w\.]+/,
+        keyword:
+          reduceRelevancy(KEYWORDS, { when: (x) => x.length < 3 }),
+        literal: LITERALS,
+        type: TYPES,
+        built_in: POSSIBLE_WITHOUT_PARENS
+      },
+      contains: [
+        {
+          begin: regex.either(...COMBOS),
+          relevance: 0,
+          keywords: {
+            $pattern: /[\w\.]+/,
+            keyword: KEYWORDS.concat(COMBOS),
+            literal: LITERALS,
+            type: TYPES
+          },
+        },
+        {
+          className: "type",
+          begin: regex.either(...MULTI_WORD_TYPES)
+        },
+        FUNCTION_CALL,
+        VARIABLE,
+        STRING,
+        QUOTED_IDENTIFIER,
+        hljs.C_NUMBER_MODE,
+        hljs.C_BLOCK_COMMENT_MODE,
+        COMMENT_MODE,
+        OPERATOR
+      ]
+    };
+  }
+
+  return sql;
+
+})();
+
+    hljs.registerLanguage('sql', hljsGrammar);
+  })();/*! `swift` grammar compiled for Highlight.js 11.9.0 */
+  (function(){
+    var hljsGrammar = (function () {
+  'use strict';
+
+  /**
+   * @param {string} value
+   * @returns {RegExp}
+   * */
+
+  /**
+   * @param {RegExp | string } re
+   * @returns {string}
+   */
+  function source(re) {
+    if (!re) return null;
+    if (typeof re === "string") return re;
+
+    return re.source;
+  }
+
+  /**
+   * @param {RegExp | string } re
+   * @returns {string}
+   */
+  function lookahead(re) {
+    return concat('(?=', re, ')');
+  }
+
+  /**
+   * @param {...(RegExp | string) } args
+   * @returns {string}
+   */
+  function concat(...args) {
+    const joined = args.map((x) => source(x)).join("");
+    return joined;
+  }
+
+  /**
+   * @param { Array<string | RegExp | Object> } args
+   * @returns {object}
+   */
+  function stripOptionsFromArgs(args) {
+    const opts = args[args.length - 1];
+
+    if (typeof opts === 'object' && opts.constructor === Object) {
+      args.splice(args.length - 1, 1);
+      return opts;
+    } else {
+      return {};
+    }
+  }
+
+  /** @typedef { {capture?: boolean} } RegexEitherOptions */
+
+  /**
+   * Any of the passed expresssions may match
+   *
+   * Creates a huge this | this | that | that match
+   * @param {(RegExp | string)[] | [...(RegExp | string)[], RegexEitherOptions]} args
+   * @returns {string}
+   */
+  function either(...args) {
+    /** @type { object & {capture?: boolean} }  */
+    const opts = stripOptionsFromArgs(args);
+    const joined = '('
+      + (opts.capture ? "" : "?:")
+      + args.map((x) => source(x)).join("|") + ")";
+    return joined;
+  }
+
+  const keywordWrapper = keyword => concat(
+    /\b/,
+    keyword,
+    /\w$/.test(keyword) ? /\b/ : /\B/
+  );
+
+  // Keywords that require a leading dot.
+  const dotKeywords = [
+    'Protocol', // contextual
+    'Type' // contextual
+  ].map(keywordWrapper);
+
+  // Keywords that may have a leading dot.
+  const optionalDotKeywords = [
+    'init',
+    'self'
+  ].map(keywordWrapper);
+
+  // should register as keyword, not type
+  const keywordTypes = [
+    'Any',
+    'Self'
+  ];
+
+  // Regular keywords and literals.
+  const keywords = [
+    // strings below will be fed into the regular `keywords` engine while regex
+    // will result in additional modes being created to scan for those keywords to
+    // avoid conflicts with other rules
+    'actor',
+    'any', // contextual
+    'associatedtype',
+    'async',
+    'await',
+    /as\?/, // operator
+    /as!/, // operator
+    'as', // operator
+    'borrowing', // contextual
+    'break',
+    'case',
+    'catch',
+    'class',
+    'consume', // contextual
+    'consuming', // contextual
+    'continue',
+    'convenience', // contextual
+    'copy', // contextual
+    'default',
+    'defer',
+    'deinit',
+    'didSet', // contextual
+    'distributed',
+    'do',
+    'dynamic', // contextual
+    'each',
+    'else',
+    'enum',
+    'extension',
+    'fallthrough',
+    /fileprivate\(set\)/,
+    'fileprivate',
+    'final', // contextual
+    'for',
+    'func',
+    'get', // contextual
+    'guard',
+    'if',
+    'import',
+    'indirect', // contextual
+    'infix', // contextual
+    /init\?/,
+    /init!/,
+    'inout',
+    /internal\(set\)/,
+    'internal',
+    'in',
+    'is', // operator
+    'isolated', // contextual
+    'nonisolated', // contextual
+    'lazy', // contextual
+    'let',
+    'macro',
+    'mutating', // contextual
+    'nonmutating', // contextual
+    /open\(set\)/, // contextual
+    'open', // contextual
+    'operator',
+    'optional', // contextual
+    'override', // contextual
+    'postfix', // contextual
+    'precedencegroup',
+    'prefix', // contextual
+    /private\(set\)/,
+    'private',
+    'protocol',
+    /public\(set\)/,
+    'public',
+    'repeat',
+    'required', // contextual
+    'rethrows',
+    'return',
+    'set', // contextual
+    'some', // contextual
+    'static',
+    'struct',
+    'subscript',
+    'super',
+    'switch',
+    'throws',
+    'throw',
+    /try\?/, // operator
+    /try!/, // operator
+    'try', // operator
+    'typealias',
+    /unowned\(safe\)/, // contextual
+    /unowned\(unsafe\)/, // contextual
+    'unowned', // contextual
+    'var',
+    'weak', // contextual
+    'where',
+    'while',
+    'willSet' // contextual
+  ];
+
+  // NOTE: Contextual keywords are reserved only in specific contexts.
+  // Ideally, these should be matched using modes to avoid false positives.
+
+  // Literals.
+  const literals = [
+    'false',
+    'nil',
+    'true'
+  ];
+
+  // Keywords used in precedence groups.
+  const precedencegroupKeywords = [
+    'assignment',
+    'associativity',
+    'higherThan',
+    'left',
+    'lowerThan',
+    'none',
+    'right'
+  ];
+
+  // Keywords that start with a number sign (#).
+  // #(un)available is handled separately.
+  const numberSignKeywords = [
+    '#colorLiteral',
+    '#column',
+    '#dsohandle',
+    '#else',
+    '#elseif',
+    '#endif',
+    '#error',
+    '#file',
+    '#fileID',
+    '#fileLiteral',
+    '#filePath',
+    '#function',
+    '#if',
+    '#imageLiteral',
+    '#keyPath',
+    '#line',
+    '#selector',
+    '#sourceLocation',
+    '#warning'
+  ];
+
+  // Global functions in the Standard Library.
+  const builtIns = [
+    'abs',
+    'all',
+    'any',
+    'assert',
+    'assertionFailure',
+    'debugPrint',
+    'dump',
+    'fatalError',
+    'getVaList',
+    'isKnownUniquelyReferenced',
+    'max',
+    'min',
+    'numericCast',
+    'pointwiseMax',
+    'pointwiseMin',
+    'precondition',
+    'preconditionFailure',
+    'print',
+    'readLine',
+    'repeatElement',
+    'sequence',
+    'stride',
+    'swap',
+    'swift_unboxFromSwiftValueWithType',
+    'transcode',
+    'type',
+    'unsafeBitCast',
+    'unsafeDowncast',
+    'withExtendedLifetime',
+    'withUnsafeMutablePointer',
+    'withUnsafePointer',
+    'withVaList',
+    'withoutActuallyEscaping',
+    'zip'
+  ];
+
+  // Valid first characters for operators.
+  const operatorHead = either(
+    /[/=\-+!*%<>&|^~?]/,
+    /[\u00A1-\u00A7]/,
+    /[\u00A9\u00AB]/,
+    /[\u00AC\u00AE]/,
+    /[\u00B0\u00B1]/,
+    /[\u00B6\u00BB\u00BF\u00D7\u00F7]/,
+    /[\u2016-\u2017]/,
+    /[\u2020-\u2027]/,
+    /[\u2030-\u203E]/,
+    /[\u2041-\u2053]/,
+    /[\u2055-\u205E]/,
+    /[\u2190-\u23FF]/,
+    /[\u2500-\u2775]/,
+    /[\u2794-\u2BFF]/,
+    /[\u2E00-\u2E7F]/,
+    /[\u3001-\u3003]/,
+    /[\u3008-\u3020]/,
+    /[\u3030]/
+  );
+
+  // Valid characters for operators.
+  const operatorCharacter = either(
+    operatorHead,
+    /[\u0300-\u036F]/,
+    /[\u1DC0-\u1DFF]/,
+    /[\u20D0-\u20FF]/,
+    /[\uFE00-\uFE0F]/,
+    /[\uFE20-\uFE2F]/
+    // TODO: The following characters are also allowed, but the regex isn't supported yet.
+    // /[\u{E0100}-\u{E01EF}]/u
+  );
+
+  // Valid operator.
+  const operator = concat(operatorHead, operatorCharacter, '*');
+
+  // Valid first characters for identifiers.
+  const identifierHead = either(
+    /[a-zA-Z_]/,
+    /[\u00A8\u00AA\u00AD\u00AF\u00B2-\u00B5\u00B7-\u00BA]/,
+    /[\u00BC-\u00BE\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u00FF]/,
+    /[\u0100-\u02FF\u0370-\u167F\u1681-\u180D\u180F-\u1DBF]/,
+    /[\u1E00-\u1FFF]/,
+    /[\u200B-\u200D\u202A-\u202E\u203F-\u2040\u2054\u2060-\u206F]/,
+    /[\u2070-\u20CF\u2100-\u218F\u2460-\u24FF\u2776-\u2793]/,
+    /[\u2C00-\u2DFF\u2E80-\u2FFF]/,
+    /[\u3004-\u3007\u3021-\u302F\u3031-\u303F\u3040-\uD7FF]/,
+    /[\uF900-\uFD3D\uFD40-\uFDCF\uFDF0-\uFE1F\uFE30-\uFE44]/,
+    /[\uFE47-\uFEFE\uFF00-\uFFFD]/ // Should be /[\uFE47-\uFFFD]/, but we have to exclude FEFF.
+    // The following characters are also allowed, but the regexes aren't supported yet.
+    // /[\u{10000}-\u{1FFFD}\u{20000-\u{2FFFD}\u{30000}-\u{3FFFD}\u{40000}-\u{4FFFD}]/u,
+    // /[\u{50000}-\u{5FFFD}\u{60000-\u{6FFFD}\u{70000}-\u{7FFFD}\u{80000}-\u{8FFFD}]/u,
+    // /[\u{90000}-\u{9FFFD}\u{A0000-\u{AFFFD}\u{B0000}-\u{BFFFD}\u{C0000}-\u{CFFFD}]/u,
+    // /[\u{D0000}-\u{DFFFD}\u{E0000-\u{EFFFD}]/u
+  );
+
+  // Valid characters for identifiers.
+  const identifierCharacter = either(
+    identifierHead,
+    /\d/,
+    /[\u0300-\u036F\u1DC0-\u1DFF\u20D0-\u20FF\uFE20-\uFE2F]/
+  );
+
+  // Valid identifier.
+  const identifier = concat(identifierHead, identifierCharacter, '*');
+
+  // Valid type identifier.
+  const typeIdentifier = concat(/[A-Z]/, identifierCharacter, '*');
+
+  // Built-in attributes, which are highlighted as keywords.
+  // @available is handled separately.
+  // https://docs.swift.org/swift-book/documentation/the-swift-programming-language/attributes
+  const keywordAttributes = [
+    'attached',
+    'autoclosure',
+    concat(/convention\(/, either('swift', 'block', 'c'), /\)/),
+    'discardableResult',
+    'dynamicCallable',
+    'dynamicMemberLookup',
+    'escaping',
+    'freestanding',
+    'frozen',
+    'GKInspectable',
+    'IBAction',
+    'IBDesignable',
+    'IBInspectable',
+    'IBOutlet',
+    'IBSegueAction',
+    'inlinable',
+    'main',
+    'nonobjc',
+    'NSApplicationMain',
+    'NSCopying',
+    'NSManaged',
+    concat(/objc\(/, identifier, /\)/),
+    'objc',
+    'objcMembers',
+    'propertyWrapper',
+    'requires_stored_property_inits',
+    'resultBuilder',
+    'Sendable',
+    'testable',
+    'UIApplicationMain',
+    'unchecked',
+    'unknown',
+    'usableFromInline',
+    'warn_unqualified_access'
+  ];
+
+  // Contextual keywords used in @available and #(un)available.
+  const availabilityKeywords = [
+    'iOS',
+    'iOSApplicationExtension',
+    'macOS',
+    'macOSApplicationExtension',
+    'macCatalyst',
+    'macCatalystApplicationExtension',
+    'watchOS',
+    'watchOSApplicationExtension',
+    'tvOS',
+    'tvOSApplicationExtension',
+    'swift'
+  ];
+
+  /*
+  Language: Swift
+  Description: Swift is a general-purpose programming language built using a modern approach to safety, performance, and software design patterns.
+  Author: Steven Van Impe <steven.vanimpe@icloud.com>
+  Contributors: Chris Eidhof <chris@eidhof.nl>, Nate Cook <natecook@gmail.com>, Alexander Lichter <manniL@gmx.net>, Richard Gibson <gibson042@github>
+  Website: https://swift.org
+  Category: common, system
+  */
+
+
+  /** @type LanguageFn */
+  function swift(hljs) {
+    const WHITESPACE = {
+      match: /\s+/,
+      relevance: 0
+    };
+    // https://docs.swift.org/swift-book/ReferenceManual/LexicalStructure.html#ID411
+    const BLOCK_COMMENT = hljs.COMMENT(
+      '/\\*',
+      '\\*/',
+      { contains: [ 'self' ] }
+    );
+    const COMMENTS = [
+      hljs.C_LINE_COMMENT_MODE,
+      BLOCK_COMMENT
+    ];
+
+    // https://docs.swift.org/swift-book/ReferenceManual/LexicalStructure.html#ID413
+    // https://docs.swift.org/swift-book/ReferenceManual/zzSummaryOfTheGrammar.html
+    const DOT_KEYWORD = {
+      match: [
+        /\./,
+        either(...dotKeywords, ...optionalDotKeywords)
+      ],
+      className: { 2: "keyword" }
+    };
+    const KEYWORD_GUARD = {
+      // Consume .keyword to prevent highlighting properties and methods as keywords.
+      match: concat(/\./, either(...keywords)),
+      relevance: 0
+    };
+    const PLAIN_KEYWORDS = keywords
+      .filter(kw => typeof kw === 'string')
+      .concat([ "_|0" ]); // seems common, so 0 relevance
+    const REGEX_KEYWORDS = keywords
+      .filter(kw => typeof kw !== 'string') // find regex
+      .concat(keywordTypes)
+      .map(keywordWrapper);
+    const KEYWORD = { variants: [
+      {
+        className: 'keyword',
+        match: either(...REGEX_KEYWORDS, ...optionalDotKeywords)
+      }
+    ] };
+    // find all the regular keywords
+    const KEYWORDS = {
+      $pattern: either(
+        /\b\w+/, // regular keywords
+        /#\w+/ // number keywords
+      ),
+      keyword: PLAIN_KEYWORDS
+        .concat(numberSignKeywords),
+      literal: literals
+    };
+    const KEYWORD_MODES = [
+      DOT_KEYWORD,
+      KEYWORD_GUARD,
+      KEYWORD
+    ];
+
+    // https://github.com/apple/swift/tree/main/stdlib/public/core
+    const BUILT_IN_GUARD = {
+      // Consume .built_in to prevent highlighting properties and methods.
+      match: concat(/\./, either(...builtIns)),
+      relevance: 0
+    };
+    const BUILT_IN = {
+      className: 'built_in',
+      match: concat(/\b/, either(...builtIns), /(?=\()/)
+    };
+    const BUILT_INS = [
+      BUILT_IN_GUARD,
+      BUILT_IN
+    ];
+
+    // https://docs.swift.org/swift-book/ReferenceManual/LexicalStructure.html#ID418
+    const OPERATOR_GUARD = {
+      // Prevent -> from being highlighting as an operator.
+      match: /->/,
+      relevance: 0
+    };
+    const OPERATOR = {
+      className: 'operator',
+      relevance: 0,
+      variants: [
+        { match: operator },
+        {
+          // dot-operator: only operators that start with a dot are allowed to use dots as
+          // characters (..., ...<, .*, etc). So there rule here is: a dot followed by one or more
+          // characters that may also include dots.
+          match: `\\.(\\.|${operatorCharacter})+` }
+      ]
+    };
+    const OPERATORS = [
+      OPERATOR_GUARD,
+      OPERATOR
+    ];
+
+    // https://docs.swift.org/swift-book/ReferenceManual/LexicalStructure.html#grammar_numeric-literal
+    // TODO: Update for leading `-` after lookbehind is supported everywhere
+    const decimalDigits = '([0-9]_*)+';
+    const hexDigits = '([0-9a-fA-F]_*)+';
+    const NUMBER = {
+      className: 'number',
+      relevance: 0,
+      variants: [
+        // decimal floating-point-literal (subsumes decimal-literal)
+        { match: `\\b(${decimalDigits})(\\.(${decimalDigits}))?` + `([eE][+-]?(${decimalDigits}))?\\b` },
+        // hexadecimal floating-point-literal (subsumes hexadecimal-literal)
+        { match: `\\b0x(${hexDigits})(\\.(${hexDigits}))?` + `([pP][+-]?(${decimalDigits}))?\\b` },
+        // octal-literal
+        { match: /\b0o([0-7]_*)+\b/ },
+        // binary-literal
+        { match: /\b0b([01]_*)+\b/ }
+      ]
+    };
+
+    // https://docs.swift.org/swift-book/ReferenceManual/LexicalStructure.html#grammar_string-literal
+    const ESCAPED_CHARACTER = (rawDelimiter = "") => ({
+      className: 'subst',
+      variants: [
+        { match: concat(/\\/, rawDelimiter, /[0\\tnr"']/) },
+        { match: concat(/\\/, rawDelimiter, /u\{[0-9a-fA-F]{1,8}\}/) }
+      ]
+    });
+    const ESCAPED_NEWLINE = (rawDelimiter = "") => ({
+      className: 'subst',
+      match: concat(/\\/, rawDelimiter, /[\t ]*(?:[\r\n]|\r\n)/)
+    });
+    const INTERPOLATION = (rawDelimiter = "") => ({
+      className: 'subst',
+      label: "interpol",
+      begin: concat(/\\/, rawDelimiter, /\(/),
+      end: /\)/
+    });
+    const MULTILINE_STRING = (rawDelimiter = "") => ({
+      begin: concat(rawDelimiter, /"""/),
+      end: concat(/"""/, rawDelimiter),
+      contains: [
+        ESCAPED_CHARACTER(rawDelimiter),
+        ESCAPED_NEWLINE(rawDelimiter),
+        INTERPOLATION(rawDelimiter)
+      ]
+    });
+    const SINGLE_LINE_STRING = (rawDelimiter = "") => ({
+      begin: concat(rawDelimiter, /"/),
+      end: concat(/"/, rawDelimiter),
+      contains: [
+        ESCAPED_CHARACTER(rawDelimiter),
+        INTERPOLATION(rawDelimiter)
+      ]
+    });
+    const STRING = {
+      className: 'string',
+      variants: [
+        MULTILINE_STRING(),
+        MULTILINE_STRING("#"),
+        MULTILINE_STRING("##"),
+        MULTILINE_STRING("###"),
+        SINGLE_LINE_STRING(),
+        SINGLE_LINE_STRING("#"),
+        SINGLE_LINE_STRING("##"),
+        SINGLE_LINE_STRING("###")
+      ]
+    };
+
+    const REGEXP_CONTENTS = [
+      hljs.BACKSLASH_ESCAPE,
+      {
+        begin: /\[/,
+        end: /\]/,
+        relevance: 0,
+        contains: [ hljs.BACKSLASH_ESCAPE ]
+      }
+    ];
+
+    const BARE_REGEXP_LITERAL = {
+      begin: /\/[^\s](?=[^/\n]*\/)/,
+      end: /\//,
+      contains: REGEXP_CONTENTS
+    };
+
+    const EXTENDED_REGEXP_LITERAL = (rawDelimiter) => {
+      const begin = concat(rawDelimiter, /\//);
+      const end = concat(/\//, rawDelimiter);
+      return {
+        begin,
+        end,
+        contains: [
+          ...REGEXP_CONTENTS,
+          {
+            scope: "comment",
+            begin: `#(?!.*${end})`,
+            end: /$/,
+          },
+        ],
+      };
+    };
+
+    // https://docs.swift.org/swift-book/documentation/the-swift-programming-language/lexicalstructure/#Regular-Expression-Literals
+    const REGEXP = {
+      scope: "regexp",
+      variants: [
+        EXTENDED_REGEXP_LITERAL('###'),
+        EXTENDED_REGEXP_LITERAL('##'),
+        EXTENDED_REGEXP_LITERAL('#'),
+        BARE_REGEXP_LITERAL
+      ]
+    };
+
+    // https://docs.swift.org/swift-book/ReferenceManual/LexicalStructure.html#ID412
+    const QUOTED_IDENTIFIER = { match: concat(/`/, identifier, /`/) };
+    const IMPLICIT_PARAMETER = {
+      className: 'variable',
+      match: /\$\d+/
+    };
+    const PROPERTY_WRAPPER_PROJECTION = {
+      className: 'variable',
+      match: `\\$${identifierCharacter}+`
+    };
+    const IDENTIFIERS = [
+      QUOTED_IDENTIFIER,
+      IMPLICIT_PARAMETER,
+      PROPERTY_WRAPPER_PROJECTION
+    ];
+
+    // https://docs.swift.org/swift-book/ReferenceManual/Attributes.html
+    const AVAILABLE_ATTRIBUTE = {
+      match: /(@|#(un)?)available/,
+      scope: 'keyword',
+      starts: { contains: [
+        {
+          begin: /\(/,
+          end: /\)/,
+          keywords: availabilityKeywords,
+          contains: [
+            ...OPERATORS,
+            NUMBER,
+            STRING
+          ]
+        }
+      ] }
+    };
+    const KEYWORD_ATTRIBUTE = {
+      scope: 'keyword',
+      match: concat(/@/, either(...keywordAttributes))
+    };
+    const USER_DEFINED_ATTRIBUTE = {
+      scope: 'meta',
+      match: concat(/@/, identifier)
+    };
+    const ATTRIBUTES = [
+      AVAILABLE_ATTRIBUTE,
+      KEYWORD_ATTRIBUTE,
+      USER_DEFINED_ATTRIBUTE
+    ];
+
+    // https://docs.swift.org/swift-book/ReferenceManual/Types.html
+    const TYPE = {
+      match: lookahead(/\b[A-Z]/),
+      relevance: 0,
+      contains: [
+        { // Common Apple frameworks, for relevance boost
+          className: 'type',
+          match: concat(/(AV|CA|CF|CG|CI|CL|CM|CN|CT|MK|MP|MTK|MTL|NS|SCN|SK|UI|WK|XC)/, identifierCharacter, '+')
+        },
+        { // Type identifier
+          className: 'type',
+          match: typeIdentifier,
+          relevance: 0
+        },
+        { // Optional type
+          match: /[?!]+/,
+          relevance: 0
+        },
+        { // Variadic parameter
+          match: /\.\.\./,
+          relevance: 0
+        },
+        { // Protocol composition
+          match: concat(/\s+&\s+/, lookahead(typeIdentifier)),
+          relevance: 0
+        }
+      ]
+    };
+    const GENERIC_ARGUMENTS = {
+      begin: /</,
+      end: />/,
+      keywords: KEYWORDS,
+      contains: [
+        ...COMMENTS,
+        ...KEYWORD_MODES,
+        ...ATTRIBUTES,
+        OPERATOR_GUARD,
+        TYPE
+      ]
+    };
+    TYPE.contains.push(GENERIC_ARGUMENTS);
+
+    // https://docs.swift.org/swift-book/ReferenceManual/Expressions.html#ID552
+    // Prevents element names from being highlighted as keywords.
+    const TUPLE_ELEMENT_NAME = {
+      match: concat(identifier, /\s*:/),
+      keywords: "_|0",
+      relevance: 0
+    };
+    // Matches tuples as well as the parameter list of a function type.
+    const TUPLE = {
+      begin: /\(/,
+      end: /\)/,
+      relevance: 0,
+      keywords: KEYWORDS,
+      contains: [
+        'self',
+        TUPLE_ELEMENT_NAME,
+        ...COMMENTS,
+        REGEXP,
+        ...KEYWORD_MODES,
+        ...BUILT_INS,
+        ...OPERATORS,
+        NUMBER,
+        STRING,
+        ...IDENTIFIERS,
+        ...ATTRIBUTES,
+        TYPE
+      ]
+    };
+
+    const GENERIC_PARAMETERS = {
+      begin: /</,
+      end: />/,
+      keywords: 'repeat each',
+      contains: [
+        ...COMMENTS,
+        TYPE
+      ]
+    };
+    const FUNCTION_PARAMETER_NAME = {
+      begin: either(
+        lookahead(concat(identifier, /\s*:/)),
+        lookahead(concat(identifier, /\s+/, identifier, /\s*:/))
+      ),
+      end: /:/,
+      relevance: 0,
+      contains: [
+        {
+          className: 'keyword',
+          match: /\b_\b/
+        },
+        {
+          className: 'params',
+          match: identifier
+        }
+      ]
+    };
+    const FUNCTION_PARAMETERS = {
+      begin: /\(/,
+      end: /\)/,
+      keywords: KEYWORDS,
+      contains: [
+        FUNCTION_PARAMETER_NAME,
+        ...COMMENTS,
+        ...KEYWORD_MODES,
+        ...OPERATORS,
+        NUMBER,
+        STRING,
+        ...ATTRIBUTES,
+        TYPE,
+        TUPLE
+      ],
+      endsParent: true,
+      illegal: /["']/
+    };
+    // https://docs.swift.org/swift-book/ReferenceManual/Declarations.html#ID362
+    // https://docs.swift.org/swift-book/documentation/the-swift-programming-language/declarations/#Macro-Declaration
+    const FUNCTION_OR_MACRO = {
+      match: [
+        /(func|macro)/,
+        /\s+/,
+        either(QUOTED_IDENTIFIER.match, identifier, operator)
+      ],
+      className: {
+        1: "keyword",
+        3: "title.function"
+      },
+      contains: [
+        GENERIC_PARAMETERS,
+        FUNCTION_PARAMETERS,
+        WHITESPACE
+      ],
+      illegal: [
+        /\[/,
+        /%/
+      ]
+    };
+
+    // https://docs.swift.org/swift-book/ReferenceManual/Declarations.html#ID375
+    // https://docs.swift.org/swift-book/ReferenceManual/Declarations.html#ID379
+    const INIT_SUBSCRIPT = {
+      match: [
+        /\b(?:subscript|init[?!]?)/,
+        /\s*(?=[<(])/,
+      ],
+      className: { 1: "keyword" },
+      contains: [
+        GENERIC_PARAMETERS,
+        FUNCTION_PARAMETERS,
+        WHITESPACE
+      ],
+      illegal: /\[|%/
+    };
+    // https://docs.swift.org/swift-book/ReferenceManual/Declarations.html#ID380
+    const OPERATOR_DECLARATION = {
+      match: [
+        /operator/,
+        /\s+/,
+        operator
+      ],
+      className: {
+        1: "keyword",
+        3: "title"
+      }
+    };
+
+    // https://docs.swift.org/swift-book/ReferenceManual/Declarations.html#ID550
+    const PRECEDENCEGROUP = {
+      begin: [
+        /precedencegroup/,
+        /\s+/,
+        typeIdentifier
+      ],
+      className: {
+        1: "keyword",
+        3: "title"
+      },
+      contains: [ TYPE ],
+      keywords: [
+        ...precedencegroupKeywords,
+        ...literals
+      ],
+      end: /}/
+    };
+
+    // Add supported submodes to string interpolation.
+    for (const variant of STRING.variants) {
+      const interpolation = variant.contains.find(mode => mode.label === "interpol");
+      // TODO: Interpolation can contain any expression, so there's room for improvement here.
+      interpolation.keywords = KEYWORDS;
+      const submodes = [
+        ...KEYWORD_MODES,
+        ...BUILT_INS,
+        ...OPERATORS,
+        NUMBER,
+        STRING,
+        ...IDENTIFIERS
+      ];
+      interpolation.contains = [
+        ...submodes,
+        {
+          begin: /\(/,
+          end: /\)/,
+          contains: [
+            'self',
+            ...submodes
+          ]
+        }
+      ];
+    }
+
+    return {
+      name: 'Swift',
+      keywords: KEYWORDS,
+      contains: [
+        ...COMMENTS,
+        FUNCTION_OR_MACRO,
+        INIT_SUBSCRIPT,
+        {
+          beginKeywords: 'struct protocol class extension enum actor',
+          end: '\\{',
+          excludeEnd: true,
+          keywords: KEYWORDS,
+          contains: [
+            hljs.inherit(hljs.TITLE_MODE, {
+              className: "title.class",
+              begin: /[A-Za-z$_][\u00C0-\u02B80-9A-Za-z$_]*/
+            }),
+            ...KEYWORD_MODES
+          ]
+        },
+        OPERATOR_DECLARATION,
+        PRECEDENCEGROUP,
+        {
+          beginKeywords: 'import',
+          end: /$/,
+          contains: [ ...COMMENTS ],
+          relevance: 0
+        },
+        REGEXP,
+        ...KEYWORD_MODES,
+        ...BUILT_INS,
+        ...OPERATORS,
+        NUMBER,
+        STRING,
+        ...IDENTIFIERS,
+        ...ATTRIBUTES,
+        TYPE,
+        TUPLE
+      ]
+    };
+  }
+
+  return swift;
+
+})();
+
+    hljs.registerLanguage('swift', hljsGrammar);
+  })();/*! `typescript` grammar compiled for Highlight.js 11.9.0 */
+  (function(){
+    var hljsGrammar = (function () {
+  'use strict';
+
+  const IDENT_RE = '[A-Za-z$_][0-9A-Za-z$_]*';
+  const KEYWORDS = [
+    "as", // for exports
+    "in",
+    "of",
+    "if",
+    "for",
+    "while",
+    "finally",
+    "var",
+    "new",
+    "function",
+    "do",
+    "return",
+    "void",
+    "else",
+    "break",
+    "catch",
+    "instanceof",
+    "with",
+    "throw",
+    "case",
+    "default",
+    "try",
+    "switch",
+    "continue",
+    "typeof",
+    "delete",
+    "let",
+    "yield",
+    "const",
+    "class",
+    // JS handles these with a special rule
+    // "get",
+    // "set",
+    "debugger",
+    "async",
+    "await",
+    "static",
+    "import",
+    "from",
+    "export",
+    "extends"
+  ];
+  const LITERALS = [
+    "true",
+    "false",
+    "null",
+    "undefined",
+    "NaN",
+    "Infinity"
+  ];
+
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
+  const TYPES = [
+    // Fundamental objects
+    "Object",
+    "Function",
+    "Boolean",
+    "Symbol",
+    // numbers and dates
+    "Math",
+    "Date",
+    "Number",
+    "BigInt",
+    // text
+    "String",
+    "RegExp",
+    // Indexed collections
+    "Array",
+    "Float32Array",
+    "Float64Array",
+    "Int8Array",
+    "Uint8Array",
+    "Uint8ClampedArray",
+    "Int16Array",
+    "Int32Array",
+    "Uint16Array",
+    "Uint32Array",
+    "BigInt64Array",
+    "BigUint64Array",
+    // Keyed collections
+    "Set",
+    "Map",
+    "WeakSet",
+    "WeakMap",
+    // Structured data
+    "ArrayBuffer",
+    "SharedArrayBuffer",
+    "Atomics",
+    "DataView",
+    "JSON",
+    // Control abstraction objects
+    "Promise",
+    "Generator",
+    "GeneratorFunction",
+    "AsyncFunction",
+    // Reflection
+    "Reflect",
+    "Proxy",
+    // Internationalization
+    "Intl",
+    // WebAssembly
+    "WebAssembly"
+  ];
+
+  const ERROR_TYPES = [
+    "Error",
+    "EvalError",
+    "InternalError",
+    "RangeError",
+    "ReferenceError",
+    "SyntaxError",
+    "TypeError",
+    "URIError"
+  ];
+
+  const BUILT_IN_GLOBALS = [
+    "setInterval",
+    "setTimeout",
+    "clearInterval",
+    "clearTimeout",
+
+    "require",
+    "exports",
+
+    "eval",
+    "isFinite",
+    "isNaN",
+    "parseFloat",
+    "parseInt",
+    "decodeURI",
+    "decodeURIComponent",
+    "encodeURI",
+    "encodeURIComponent",
+    "escape",
+    "unescape"
+  ];
+
+  const BUILT_IN_VARIABLES = [
+    "arguments",
+    "this",
+    "super",
+    "console",
+    "window",
+    "document",
+    "localStorage",
+    "sessionStorage",
+    "module",
+    "global" // Node.js
+  ];
+
+  const BUILT_INS = [].concat(
+    BUILT_IN_GLOBALS,
+    TYPES,
+    ERROR_TYPES
+  );
+
+  /*
+  Language: JavaScript
+  Description: JavaScript (JS) is a lightweight, interpreted, or just-in-time compiled programming language with first-class functions.
+  Category: common, scripting, web
+  Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
+  */
+
+
+  /** @type LanguageFn */
+  function javascript(hljs) {
+    const regex = hljs.regex;
+    /**
+     * Takes a string like "<Booger" and checks to see
+     * if we can find a matching "</Booger" later in the
+     * content.
+     * @param {RegExpMatchArray} match
+     * @param {{after:number}} param1
+     */
+    const hasClosingTag = (match, { after }) => {
+      const tag = "</" + match[0].slice(1);
+      const pos = match.input.indexOf(tag, after);
+      return pos !== -1;
+    };
+
+    const IDENT_RE$1 = IDENT_RE;
+    const FRAGMENT = {
+      begin: '<>',
+      end: '</>'
+    };
+    // to avoid some special cases inside isTrulyOpeningTag
+    const XML_SELF_CLOSING = /<[A-Za-z0-9\\._:-]+\s*\/>/;
+    const XML_TAG = {
+      begin: /<[A-Za-z0-9\\._:-]+/,
+      end: /\/[A-Za-z0-9\\._:-]+>|\/>/,
+      /**
+       * @param {RegExpMatchArray} match
+       * @param {CallbackResponse} response
+       */
+      isTrulyOpeningTag: (match, response) => {
+        const afterMatchIndex = match[0].length + match.index;
+        const nextChar = match.input[afterMatchIndex];
+        if (
+          // HTML should not include another raw `<` inside a tag
+          // nested type?
+          // `<Array<Array<number>>`, etc.
+          nextChar === "<" ||
+          // the , gives away that this is not HTML
+          // `<T, A extends keyof T, V>`
+          nextChar === ","
+          ) {
+          response.ignoreMatch();
+          return;
+        }
+
+        // `<something>`
+        // Quite possibly a tag, lets look for a matching closing tag...
+        if (nextChar === ">") {
+          // if we cannot find a matching closing tag, then we
+          // will ignore it
+          if (!hasClosingTag(match, { after: afterMatchIndex })) {
+            response.ignoreMatch();
+          }
+        }
+
+        // `<blah />` (self-closing)
+        // handled by simpleSelfClosing rule
+
+        let m;
+        const afterMatch = match.input.substring(afterMatchIndex);
+
+        // some more template typing stuff
+        //  <T = any>(key?: string) => Modify<
+        if ((m = afterMatch.match(/^\s*=/))) {
+          response.ignoreMatch();
+          return;
+        }
+
+        // `<From extends string>`
+        // technically this could be HTML, but it smells like a type
+        // NOTE: This is ugh, but added specifically for https://github.com/highlightjs/highlight.js/issues/3276
+        if ((m = afterMatch.match(/^\s+extends\s+/))) {
+          if (m.index === 0) {
+            response.ignoreMatch();
+            // eslint-disable-next-line no-useless-return
+            return;
+          }
+        }
+      }
+    };
+    const KEYWORDS$1 = {
+      $pattern: IDENT_RE,
+      keyword: KEYWORDS,
+      literal: LITERALS,
+      built_in: BUILT_INS,
+      "variable.language": BUILT_IN_VARIABLES
+    };
+
+    // https://tc39.es/ecma262/#sec-literals-numeric-literals
+    const decimalDigits = '[0-9](_?[0-9])*';
+    const frac = `\\.(${decimalDigits})`;
+    // DecimalIntegerLiteral, including Annex B NonOctalDecimalIntegerLiteral
+    // https://tc39.es/ecma262/#sec-additional-syntax-numeric-literals
+    const decimalInteger = `0|[1-9](_?[0-9])*|0[0-7]*[89][0-9]*`;
+    const NUMBER = {
+      className: 'number',
+      variants: [
+        // DecimalLiteral
+        { begin: `(\\b(${decimalInteger})((${frac})|\\.)?|(${frac}))` +
+          `[eE][+-]?(${decimalDigits})\\b` },
+        { begin: `\\b(${decimalInteger})\\b((${frac})\\b|\\.)?|(${frac})\\b` },
+
+        // DecimalBigIntegerLiteral
+        { begin: `\\b(0|[1-9](_?[0-9])*)n\\b` },
+
+        // NonDecimalIntegerLiteral
+        { begin: "\\b0[xX][0-9a-fA-F](_?[0-9a-fA-F])*n?\\b" },
+        { begin: "\\b0[bB][0-1](_?[0-1])*n?\\b" },
+        { begin: "\\b0[oO][0-7](_?[0-7])*n?\\b" },
+
+        // LegacyOctalIntegerLiteral (does not include underscore separators)
+        // https://tc39.es/ecma262/#sec-additional-syntax-numeric-literals
+        { begin: "\\b0[0-7]+n?\\b" },
+      ],
+      relevance: 0
+    };
+
+    const SUBST = {
+      className: 'subst',
+      begin: '\\$\\{',
+      end: '\\}',
+      keywords: KEYWORDS$1,
+      contains: [] // defined later
+    };
+    const HTML_TEMPLATE = {
+      begin: 'html`',
+      end: '',
+      starts: {
+        end: '`',
+        returnEnd: false,
+        contains: [
+          hljs.BACKSLASH_ESCAPE,
+          SUBST
+        ],
+        subLanguage: 'xml'
+      }
+    };
+    const CSS_TEMPLATE = {
+      begin: 'css`',
+      end: '',
+      starts: {
+        end: '`',
+        returnEnd: false,
+        contains: [
+          hljs.BACKSLASH_ESCAPE,
+          SUBST
+        ],
+        subLanguage: 'css'
+      }
+    };
+    const GRAPHQL_TEMPLATE = {
+      begin: 'gql`',
+      end: '',
+      starts: {
+        end: '`',
+        returnEnd: false,
+        contains: [
+          hljs.BACKSLASH_ESCAPE,
+          SUBST
+        ],
+        subLanguage: 'graphql'
+      }
+    };
+    const TEMPLATE_STRING = {
+      className: 'string',
+      begin: '`',
+      end: '`',
+      contains: [
+        hljs.BACKSLASH_ESCAPE,
+        SUBST
+      ]
+    };
+    const JSDOC_COMMENT = hljs.COMMENT(
+      /\/\*\*(?!\/)/,
+      '\\*/',
+      {
+        relevance: 0,
+        contains: [
+          {
+            begin: '(?=@[A-Za-z]+)',
+            relevance: 0,
+            contains: [
+              {
+                className: 'doctag',
+                begin: '@[A-Za-z]+'
+              },
+              {
+                className: 'type',
+                begin: '\\{',
+                end: '\\}',
+                excludeEnd: true,
+                excludeBegin: true,
+                relevance: 0
+              },
+              {
+                className: 'variable',
+                begin: IDENT_RE$1 + '(?=\\s*(-)|$)',
+                endsParent: true,
+                relevance: 0
+              },
+              // eat spaces (not newlines) so we can find
+              // types or variables
+              {
+                begin: /(?=[^\n])\s/,
+                relevance: 0
+              }
+            ]
+          }
+        ]
+      }
+    );
+    const COMMENT = {
+      className: "comment",
+      variants: [
+        JSDOC_COMMENT,
+        hljs.C_BLOCK_COMMENT_MODE,
+        hljs.C_LINE_COMMENT_MODE
+      ]
+    };
+    const SUBST_INTERNALS = [
+      hljs.APOS_STRING_MODE,
+      hljs.QUOTE_STRING_MODE,
+      HTML_TEMPLATE,
+      CSS_TEMPLATE,
+      GRAPHQL_TEMPLATE,
+      TEMPLATE_STRING,
+      // Skip numbers when they are part of a variable name
+      { match: /\$\d+/ },
+      NUMBER,
+      // This is intentional:
+      // See https://github.com/highlightjs/highlight.js/issues/3288
+      // hljs.REGEXP_MODE
+    ];
+    SUBST.contains = SUBST_INTERNALS
+      .concat({
+        // we need to pair up {} inside our subst to prevent
+        // it from ending too early by matching another }
+        begin: /\{/,
+        end: /\}/,
+        keywords: KEYWORDS$1,
+        contains: [
+          "self"
+        ].concat(SUBST_INTERNALS)
+      });
+    const SUBST_AND_COMMENTS = [].concat(COMMENT, SUBST.contains);
+    const PARAMS_CONTAINS = SUBST_AND_COMMENTS.concat([
+      // eat recursive parens in sub expressions
+      {
+        begin: /\(/,
+        end: /\)/,
+        keywords: KEYWORDS$1,
+        contains: ["self"].concat(SUBST_AND_COMMENTS)
+      }
+    ]);
+    const PARAMS = {
+      className: 'params',
+      begin: /\(/,
+      end: /\)/,
+      excludeBegin: true,
+      excludeEnd: true,
+      keywords: KEYWORDS$1,
+      contains: PARAMS_CONTAINS
+    };
+
+    // ES6 classes
+    const CLASS_OR_EXTENDS = {
+      variants: [
+        // class Car extends vehicle
+        {
+          match: [
+            /class/,
+            /\s+/,
+            IDENT_RE$1,
+            /\s+/,
+            /extends/,
+            /\s+/,
+            regex.concat(IDENT_RE$1, "(", regex.concat(/\./, IDENT_RE$1), ")*")
+          ],
+          scope: {
+            1: "keyword",
+            3: "title.class",
+            5: "keyword",
+            7: "title.class.inherited"
+          }
+        },
+        // class Car
+        {
+          match: [
+            /class/,
+            /\s+/,
+            IDENT_RE$1
+          ],
+          scope: {
+            1: "keyword",
+            3: "title.class"
+          }
+        },
+
+      ]
+    };
+
+    const CLASS_REFERENCE = {
+      relevance: 0,
+      match:
+      regex.either(
+        // Hard coded exceptions
+        /\bJSON/,
+        // Float32Array, OutT
+        /\b[A-Z][a-z]+([A-Z][a-z]*|\d)*/,
+        // CSSFactory, CSSFactoryT
+        /\b[A-Z]{2,}([A-Z][a-z]+|\d)+([A-Z][a-z]*)*/,
+        // FPs, FPsT
+        /\b[A-Z]{2,}[a-z]+([A-Z][a-z]+|\d)*([A-Z][a-z]*)*/,
+        // P
+        // single letters are not highlighted
+        // BLAH
+        // this will be flagged as a UPPER_CASE_CONSTANT instead
+      ),
+      className: "title.class",
+      keywords: {
+        _: [
+          // se we still get relevance credit for JS library classes
+          ...TYPES,
+          ...ERROR_TYPES
+        ]
+      }
+    };
+
+    const USE_STRICT = {
+      label: "use_strict",
+      className: 'meta',
+      relevance: 10,
+      begin: /^\s*['"]use (strict|asm)['"]/
+    };
+
+    const FUNCTION_DEFINITION = {
+      variants: [
+        {
+          match: [
+            /function/,
+            /\s+/,
+            IDENT_RE$1,
+            /(?=\s*\()/
+          ]
+        },
+        // anonymous function
+        {
+          match: [
+            /function/,
+            /\s*(?=\()/
+          ]
+        }
+      ],
+      className: {
+        1: "keyword",
+        3: "title.function"
+      },
+      label: "func.def",
+      contains: [ PARAMS ],
+      illegal: /%/
+    };
+
+    const UPPER_CASE_CONSTANT = {
+      relevance: 0,
+      match: /\b[A-Z][A-Z_0-9]+\b/,
+      className: "variable.constant"
+    };
+
+    function noneOf(list) {
+      return regex.concat("(?!", list.join("|"), ")");
+    }
+
+    const FUNCTION_CALL = {
+      match: regex.concat(
+        /\b/,
+        noneOf([
+          ...BUILT_IN_GLOBALS,
+          "super",
+          "import"
+        ]),
+        IDENT_RE$1, regex.lookahead(/\(/)),
+      className: "title.function",
+      relevance: 0
+    };
+
+    const PROPERTY_ACCESS = {
+      begin: regex.concat(/\./, regex.lookahead(
+        regex.concat(IDENT_RE$1, /(?![0-9A-Za-z$_(])/)
+      )),
+      end: IDENT_RE$1,
+      excludeBegin: true,
+      keywords: "prototype",
+      className: "property",
+      relevance: 0
+    };
+
+    const GETTER_OR_SETTER = {
+      match: [
+        /get|set/,
+        /\s+/,
+        IDENT_RE$1,
+        /(?=\()/
+      ],
+      className: {
+        1: "keyword",
+        3: "title.function"
+      },
+      contains: [
+        { // eat to avoid empty params
+          begin: /\(\)/
+        },
+        PARAMS
+      ]
+    };
+
+    const FUNC_LEAD_IN_RE = '(\\(' +
+      '[^()]*(\\(' +
+      '[^()]*(\\(' +
+      '[^()]*' +
+      '\\)[^()]*)*' +
+      '\\)[^()]*)*' +
+      '\\)|' + hljs.UNDERSCORE_IDENT_RE + ')\\s*=>';
+
+    const FUNCTION_VARIABLE = {
+      match: [
+        /const|var|let/, /\s+/,
+        IDENT_RE$1, /\s*/,
+        /=\s*/,
+        /(async\s*)?/, // async is optional
+        regex.lookahead(FUNC_LEAD_IN_RE)
+      ],
+      keywords: "async",
+      className: {
+        1: "keyword",
+        3: "title.function"
+      },
+      contains: [
+        PARAMS
+      ]
+    };
+
+    return {
+      name: 'JavaScript',
+      aliases: ['js', 'jsx', 'mjs', 'cjs'],
+      keywords: KEYWORDS$1,
+      // this will be extended by TypeScript
+      exports: { PARAMS_CONTAINS, CLASS_REFERENCE },
+      illegal: /#(?![$_A-z])/,
+      contains: [
+        hljs.SHEBANG({
+          label: "shebang",
+          binary: "node",
+          relevance: 5
+        }),
+        USE_STRICT,
+        hljs.APOS_STRING_MODE,
+        hljs.QUOTE_STRING_MODE,
+        HTML_TEMPLATE,
+        CSS_TEMPLATE,
+        GRAPHQL_TEMPLATE,
+        TEMPLATE_STRING,
+        COMMENT,
+        // Skip numbers when they are part of a variable name
+        { match: /\$\d+/ },
+        NUMBER,
+        CLASS_REFERENCE,
+        {
+          className: 'attr',
+          begin: IDENT_RE$1 + regex.lookahead(':'),
+          relevance: 0
+        },
+        FUNCTION_VARIABLE,
+        { // "value" container
+          begin: '(' + hljs.RE_STARTERS_RE + '|\\b(case|return|throw)\\b)\\s*',
+          keywords: 'return throw case',
+          relevance: 0,
+          contains: [
+            COMMENT,
+            hljs.REGEXP_MODE,
+            {
+              className: 'function',
+              // we have to count the parens to make sure we actually have the
+              // correct bounding ( ) before the =>.  There could be any number of
+              // sub-expressions inside also surrounded by parens.
+              begin: FUNC_LEAD_IN_RE,
+              returnBegin: true,
+              end: '\\s*=>',
+              contains: [
+                {
+                  className: 'params',
+                  variants: [
+                    {
+                      begin: hljs.UNDERSCORE_IDENT_RE,
+                      relevance: 0
+                    },
+                    {
+                      className: null,
+                      begin: /\(\s*\)/,
+                      skip: true
+                    },
+                    {
+                      begin: /\(/,
+                      end: /\)/,
+                      excludeBegin: true,
+                      excludeEnd: true,
+                      keywords: KEYWORDS$1,
+                      contains: PARAMS_CONTAINS
+                    }
+                  ]
+                }
+              ]
+            },
+            { // could be a comma delimited list of params to a function call
+              begin: /,/,
+              relevance: 0
+            },
+            {
+              match: /\s+/,
+              relevance: 0
+            },
+            { // JSX
+              variants: [
+                { begin: FRAGMENT.begin, end: FRAGMENT.end },
+                { match: XML_SELF_CLOSING },
+                {
+                  begin: XML_TAG.begin,
+                  // we carefully check the opening tag to see if it truly
+                  // is a tag and not a false positive
+                  'on:begin': XML_TAG.isTrulyOpeningTag,
+                  end: XML_TAG.end
+                }
+              ],
+              subLanguage: 'xml',
+              contains: [
+                {
+                  begin: XML_TAG.begin,
+                  end: XML_TAG.end,
+                  skip: true,
+                  contains: ['self']
+                }
+              ]
+            }
+          ],
+        },
+        FUNCTION_DEFINITION,
+        {
+          // prevent this from getting swallowed up by function
+          // since they appear "function like"
+          beginKeywords: "while if switch catch for"
+        },
+        {
+          // we have to count the parens to make sure we actually have the correct
+          // bounding ( ).  There could be any number of sub-expressions inside
+          // also surrounded by parens.
+          begin: '\\b(?!function)' + hljs.UNDERSCORE_IDENT_RE +
+            '\\(' + // first parens
+            '[^()]*(\\(' +
+              '[^()]*(\\(' +
+                '[^()]*' +
+              '\\)[^()]*)*' +
+            '\\)[^()]*)*' +
+            '\\)\\s*\\{', // end parens
+          returnBegin:true,
+          label: "func.def",
+          contains: [
+            PARAMS,
+            hljs.inherit(hljs.TITLE_MODE, { begin: IDENT_RE$1, className: "title.function" })
+          ]
+        },
+        // catch ... so it won't trigger the property rule below
+        {
+          match: /\.\.\./,
+          relevance: 0
+        },
+        PROPERTY_ACCESS,
+        // hack: prevents detection of keywords in some circumstances
+        // .keyword()
+        // $keyword = x
+        {
+          match: '\\$' + IDENT_RE$1,
+          relevance: 0
+        },
+        {
+          match: [ /\bconstructor(?=\s*\()/ ],
+          className: { 1: "title.function" },
+          contains: [ PARAMS ]
+        },
+        FUNCTION_CALL,
+        UPPER_CASE_CONSTANT,
+        CLASS_OR_EXTENDS,
+        GETTER_OR_SETTER,
+        {
+          match: /\$[(.]/ // relevance booster for a pattern common to JS libs: `$(something)` and `$.something`
+        }
+      ]
+    };
+  }
+
+  /*
+  Language: TypeScript
+  Author: Panu Horsmalahti <panu.horsmalahti@iki.fi>
+  Contributors: Ike Ku <dempfi@yahoo.com>
+  Description: TypeScript is a strict superset of JavaScript
+  Website: https://www.typescriptlang.org
+  Category: common, scripting
+  */
+
+
+  /** @type LanguageFn */
+  function typescript(hljs) {
+    const tsLanguage = javascript(hljs);
+
+    const IDENT_RE$1 = IDENT_RE;
+    const TYPES = [
+      "any",
+      "void",
+      "number",
+      "boolean",
+      "string",
+      "object",
+      "never",
+      "symbol",
+      "bigint",
+      "unknown"
+    ];
+    const NAMESPACE = {
+      beginKeywords: 'namespace',
+      end: /\{/,
+      excludeEnd: true,
+      contains: [ tsLanguage.exports.CLASS_REFERENCE ]
+    };
+    const INTERFACE = {
+      beginKeywords: 'interface',
+      end: /\{/,
+      excludeEnd: true,
+      keywords: {
+        keyword: 'interface extends',
+        built_in: TYPES
+      },
+      contains: [ tsLanguage.exports.CLASS_REFERENCE ]
+    };
+    const USE_STRICT = {
+      className: 'meta',
+      relevance: 10,
+      begin: /^\s*['"]use strict['"]/
+    };
+    const TS_SPECIFIC_KEYWORDS = [
+      "type",
+      "namespace",
+      "interface",
+      "public",
+      "private",
+      "protected",
+      "implements",
+      "declare",
+      "abstract",
+      "readonly",
+      "enum",
+      "override"
+    ];
+    const KEYWORDS$1 = {
+      $pattern: IDENT_RE,
+      keyword: KEYWORDS.concat(TS_SPECIFIC_KEYWORDS),
+      literal: LITERALS,
+      built_in: BUILT_INS.concat(TYPES),
+      "variable.language": BUILT_IN_VARIABLES
+    };
+    const DECORATOR = {
+      className: 'meta',
+      begin: '@' + IDENT_RE$1,
+    };
+
+    const swapMode = (mode, label, replacement) => {
+      const indx = mode.contains.findIndex(m => m.label === label);
+      if (indx === -1) { throw new Error("can not find mode to replace"); }
+
+      mode.contains.splice(indx, 1, replacement);
+    };
+
+
+    // this should update anywhere keywords is used since
+    // it will be the same actual JS object
+    Object.assign(tsLanguage.keywords, KEYWORDS$1);
+
+    tsLanguage.exports.PARAMS_CONTAINS.push(DECORATOR);
+    tsLanguage.contains = tsLanguage.contains.concat([
+      DECORATOR,
+      NAMESPACE,
+      INTERFACE,
+    ]);
+
+    // TS gets a simpler shebang rule than JS
+    swapMode(tsLanguage, "shebang", hljs.SHEBANG());
+    // JS use strict rule purposely excludes `asm` which makes no sense
+    swapMode(tsLanguage, "use_strict", USE_STRICT);
+
+    const functionDeclaration = tsLanguage.contains.find(m => m.label === "func.def");
+    functionDeclaration.relevance = 0; // () => {} is more typical in TypeScript
+
+    Object.assign(tsLanguage, {
+      name: 'TypeScript',
+      aliases: [
+        'ts',
+        'tsx',
+        'mts',
+        'cts'
+      ]
+    });
+
+    return tsLanguage;
+  }
+
+  return typescript;
+
+})();
+
+    hljs.registerLanguage('typescript', hljsGrammar);
+  })();/*! `vbnet` grammar compiled for Highlight.js 11.9.0 */
+  (function(){
+    var hljsGrammar = (function () {
+  'use strict';
+
+  /*
+  Language: Visual Basic .NET
+  Description: Visual Basic .NET (VB.NET) is a multi-paradigm, object-oriented programming language, implemented on the .NET Framework.
+  Authors: Poren Chiang <ren.chiang@gmail.com>, Jan Pilzer
+  Website: https://docs.microsoft.com/dotnet/visual-basic/getting-started
+  Category: common
+  */
+
+  /** @type LanguageFn */
+  function vbnet(hljs) {
+    const regex = hljs.regex;
+    /**
+     * Character Literal
+     * Either a single character ("a"C) or an escaped double quote (""""C).
+     */
+    const CHARACTER = {
+      className: 'string',
+      begin: /"(""|[^/n])"C\b/
+    };
+
+    const STRING = {
+      className: 'string',
+      begin: /"/,
+      end: /"/,
+      illegal: /\n/,
+      contains: [
+        {
+          // double quote escape
+          begin: /""/ }
+      ]
+    };
+
+    /** Date Literals consist of a date, a time, or both separated by whitespace, surrounded by # */
+    const MM_DD_YYYY = /\d{1,2}\/\d{1,2}\/\d{4}/;
+    const YYYY_MM_DD = /\d{4}-\d{1,2}-\d{1,2}/;
+    const TIME_12H = /(\d|1[012])(:\d+){0,2} *(AM|PM)/;
+    const TIME_24H = /\d{1,2}(:\d{1,2}){1,2}/;
+    const DATE = {
+      className: 'literal',
+      variants: [
+        {
+          // #YYYY-MM-DD# (ISO-Date) or #M/D/YYYY# (US-Date)
+          begin: regex.concat(/# */, regex.either(YYYY_MM_DD, MM_DD_YYYY), / *#/) },
+        {
+          // #H:mm[:ss]# (24h Time)
+          begin: regex.concat(/# */, TIME_24H, / *#/) },
+        {
+          // #h[:mm[:ss]] A# (12h Time)
+          begin: regex.concat(/# */, TIME_12H, / *#/) },
+        {
+          // date plus time
+          begin: regex.concat(
+            /# */,
+            regex.either(YYYY_MM_DD, MM_DD_YYYY),
+            / +/,
+            regex.either(TIME_12H, TIME_24H),
+            / *#/
+          ) }
+      ]
+    };
+
+    const NUMBER = {
+      className: 'number',
+      relevance: 0,
+      variants: [
+        {
+          // Float
+          begin: /\b\d[\d_]*((\.[\d_]+(E[+-]?[\d_]+)?)|(E[+-]?[\d_]+))[RFD@!#]?/ },
+        {
+          // Integer (base 10)
+          begin: /\b\d[\d_]*((U?[SIL])|[%&])?/ },
+        {
+          // Integer (base 16)
+          begin: /&H[\dA-F_]+((U?[SIL])|[%&])?/ },
+        {
+          // Integer (base 8)
+          begin: /&O[0-7_]+((U?[SIL])|[%&])?/ },
+        {
+          // Integer (base 2)
+          begin: /&B[01_]+((U?[SIL])|[%&])?/ }
+      ]
+    };
+
+    const LABEL = {
+      className: 'label',
+      begin: /^\w+:/
+    };
+
+    const DOC_COMMENT = hljs.COMMENT(/'''/, /$/, { contains: [
+      {
+        className: 'doctag',
+        begin: /<\/?/,
+        end: />/
+      }
+    ] });
+
+    const COMMENT = hljs.COMMENT(null, /$/, { variants: [
+      { begin: /'/ },
+      {
+        // TODO: Use multi-class for leading spaces
+        begin: /([\t ]|^)REM(?=\s)/ }
+    ] });
+
+    const DIRECTIVES = {
+      className: 'meta',
+      // TODO: Use multi-class for indentation once available
+      begin: /[\t ]*#(const|disable|else|elseif|enable|end|externalsource|if|region)\b/,
+      end: /$/,
+      keywords: { keyword:
+          'const disable else elseif enable end externalsource if region then' },
+      contains: [ COMMENT ]
+    };
+
+    return {
+      name: 'Visual Basic .NET',
+      aliases: [ 'vb' ],
+      case_insensitive: true,
+      classNameAliases: { label: 'symbol' },
+      keywords: {
+        keyword:
+          'addhandler alias aggregate ansi as async assembly auto binary by byref byval ' /* a-b */
+          + 'call case catch class compare const continue custom declare default delegate dim distinct do ' /* c-d */
+          + 'each equals else elseif end enum erase error event exit explicit finally for friend from function ' /* e-f */
+          + 'get global goto group handles if implements imports in inherits interface into iterator ' /* g-i */
+          + 'join key let lib loop me mid module mustinherit mustoverride mybase myclass ' /* j-m */
+          + 'namespace narrowing new next notinheritable notoverridable ' /* n */
+          + 'of off on operator option optional order overloads overridable overrides ' /* o */
+          + 'paramarray partial preserve private property protected public ' /* p */
+          + 'raiseevent readonly redim removehandler resume return ' /* r */
+          + 'select set shadows shared skip static step stop structure strict sub synclock ' /* s */
+          + 'take text then throw to try unicode until using when where while widening with withevents writeonly yield' /* t-y */,
+        built_in:
+          // Operators https://docs.microsoft.com/dotnet/visual-basic/language-reference/operators
+          'addressof and andalso await directcast gettype getxmlnamespace is isfalse isnot istrue like mod nameof new not or orelse trycast typeof xor '
+          // Type Conversion Functions https://docs.microsoft.com/dotnet/visual-basic/language-reference/functions/type-conversion-functions
+          + 'cbool cbyte cchar cdate cdbl cdec cint clng cobj csbyte cshort csng cstr cuint culng cushort',
+        type:
+          // Data types https://docs.microsoft.com/dotnet/visual-basic/language-reference/data-types
+          'boolean byte char date decimal double integer long object sbyte short single string uinteger ulong ushort',
+        literal: 'true false nothing'
+      },
+      illegal:
+        '//|\\{|\\}|endif|gosub|variant|wend|^\\$ ' /* reserved deprecated keywords */,
+      contains: [
+        CHARACTER,
+        STRING,
+        DATE,
+        NUMBER,
+        LABEL,
+        DOC_COMMENT,
+        COMMENT,
+        DIRECTIVES
+      ]
+    };
+  }
+
+  return vbnet;
+
+})();
+
+    hljs.registerLanguage('vbnet', hljsGrammar);
+  })();/*! `wasm` grammar compiled for Highlight.js 11.9.0 */
+  (function(){
+    var hljsGrammar = (function () {
+  'use strict';
+
+  /*
+  Language: WebAssembly
+  Website: https://webassembly.org
+  Description:  Wasm is designed as a portable compilation target for programming languages, enabling deployment on the web for client and server applications.
+  Category: web, common
+  Audit: 2020
+  */
+
+  /** @type LanguageFn */
+  function wasm(hljs) {
+    hljs.regex;
+    const BLOCK_COMMENT = hljs.COMMENT(/\(;/, /;\)/);
+    BLOCK_COMMENT.contains.push("self");
+    const LINE_COMMENT = hljs.COMMENT(/;;/, /$/);
+
+    const KWS = [
+      "anyfunc",
+      "block",
+      "br",
+      "br_if",
+      "br_table",
+      "call",
+      "call_indirect",
+      "data",
+      "drop",
+      "elem",
+      "else",
+      "end",
+      "export",
+      "func",
+      "global.get",
+      "global.set",
+      "local.get",
+      "local.set",
+      "local.tee",
+      "get_global",
+      "get_local",
+      "global",
+      "if",
+      "import",
+      "local",
+      "loop",
+      "memory",
+      "memory.grow",
+      "memory.size",
+      "module",
+      "mut",
+      "nop",
+      "offset",
+      "param",
+      "result",
+      "return",
+      "select",
+      "set_global",
+      "set_local",
+      "start",
+      "table",
+      "tee_local",
+      "then",
+      "type",
+      "unreachable"
+    ];
+
+    const FUNCTION_REFERENCE = {
+      begin: [
+        /(?:func|call|call_indirect)/,
+        /\s+/,
+        /\$[^\s)]+/
+      ],
+      className: {
+        1: "keyword",
+        3: "title.function"
+      }
+    };
+
+    const ARGUMENT = {
+      className: "variable",
+      begin: /\$[\w_]+/
+    };
+
+    const PARENS = {
+      match: /(\((?!;)|\))+/,
+      className: "punctuation",
+      relevance: 0
+    };
+
+    const NUMBER = {
+      className: "number",
+      relevance: 0,
+      // borrowed from Prism, TODO: split out into variants
+      match: /[+-]?\b(?:\d(?:_?\d)*(?:\.\d(?:_?\d)*)?(?:[eE][+-]?\d(?:_?\d)*)?|0x[\da-fA-F](?:_?[\da-fA-F])*(?:\.[\da-fA-F](?:_?[\da-fA-D])*)?(?:[pP][+-]?\d(?:_?\d)*)?)\b|\binf\b|\bnan(?::0x[\da-fA-F](?:_?[\da-fA-D])*)?\b/
+    };
+
+    const TYPE = {
+      // look-ahead prevents us from gobbling up opcodes
+      match: /(i32|i64|f32|f64)(?!\.)/,
+      className: "type"
+    };
+
+    const MATH_OPERATIONS = {
+      className: "keyword",
+      // borrowed from Prism, TODO: split out into variants
+      match: /\b(f32|f64|i32|i64)(?:\.(?:abs|add|and|ceil|clz|const|convert_[su]\/i(?:32|64)|copysign|ctz|demote\/f64|div(?:_[su])?|eqz?|extend_[su]\/i32|floor|ge(?:_[su])?|gt(?:_[su])?|le(?:_[su])?|load(?:(?:8|16|32)_[su])?|lt(?:_[su])?|max|min|mul|nearest|neg?|or|popcnt|promote\/f32|reinterpret\/[fi](?:32|64)|rem_[su]|rot[lr]|shl|shr_[su]|store(?:8|16|32)?|sqrt|sub|trunc(?:_[su]\/f(?:32|64))?|wrap\/i64|xor))\b/
+    };
+
+    const OFFSET_ALIGN = {
+      match: [
+        /(?:offset|align)/,
+        /\s*/,
+        /=/
+      ],
+      className: {
+        1: "keyword",
+        3: "operator"
+      }
+    };
+
+    return {
+      name: 'WebAssembly',
+      keywords: {
+        $pattern: /[\w.]+/,
+        keyword: KWS
+      },
+      contains: [
+        LINE_COMMENT,
+        BLOCK_COMMENT,
+        OFFSET_ALIGN,
+        ARGUMENT,
+        PARENS,
+        FUNCTION_REFERENCE,
+        hljs.QUOTE_STRING_MODE,
+        TYPE,
+        MATH_OPERATIONS,
+        NUMBER
+      ]
+    };
+  }
+
+  return wasm;
+
+})();
+
+    hljs.registerLanguage('wasm', hljsGrammar);
+  })();/*! `xml` grammar compiled for Highlight.js 11.9.0 */
+  (function(){
+    var hljsGrammar = (function () {
+  'use strict';
+
+  /*
+  Language: HTML, XML
+  Website: https://www.w3.org/XML/
+  Category: common, web
+  Audit: 2020
+  */
+
+  /** @type LanguageFn */
+  function xml(hljs) {
+    const regex = hljs.regex;
+    // XML names can have the following additional letters: https://www.w3.org/TR/xml/#NT-NameChar
+    // OTHER_NAME_CHARS = /[:\-.0-9\u00B7\u0300-\u036F\u203F-\u2040]/;
+    // Element names start with NAME_START_CHAR followed by optional other Unicode letters, ASCII digits, hyphens, underscores, and periods
+    // const TAG_NAME_RE = regex.concat(/[A-Z_a-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD]/, regex.optional(/[A-Z_a-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD\-.0-9\u00B7\u0300-\u036F\u203F-\u2040]*:/), /[A-Z_a-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD\-.0-9\u00B7\u0300-\u036F\u203F-\u2040]*/);;
+    // const XML_IDENT_RE = /[A-Z_a-z:\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD\-.0-9\u00B7\u0300-\u036F\u203F-\u2040]+/;
+    // const TAG_NAME_RE = regex.concat(/[A-Z_a-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD]/, regex.optional(/[A-Z_a-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD\-.0-9\u00B7\u0300-\u036F\u203F-\u2040]*:/), /[A-Z_a-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD\-.0-9\u00B7\u0300-\u036F\u203F-\u2040]*/);
+    // however, to cater for performance and more Unicode support rely simply on the Unicode letter class
+    const TAG_NAME_RE = regex.concat(/[\p{L}_]/u, regex.optional(/[\p{L}0-9_.-]*:/u), /[\p{L}0-9_.-]*/u);
+    const XML_IDENT_RE = /[\p{L}0-9._:-]+/u;
+    const XML_ENTITIES = {
+      className: 'symbol',
+      begin: /&[a-z]+;|&#[0-9]+;|&#x[a-f0-9]+;/
+    };
+    const XML_META_KEYWORDS = {
+      begin: /\s/,
+      contains: [
+        {
+          className: 'keyword',
+          begin: /#?[a-z_][a-z1-9_-]+/,
+          illegal: /\n/
+        }
+      ]
+    };
+    const XML_META_PAR_KEYWORDS = hljs.inherit(XML_META_KEYWORDS, {
+      begin: /\(/,
+      end: /\)/
+    });
+    const APOS_META_STRING_MODE = hljs.inherit(hljs.APOS_STRING_MODE, { className: 'string' });
+    const QUOTE_META_STRING_MODE = hljs.inherit(hljs.QUOTE_STRING_MODE, { className: 'string' });
+    const TAG_INTERNALS = {
+      endsWithParent: true,
+      illegal: /</,
+      relevance: 0,
+      contains: [
+        {
+          className: 'attr',
+          begin: XML_IDENT_RE,
+          relevance: 0
+        },
+        {
+          begin: /=\s*/,
+          relevance: 0,
+          contains: [
+            {
+              className: 'string',
+              endsParent: true,
+              variants: [
+                {
+                  begin: /"/,
+                  end: /"/,
+                  contains: [ XML_ENTITIES ]
+                },
+                {
+                  begin: /'/,
+                  end: /'/,
+                  contains: [ XML_ENTITIES ]
+                },
+                { begin: /[^\s"'=<>`]+/ }
+              ]
+            }
+          ]
+        }
+      ]
+    };
+    return {
+      name: 'HTML, XML',
+      aliases: [
+        'html',
+        'xhtml',
+        'rss',
+        'atom',
+        'xjb',
+        'xsd',
+        'xsl',
+        'plist',
+        'wsf',
+        'svg'
+      ],
+      case_insensitive: true,
+      unicodeRegex: true,
+      contains: [
+        {
+          className: 'meta',
+          begin: /<![a-z]/,
+          end: />/,
+          relevance: 10,
+          contains: [
+            XML_META_KEYWORDS,
+            QUOTE_META_STRING_MODE,
+            APOS_META_STRING_MODE,
+            XML_META_PAR_KEYWORDS,
+            {
+              begin: /\[/,
+              end: /\]/,
+              contains: [
+                {
+                  className: 'meta',
+                  begin: /<![a-z]/,
+                  end: />/,
+                  contains: [
+                    XML_META_KEYWORDS,
+                    XML_META_PAR_KEYWORDS,
+                    QUOTE_META_STRING_MODE,
+                    APOS_META_STRING_MODE
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        hljs.COMMENT(
+          /<!--/,
+          /-->/,
+          { relevance: 10 }
+        ),
+        {
+          begin: /<!\[CDATA\[/,
+          end: /\]\]>/,
+          relevance: 10
+        },
+        XML_ENTITIES,
+        // xml processing instructions
+        {
+          className: 'meta',
+          end: /\?>/,
+          variants: [
+            {
+              begin: /<\?xml/,
+              relevance: 10,
+              contains: [
+                QUOTE_META_STRING_MODE
+              ]
+            },
+            {
+              begin: /<\?[a-z][a-z0-9]+/,
+            }
+          ]
+
+        },
+        {
+          className: 'tag',
+          /*
+          The lookahead pattern (?=...) ensures that 'begin' only matches
+          '<style' as a single word, followed by a whitespace or an
+          ending bracket.
+          */
+          begin: /<style(?=\s|>)/,
+          end: />/,
+          keywords: { name: 'style' },
+          contains: [ TAG_INTERNALS ],
+          starts: {
+            end: /<\/style>/,
+            returnEnd: true,
+            subLanguage: [
+              'css',
+              'xml'
+            ]
+          }
+        },
+        {
+          className: 'tag',
+          // See the comment in the <style tag about the lookahead pattern
+          begin: /<script(?=\s|>)/,
+          end: />/,
+          keywords: { name: 'script' },
+          contains: [ TAG_INTERNALS ],
+          starts: {
+            end: /<\/script>/,
+            returnEnd: true,
+            subLanguage: [
+              'javascript',
+              'handlebars',
+              'xml'
+            ]
+          }
+        },
+        // we need this for now for jSX
+        {
+          className: 'tag',
+          begin: /<>|<\/>/
+        },
+        // open tag
+        {
+          className: 'tag',
+          begin: regex.concat(
+            /</,
+            regex.lookahead(regex.concat(
+              TAG_NAME_RE,
+              // <tag/>
+              // <tag>
+              // <tag ...
+              regex.either(/\/>/, />/, /\s/)
+            ))
+          ),
+          end: /\/?>/,
+          contains: [
+            {
+              className: 'name',
+              begin: TAG_NAME_RE,
+              relevance: 0,
+              starts: TAG_INTERNALS
+            }
+          ]
+        },
+        // close tag
+        {
+          className: 'tag',
+          begin: regex.concat(
+            /<\//,
+            regex.lookahead(regex.concat(
+              TAG_NAME_RE, />/
+            ))
+          ),
+          contains: [
+            {
+              className: 'name',
+              begin: TAG_NAME_RE,
+              relevance: 0
+            },
+            {
+              begin: />/,
+              relevance: 0,
+              endsParent: true
+            }
+          ]
+        }
+      ]
+    };
+  }
+
+  return xml;
+
+})();
+
+    hljs.registerLanguage('xml', hljsGrammar);
+  })();/*! `yaml` grammar compiled for Highlight.js 11.9.0 */
+  (function(){
+    var hljsGrammar = (function () {
+  'use strict';
+
+  /*
+  Language: YAML
+  Description: Yet Another Markdown Language
+  Author: Stefan Wienert <stwienert@gmail.com>
+  Contributors: Carl Baxter <carl@cbax.tech>
+  Requires: ruby.js
+  Website: https://yaml.org
+  Category: common, config
+  */
+  function yaml(hljs) {
+    const LITERALS = 'true false yes no null';
+
+    // YAML spec allows non-reserved URI characters in tags.
+    const URI_CHARACTERS = '[\\w#;/?:@&=+$,.~*\'()[\\]]+';
+
+    // Define keys as starting with a word character
+    // ...containing word chars, spaces, colons, forward-slashes, hyphens and periods
+    // ...and ending with a colon followed immediately by a space, tab or newline.
+    // The YAML spec allows for much more than this, but this covers most use-cases.
+    const KEY = {
+      className: 'attr',
+      variants: [
+        // added brackets support 
+        { begin: /\w[\w :()\./-]*:(?=[ \t]|$)/ },
+        { // double quoted keys - with brackets
+          begin: /"\w[\w :()\./-]*":(?=[ \t]|$)/ },
+        { // single quoted keys - with brackets
+          begin: /'\w[\w :()\./-]*':(?=[ \t]|$)/ },
+      ]
+    };
+
+    const TEMPLATE_VARIABLES = {
+      className: 'template-variable',
+      variants: [
+        { // jinja templates Ansible
+          begin: /\{\{/,
+          end: /\}\}/
+        },
+        { // Ruby i18n
+          begin: /%\{/,
+          end: /\}/
+        }
+      ]
+    };
+    const STRING = {
+      className: 'string',
+      relevance: 0,
+      variants: [
+        {
+          begin: /'/,
+          end: /'/
+        },
+        {
+          begin: /"/,
+          end: /"/
+        },
+        { begin: /\S+/ }
+      ],
+      contains: [
+        hljs.BACKSLASH_ESCAPE,
+        TEMPLATE_VARIABLES
+      ]
+    };
+
+    // Strings inside of value containers (objects) can't contain braces,
+    // brackets, or commas
+    const CONTAINER_STRING = hljs.inherit(STRING, { variants: [
+      {
+        begin: /'/,
+        end: /'/
+      },
+      {
+        begin: /"/,
+        end: /"/
+      },
+      { begin: /[^\s,{}[\]]+/ }
+    ] });
+
+    const DATE_RE = '[0-9]{4}(-[0-9][0-9]){0,2}';
+    const TIME_RE = '([Tt \\t][0-9][0-9]?(:[0-9][0-9]){2})?';
+    const FRACTION_RE = '(\\.[0-9]*)?';
+    const ZONE_RE = '([ \\t])*(Z|[-+][0-9][0-9]?(:[0-9][0-9])?)?';
+    const TIMESTAMP = {
+      className: 'number',
+      begin: '\\b' + DATE_RE + TIME_RE + FRACTION_RE + ZONE_RE + '\\b'
+    };
+
+    const VALUE_CONTAINER = {
+      end: ',',
+      endsWithParent: true,
+      excludeEnd: true,
+      keywords: LITERALS,
+      relevance: 0
+    };
+    const OBJECT = {
+      begin: /\{/,
+      end: /\}/,
+      contains: [ VALUE_CONTAINER ],
+      illegal: '\\n',
+      relevance: 0
+    };
+    const ARRAY = {
+      begin: '\\[',
+      end: '\\]',
+      contains: [ VALUE_CONTAINER ],
+      illegal: '\\n',
+      relevance: 0
+    };
+
+    const MODES = [
+      KEY,
+      {
+        className: 'meta',
+        begin: '^---\\s*$',
+        relevance: 10
+      },
+      { // multi line string
+        // Blocks start with a | or > followed by a newline
+        //
+        // Indentation of subsequent lines must be the same to
+        // be considered part of the block
+        className: 'string',
+        begin: '[\\|>]([1-9]?[+-])?[ ]*\\n( +)[^ ][^\\n]*\\n(\\2[^\\n]+\\n?)*'
+      },
+      { // Ruby/Rails erb
+        begin: '<%[%=-]?',
+        end: '[%-]?%>',
+        subLanguage: 'ruby',
+        excludeBegin: true,
+        excludeEnd: true,
+        relevance: 0
+      },
+      { // named tags
+        className: 'type',
+        begin: '!\\w+!' + URI_CHARACTERS
+      },
+      // https://yaml.org/spec/1.2/spec.html#id2784064
+      { // verbatim tags
+        className: 'type',
+        begin: '!<' + URI_CHARACTERS + ">"
+      },
+      { // primary tags
+        className: 'type',
+        begin: '!' + URI_CHARACTERS
+      },
+      { // secondary tags
+        className: 'type',
+        begin: '!!' + URI_CHARACTERS
+      },
+      { // fragment id &ref
+        className: 'meta',
+        begin: '&' + hljs.UNDERSCORE_IDENT_RE + '$'
+      },
+      { // fragment reference *ref
+        className: 'meta',
+        begin: '\\*' + hljs.UNDERSCORE_IDENT_RE + '$'
+      },
+      { // array listing
+        className: 'bullet',
+        // TODO: remove |$ hack when we have proper look-ahead support
+        begin: '-(?=[ ]|$)',
+        relevance: 0
+      },
+      hljs.HASH_COMMENT_MODE,
+      {
+        beginKeywords: LITERALS,
+        keywords: { literal: LITERALS }
+      },
+      TIMESTAMP,
+      // numbers are any valid C-style number that
+      // sit isolated from other words
+      {
+        className: 'number',
+        begin: hljs.C_NUMBER_RE + '\\b',
+        relevance: 0
+      },
+      OBJECT,
+      ARRAY,
+      STRING
+    ];
+
+    const VALUE_MODES = [ ...MODES ];
+    VALUE_MODES.pop();
+    VALUE_MODES.push(CONTAINER_STRING);
+    VALUE_CONTAINER.contains = VALUE_MODES;
+
+    return {
+      name: 'YAML',
+      case_insensitive: true,
+      aliases: [ 'yml' ],
+      contains: MODES
+    };
+  }
+
+  return yaml;
+
+})();
+
+    hljs.registerLanguage('yaml', hljsGrammar);
+  })();
