@@ -1,3 +1,7 @@
 # Summary
 
-[Introduction and Nerd Info](NERD-INFO.md)
+[Introduction](NERD-INFO.md)
+
+# User Guide
+
+[Installation](NERD-INFO-2.md)
