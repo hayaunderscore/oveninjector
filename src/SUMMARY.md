@@ -21,4 +21,5 @@
    - [Mod-Specific Options](modding/OPTIONS.md)
    - [Sprite Replacements (NI)](modding/SPRITES.md)
    - [Startup Mods (NI)](modding/STARTUP.md)
+   - [Language Definitions](modding/LANGUAGE.md)
 - [API](api/INDEX.md)
