@@ -90,7 +90,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="NERD-INFO.html">Introduction</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">User Guide</li><li class="chapter-item expanded "><a href="NERD-INFO-2.html"><strong aria-hidden="true">1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="USAGE.html"><strong aria-hidden="true">2.</strong> Usage</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Modding Guide</li><li class="chapter-item expanded "><a href="modding/STRUCTURE.html"><strong aria-hidden="true">3.</strong> The mod.ini</a></li><li class="chapter-item expanded "><a href="modding/GUIDE.html"><strong aria-hidden="true">4.</strong> Non-API</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="modding/CUSTOM.html"><strong aria-hidden="true">4.1.</strong> Custom Controllers</a></li><li class="chapter-item expanded "><a href="modding/ASSETS.html"><strong aria-hidden="true">4.2.</strong> Asset Loading</a></li><li class="chapter-item expanded "><a href="modding/MUSIC.html"><strong aria-hidden="true">4.3.</strong> Music Handling</a></li><li class="chapter-item expanded "><a href="modding/OPTIONS.html"><strong aria-hidden="true">4.4.</strong> Mod-Specific Options</a></li><li class="chapter-item expanded "><a href="modding/SPRITES.html"><strong aria-hidden="true">4.5.</strong> Sprite Replacements (NI)</a></li><li class="chapter-item expanded "><a href="modding/STARTUP.html"><strong aria-hidden="true">4.6.</strong> Startup Mods (NI)</a></li></ol></li><li class="chapter-item expanded "><a href="api/INDEX.html"><strong aria-hidden="true">5.</strong> API</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="NERD-INFO.html">Introduction</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">User Guide</li><li class="chapter-item expanded "><a href="NERD-INFO-2.html"><strong aria-hidden="true">1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="USAGE.html"><strong aria-hidden="true">2.</strong> Usage</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Modding Guide</li><li class="chapter-item expanded "><a href="modding/STRUCTURE.html"><strong aria-hidden="true">3.</strong> The mod.ini</a></li><li class="chapter-item expanded "><a href="modding/GUIDE.html"><strong aria-hidden="true">4.</strong> Non-API</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="modding/CUSTOM.html"><strong aria-hidden="true">4.1.</strong> Custom Controllers</a></li><li class="chapter-item expanded "><a href="modding/ASSETS.html"><strong aria-hidden="true">4.2.</strong> Asset Loading</a></li><li class="chapter-item expanded "><a href="modding/MUSIC.html"><strong aria-hidden="true">4.3.</strong> Music Handling</a></li><li class="chapter-item expanded "><a href="modding/OPTIONS.html"><strong aria-hidden="true">4.4.</strong> Mod-Specific Options</a></li><li class="chapter-item expanded "><a href="modding/SPRITES.html"><strong aria-hidden="true">4.5.</strong> Sprite Replacements (NI)</a></li><li class="chapter-item expanded "><a href="modding/STARTUP.html"><strong aria-hidden="true">4.6.</strong> Startup Mods (NI)</a></li><li class="chapter-item expanded "><a href="modding/LANGUAGE.html"><strong aria-hidden="true">4.7.</strong> Language Definitions</a></li></ol></li><li class="chapter-item expanded "><a href="api/INDEX.html"><strong aria-hidden="true">5.</strong> API</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -380,6 +380,22 @@ Another Mod
 <p>This will load Lap 3, Some Other Mod, and Another Mod in that order.
 This is based on the folder name of the mod however!</p>
 <p>You can add to this file easily by pressing the shoot key while selecting a mod in the mod menu.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="language-definitions"><a class="header" href="#language-definitions">Language Definitions</a></h1>
+<p><strong>This is not implemented yet, though boilerplate has been added to account for this in the future!</strong></p>
+<p>Fun fact: OvenInjector does not touch any of the other files apart from your <code>data.win</code>. The mod loader includes it's own localization file named <code>custom.txt</code> located in your mod folder.
+This file handles all of the language definitions exclusive to the mod (such as the name for the mod menu in the options and the shoot key).
+Mods can also have their own individual language definitions as well.</p>
+<pre><code class="language-plaintext nolang filepath=lang/english.txt"># Removing this file may result in crashes.
+# This is required, as this is based on the current language selected.
+lang = "en"
+
+# Put all your stuff here.
+lang_name_here = "STRING BOYS"
+</code></pre>
+<pre><code class="language-gml filepath=scripts/init.gml">trace(lang_get_value("lang_name_here"));
+</code></pre>
+<p>Both of these files would be located in your mod folder, as per usual.
+This would've printed a language definition named <code>lang_name_here</code>, defined in the language file.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="api-reference"><a class="header" href="#api-reference">API Reference</a></h1>
 <p>Welcome to the API Reference. Still really incomplete, but it works for now.</p>
 
