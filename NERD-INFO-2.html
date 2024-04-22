@@ -3,8 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Page not found - OvenInjector</title>
-        <base href="/">
+        <title>Installation - OvenInjector</title>
 
 
         <!-- Custom HTML head -->
@@ -89,7 +88,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="NERD-INFO.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">User Guide</li><li class="chapter-item expanded "><a href="NERD-INFO-2.html"><strong aria-hidden="true">1.</strong> Installation</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="NERD-INFO.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">User Guide</li><li class="chapter-item expanded "><a href="NERD-INFO-2.html" class="active"><strong aria-hidden="true">1.</strong> Installation</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -174,13 +173,38 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="document-not-found-404"><a class="header" href="#document-not-found-404">Document not found (404)</a></h1>
-<p>This URL is invalid, sorry. Please use the navigation bar or search to continue.</p>
+                        <h1 id="installation"><a class="header" href="#installation">Installation</a></h1>
+<p>There are multiple ways to install OvenInjector. You can either download it from the GameBanana page or compile it manually.</p>
+<h2 id="gamebanana"><a class="header" href="#gamebanana">GameBanana</a></h2>
+<p>OvenInjector is distributed in <a href="https://gamebanana.com/wips/84115">GameBanana</a>.
+This is the recommended way to install the mod.</p>
+<p>The archive includes the <code>xdelta</code> patch for you to patch via <a href="https://github.com/marco-calautti/DeltaPatcher/releases">Delta Patcher</a> or any other <code>xdelta</code> patcher.
+<strong>Pizza Oven is broken currently and cannot patch this properly.</strong> Please use Delta Patcher to patch your <code>data.win</code>.</p>
+<h2 id="compile-via-gamemaker"><a class="header" href="#compile-via-gamemaker">Compile via GameMaker</a></h2>
+<p>Compiling via GameMaker is also an option, though you will need these in order to compile it properly:</p>
+<ul>
+<li><a href="https://store.steampowered.com/app/2231450/Pizza_Tower/">Pizza Tower on Steam</a></li>
+<li><a href="https://gms.yoyogames.com/GameMaker-Installer-2022.0.1.31.exe">GameMaker LTS 2022</a> w/ Runtime 2022.0.1.30</li>
+</ul>
+<p>This seems to be the exact version Tour De Pizza used. 2023.6 might work, though I have not tested it yet.</p>
+<ul>
+<li><a href="https://yellowafterlife.itch.io/gamemaker-live">GMLive.gml</a></li>
+</ul>
+<p>The repo does not provide GMLive as-is due to the extension being a paid product.</p>
+<p>The source code doesn't include any of the datafiles (FMOD, langs) or sprites. An <a href="https://github.com/krzys-h/UndertaleModTool/releases">UndertaleModTool</a> script is included to extract everything needed from the <code>data.win</code>, and port the required files to the decomp folder.</p>
+<p>Open up your Pizza Tower <code>data.win</code> on UndertaleModTool, open up the <code>Scripts</code> tab at the top of the window, and select "Run other script..."</p>
+<p>Select PTdecompiler.csx from where you stored OvenInjector's source code. Make sure you point it in the same exact folder when prompted to. It may take a while to extract every sprite, so give it atleast 15 minutes.</p>
+<p>Open up <code>PizzaTower_GM2.yyp</code> in GameMaker LTS 2022. (<em>this is important!</em>) The project won't compile due to GMLive being missing.</p>
+<p>Click on the "Tools" tab on the top of the GameMaker IDE, and select "Import Local Package". Select GMLive's <code>.yymps</code> file, and import all assets.</p>
+<p>You should now be able to run the game via F7. Give it atleast 20 minutes.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="NERD-INFO.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
 
 
                         <div style="clear: both"></div>
@@ -189,6 +213,9 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="NERD-INFO.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
 
             </nav>
 
