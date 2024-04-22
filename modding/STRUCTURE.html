@@ -29,6 +29,7 @@
         <link rel="stylesheet" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../theme/whichlang.css">
 
     </head>
     <body class="sidebar-visible no-js">
@@ -176,14 +177,14 @@
                         <h1 id="modini"><a class="header" href="#modini">mod.ini</a></h1>
 <p>OvenInjector uses a <code>mod.ini</code> to differentiate and identify mods.</p>
 <p>Let's just say there's a mod folder</p>
-<pre><code class="language-ignore">mods/
+<pre><code class="language-nolang">mods/
 </code></pre>
 <p>next, we add a new folder that will hold all of the script and asset files of our mod</p>
-<pre><code class="language-ignore">mods/
+<pre><code class="language-ignore nolang">mods/
 - Sample Mod/
 </code></pre>
 <p>with this, a <code>mod.ini</code> file is required, which contains all the information needed for a mod to work.</p>
-<pre><code class="language-toml">[meta]
+<pre><code class="language-ini filepath=mod.ini">[meta]
 name="Sample Mod"
 description="An example mod."
 author="haya3218"
@@ -193,7 +194,7 @@ icon_base64="this can also be used if you want your icon to be b64 encoded inste
 </code></pre>
 <p>The <code>meta</code> block defines metadata and general info about the mod. An optional <code>gml</code> block can also be added, if you want your gml scripts properly named.</p>
 <p>The <code>gml</code> block takes numerous event callbacks. Which are:</p>
-<pre><code class="language-ignore">init
+<pre><code class="language-ignore nolang">init
 destroy
 begin_step
 step
@@ -209,7 +210,7 @@ room_end
 </code></pre>
 <p>By default, the game would look for these names plus the gml extension on the scripts folder for these events, except for the <code>gui</code> events. The <code>draw_</code> part is ommited from those.</p>
 <p>Now the general structure should now look like this:</p>
-<pre><code class="language-ignore">mods/
+<pre><code class="language-ignore nolang">mods/
 - Sample Mod/
   - scripts/
     - init.gml
@@ -264,6 +265,7 @@ room_end
         <script src="../book.js"></script>
 
         <!-- Custom JS scripts -->
+        <script src="../theme/whichlang.js"></script>
 
 
     </div>
