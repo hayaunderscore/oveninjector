@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Introduction - OvenInjector</title>
+        <title>Mod-Specific Options - OvenInjector</title>
 
 
         <!-- Custom HTML head -->
@@ -12,21 +12,21 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="favicon.svg">
-        <link rel="shortcut icon" href="favicon.png">
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
-        <link rel="stylesheet" href="css/print.css" media="print">
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="fonts/fonts.css">
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
 
@@ -35,7 +35,7 @@
     <div id="body-container">
         <!-- Provide site root to javascript -->
         <script>
-            var path_to_root = "";
+            var path_to_root = "../";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
 
@@ -88,7 +88,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="NERD-INFO.html" class="active">Introduction</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">User Guide</li><li class="chapter-item expanded "><a href="NERD-INFO-2.html"><strong aria-hidden="true">1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="USAGE.html"><strong aria-hidden="true">2.</strong> Usage</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Modding Guide</li><li class="chapter-item expanded "><a href="modding/STRUCTURE.html"><strong aria-hidden="true">3.</strong> mod.ini</a></li><li class="chapter-item expanded "><a href="modding/GUIDE.html"><strong aria-hidden="true">4.</strong> Non-API</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="modding/CUSTOM.html"><strong aria-hidden="true">4.1.</strong> Custom Controllers</a></li><li class="chapter-item expanded "><a href="modding/ASSETS.html"><strong aria-hidden="true">4.2.</strong> Asset Loading</a></li><li class="chapter-item expanded "><a href="modding/MUSIC.html"><strong aria-hidden="true">4.3.</strong> Music Handling</a></li><li class="chapter-item expanded "><a href="modding/OPTIONS.html"><strong aria-hidden="true">4.4.</strong> Mod-Specific Options</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> API</div></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../NERD-INFO.html">Introduction</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">User Guide</li><li class="chapter-item expanded "><a href="../NERD-INFO-2.html"><strong aria-hidden="true">1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="../USAGE.html"><strong aria-hidden="true">2.</strong> Usage</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Modding Guide</li><li class="chapter-item expanded "><a href="../modding/STRUCTURE.html"><strong aria-hidden="true">3.</strong> mod.ini</a></li><li class="chapter-item expanded "><a href="../modding/GUIDE.html"><strong aria-hidden="true">4.</strong> Non-API</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../modding/CUSTOM.html"><strong aria-hidden="true">4.1.</strong> Custom Controllers</a></li><li class="chapter-item expanded "><a href="../modding/ASSETS.html"><strong aria-hidden="true">4.2.</strong> Asset Loading</a></li><li class="chapter-item expanded "><a href="../modding/MUSIC.html"><strong aria-hidden="true">4.3.</strong> Music Handling</a></li><li class="chapter-item expanded "><a href="../modding/OPTIONS.html" class="active"><strong aria-hidden="true">4.4.</strong> Mod-Specific Options</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> API</div></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -144,7 +144,7 @@
                     <h1 class="menu-title">OvenInjector</h1>
 
                     <div class="right-buttons">
-                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
 
@@ -173,30 +173,44 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
-<p><strong>OvenInjector</strong> is a modloader for Pizza Tower! Inspired by ToppinLoader, this loads mods in a modular way for users to easily use and for modders to easily make. As this is currently a work in progress not everything is complete, and major changes may come between updates.</p>
-<ul>
-<li>Load multiple mods</li>
-<li>Easy to use mod menu</li>
-<li>A (hopefully simple) Modding API</li>
-<li>Powered by GameMaker Language (GML) <del>Lua soon?</del></li>
-</ul>
-<p>This guide is an introduction on what the mod loader does, how to use it, and how to make mods for it.</p>
-<h2 id="contributing"><a class="header" href="#contributing">Contributing</a></h2>
-<p>OvenInjector <em>(the mod)</em> is free and open source. The mod uses a decompile of the Noise Update (PT 1.1.0), and therefore may be in a different license.
-Feel free to report issues in the <a href="https://github.com/hayaunderscore/oveninjector/issues">GitHub issue tracker</a>. If you'd like to contribute/implement a new feature, consider making a pull request.</p>
-<p>You can implement the mod in other projects as you please, provided you follow the license.</p>
-<h2 id="license"><a class="header" href="#license">License</a></h2>
-<p>OpenTower (Pizza Tower Decompilation) is under CC0-1.0. All custom code related to OvenInjector is under the MIT License.</p>
+                        <h1 id="mod-specific-options"><a class="header" href="#mod-specific-options">Mod-Specific Options</a></h1>
+<p>You can now make players configure your mods via the <code>options</code> key in the <code>meta</code> block! Like so:</p>
+<pre><code class="language-toml">[meta]
+name="yeah"
+options="enable_something,another_toggle"
+</code></pre>
+<p>Pressing TAUNT on the mod menu while hovering an active mod will bring up the options related to that mod!</p>
+<p><img src="https://github.com/hayaunderscore/oveninjector/assets/126386046/5b7be629-b0d0-4899-92e3-c18b2c07d2d1" alt="Look ma, options!" /></p>
+<p>Options have a default value of zero, though these can be changed via the <code>options</code> block:</p>
+<pre><code class="language-toml">[options]
+enable_something="1"
+</code></pre>
+<p><code>enable_something</code> will now be "ON" by default.</p>
+<p>You can access these via referencing the option name in your scripts.</p>
+<pre><code class="language-gml">if enable_something
+    yeah();
+else
+    nah();
+</code></pre>
+<p>If the option <code>enable_something</code> is on, it'll call <code>yeah()</code> here, and if it's off, it will run <code>nah()</code> instead.</p>
+<p>Do note that this is NOT a global constant yet, and therefore is specified in the custom controller itself, so to access it within a <code>with</code> block be sure to prefix it with <code>other</code>.</p>
+<pre><code class="language-gml">with (obj_player)
+{
+    // This will error!
+    if enable_something { }
+    // This won't 
+    if other.enable_something { }
+}
+</code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-
-                            <a rel="next prefetch" href="NERD-INFO-2.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
+                            <a rel="prev" href="../modding/MUSIC.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
                             </a>
+
 
                         <div style="clear: both"></div>
                     </nav>
@@ -204,10 +218,10 @@ Feel free to report issues in the <a href="https://github.com/hayaunderscore/ove
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-
-                    <a rel="next prefetch" href="NERD-INFO-2.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
+                    <a rel="prev" href="../modding/MUSIC.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
                     </a>
+
             </nav>
 
         </div>
@@ -220,13 +234,13 @@ Feel free to report issues in the <a href="https://github.com/hayaunderscore/ove
         </script>
 
 
-        <script src="elasticlunr.min.js"></script>
-        <script src="mark.min.js"></script>
-        <script src="searcher.js"></script>
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
 
-        <script src="clipboard.min.js"></script>
-        <script src="highlight.js"></script>
-        <script src="book.js"></script>
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
 
         <!-- Custom JS scripts -->
 
