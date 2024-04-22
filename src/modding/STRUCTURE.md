@@ -4,7 +4,7 @@ OvenInjector uses a `mod.ini` to differentiate and identify mods.
 
 Let's just say there's a mod folder
 
-```nolang
+```ignore,nolang
 mods/
 ```
 
