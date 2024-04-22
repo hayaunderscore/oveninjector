@@ -4,4 +4,4 @@
 
 # User Guide
 
-[Installation](NERD-INFO-2.md)
+- [Installation](NERD-INFO-2.md)
