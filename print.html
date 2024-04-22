@@ -90,7 +90,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="NERD-INFO.html">Introduction</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">User Guide</li><li class="chapter-item expanded "><a href="NERD-INFO-2.html"><strong aria-hidden="true">1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="USAGE.html"><strong aria-hidden="true">2.</strong> Usage</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Modding Guide</li><li class="chapter-item expanded "><a href="modding/STRUCTURE.html"><strong aria-hidden="true">3.</strong> mod.ini</a></li><li class="chapter-item expanded "><a href="modding/GUIDE.html"><strong aria-hidden="true">4.</strong> Non-API</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="modding/CUSTOM.html"><strong aria-hidden="true">4.1.</strong> Custom Controllers</a></li><li class="chapter-item expanded "><a href="modding/ASSETS.html"><strong aria-hidden="true">4.2.</strong> Asset Loading</a></li><li class="chapter-item expanded "><a href="modding/MUSIC.html"><strong aria-hidden="true">4.3.</strong> Music Handling</a></li><li class="chapter-item expanded "><a href="modding/OPTIONS.html"><strong aria-hidden="true">4.4.</strong> Mod-Specific Options</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> API</div></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="NERD-INFO.html">Introduction</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">User Guide</li><li class="chapter-item expanded "><a href="NERD-INFO-2.html"><strong aria-hidden="true">1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="USAGE.html"><strong aria-hidden="true">2.</strong> Usage</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Modding Guide</li><li class="chapter-item expanded "><a href="modding/STRUCTURE.html"><strong aria-hidden="true">3.</strong> The mod.ini</a></li><li class="chapter-item expanded "><a href="modding/GUIDE.html"><strong aria-hidden="true">4.</strong> Non-API</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="modding/CUSTOM.html"><strong aria-hidden="true">4.1.</strong> Custom Controllers</a></li><li class="chapter-item expanded "><a href="modding/ASSETS.html"><strong aria-hidden="true">4.2.</strong> Asset Loading</a></li><li class="chapter-item expanded "><a href="modding/MUSIC.html"><strong aria-hidden="true">4.3.</strong> Music Handling</a></li><li class="chapter-item expanded "><a href="modding/OPTIONS.html"><strong aria-hidden="true">4.4.</strong> Mod-Specific Options</a></li><li class="chapter-item expanded "><a href="modding/SPRITES.html"><strong aria-hidden="true">4.5.</strong> Sprite Replacements (NI)</a></li><li class="chapter-item expanded "><a href="modding/STARTUP.html"><strong aria-hidden="true">4.6.</strong> Startup Mods (NI)</a></li></ol></li><li class="chapter-item expanded "><a href="api/INDEX.html"><strong aria-hidden="true">5.</strong> API</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -233,7 +233,8 @@ The repo does not provide GMLive as-is due to the extension being a paid product
 </li>
 </ul>
 <p>Open up your options menu in-game or in the title screen, and select "MOD MENU". Congratition!</p>
-<p>You should now be able to enable and disable mods, as well as their configuration via the taunt key if they have one.</p>
+<p>You should now be able to enable and disable mods, as well as their configuration via the taunt key if they have one.
+<del>You can also press the shoot key (configurable in the bindings menu) to make a mod automatically be loaded after launching the game.</del> Not implemented yet. ;)</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="modini"><a class="header" href="#modini">mod.ini</a></h1>
 <p>OvenInjector uses a <code>mod.ini</code> to differentiate and identify mods.</p>
 <p>Let's just say there's a mod folder</p>
@@ -298,6 +299,15 @@ with (instance_create(0, 0, obj_customcontroller))
     ');
 }
 </code></pre>
+<p><strong>The stuff below has not been implemented yet!</strong></p>
+<p>You can also use <code>instance_custom(x, y, name)</code> to easily instance a new persistent custom controller object, that runs it's scripts based on a subdirectory in the scripts folder.</p>
+<pre><code class="language-gml filepath=scripts/init.gml">instance_custom(0, 0, "ctopPeppino");
+</code></pre>
+<pre><code class="language-gml filepath=scripts/ctopPeppino/init.gml">sprite_index = spr_player_idle
+x = 1999
+y = 200
+</code></pre>
+<p>Upon loading the mod, the game immediately creates a new custom controller and loads it's init script on the <code>ctopPeppino</code> folder, and runs the init script from within that custom controller's context.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="asset-loading"><a class="header" href="#asset-loading">Asset Loading</a></h1>
 <p>Assets are loaded mostly the same with ToppinLoader, though the path to the assets are defined automatically instead of making users put the mod folder at a specific path.</p>
 <pre><code class="language-gml">// Look ma, I'm loading my assets!
@@ -343,6 +353,35 @@ else
     if other.enable_something { }
 }
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="sprite-replacements"><a class="header" href="#sprite-replacements">Sprite Replacements</a></h1>
+<p><strong>Not implemented yet!</strong></p>
+<p><code>sprite_replace()</code> sucks. We know. You have to manually specify the sprite you want to replace, plus the width and height, as well as the amount of frames. But what if you don't have to do that?</p>
+<p>The mod loader can load sprite replacements over at the <code>assets/replacements/</code> folder of your mod directory. Simply put, all you need is the sprite name, with the amount of frames appended at the end, so something like <code>spr_player_idle-4.png</code>, which will replace <code>spr_player_idle</code>, and use 4 frames.</p>
+<p>This process is automatic. You don't even need a script for it! You can omit the entire script folder if you'd like! Do note that the game will take a while to replace the sprites, as the game will also cache the original sprite to reload when the mod is disabled (TBD).</p>
+<p>You can also go the CYOP route and use a normal ini file with the same file name as the image instead!</p>
+<pre><code class="language-toml">[properties]
+images=4
+image_width=100
+
+[offset]
+centered=1
+x=0
+y=0
+</code></pre>
+<p>This will create a sprite with 4 frames with a width of 100 pixels, centered around the center of the image with no additional offset. <code>images</code> and <code>image_width</code> are interchangeable! You can have one or the other.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="startup-mods"><a class="header" href="#startup-mods">Startup Mods</a></h1>
+<p><strong>Not implemented yet!</strong></p>
+<p>Do you want a mod to be enabled immediately after launching the game instead of waiting until you get into the mod menu?
+Simply put a <code>startup.txt</code> file in your mods folder like so:</p>
+<pre><code class="language-plaintext filepath=mods/startup.txt">Lap 3
+Some Other Mod
+Another Mod
+</code></pre>
+<p>This will load Lap 3, Some Other Mod, and Another Mod in that order.
+This is based on the folder name of the mod however!</p>
+<p>You can add to this file easily by pressing the shoot key while selecting a mod in the mod menu.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="api-reference"><a class="header" href="#api-reference">API Reference</a></h1>
+<p>Welcome to the API Reference. Still really incomplete, but it works for now.</p>
 
                     </main>
 
