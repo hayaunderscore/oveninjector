@@ -10,7 +10,7 @@ var gooch_id = instance_custom(0, 0, "obj_gooch");
 // ... do stuff with gooch_id...
 ```
 
-```gml,filepath=scripts/obj_gooch.gml
+```gml,filepath=scripts/obj_gooch/init.gml
 // gooch scout digo real
 persistent = false;
 sprite_index = spr_pizzaface_haywire;

@@ -1,4 +1,6 @@
-# Introduction
+<p align="center" width="100%">
+    <img src="img/oveninjector.png" alt="Logo by Raltyro :)"> 
+</p>
 
 **OvenInjector** is a modloader for Pizza Tower! Inspired by ToppinLoader, this loads mods in a modular way for users to easily use and for modders to easily make. As this is currently a work in progress not everything is complete, and major changes may come between updates.
 
