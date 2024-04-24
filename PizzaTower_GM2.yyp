@@ -9227,6 +9227,7 @@
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"english.txt","CopyToMask":-1,"filePath":"datafiles/mods/Breakplant/lang",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"end_step.gml","CopyToMask":-1,"filePath":"datafiles/mods/Breakplant/scripts",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"init.gml","CopyToMask":-1,"filePath":"datafiles/mods/Pizza Multi/scripts/custom",},
+    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"startup.txt","CopyToMask":-1,"filePath":"datafiles/mods",},
   ],
   "MetaData": {
     "IDEVersion": "2022.0.1.31",

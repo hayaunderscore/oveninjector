@@ -425,6 +425,15 @@ pal_swap_init_system(shd_pal_swapper);
 with (obj_player1)
 	state = states.normal;
 global.loadeditor = false;
+var startup = scr_lang_get_file_arr(working_directory + "mods/startup.txt");
+var i = 0;
+for (i = 0; i < array_length(startup); i++)
+{
+	// comment
+	if string_starts_with(startup[i], "//") || string_starts_with(startup[i], "#")
+		continue;
+	scr_loadmod(startup[i]);
+}
 if (global.longintro)
 {
 	global.longintro = false;
