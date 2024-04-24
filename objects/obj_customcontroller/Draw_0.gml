@@ -1,2 +1,2 @@
 if events.draw != undefined
-	live_snippet_call(events.draw)
+	live_snippet_call(events.draw);

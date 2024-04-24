@@ -1,7 +1,7 @@
 /// @description Custom object creation
 
 // Reduce redundancy
-#macro empty_snip live_snippet_create("")
+#macro empty_snip undefined
 
 // identifier for removal
 modname = ""
@@ -25,5 +25,7 @@ events = {
 	end_gui: empty_snip,
 	// room related events
 	room_start: empty_snip,
-	room_end: empty_snip
+	room_end: empty_snip,
+	// http
+	http: empty_snip,
 }

@@ -5,7 +5,7 @@
 function scr_mod_info(path) 
 {
 	// open up
-	ini_open_from_string(get_string_from_file(path))
+	ini_open_from_string(get_string_from_file(path));
 	
 	// all of the data related to the mod is stored here lmaoao
 	var st = {
@@ -31,8 +31,9 @@ function scr_mod_info(path)
 		// these should be self explanatory
 		room_start: ini_read_string("gml", "room_start", "scripts/room_start.gml"),
 		room_end: ini_read_string("gml", "room_end", "scripts/room_end.gml"),
-	}
+		http: ini_read_string("gml", "http", "scripts/http.gml"),
+	};
 	
-	ini_close()
-	return st
+	ini_close();
+	return st;
 }

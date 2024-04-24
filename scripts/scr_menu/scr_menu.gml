@@ -61,7 +61,7 @@ function add_option_toggle(_menu, _optionid, _name, _onchanged = noone, _localiz
 	array_push(_menu.options, b);
 	return b;
 }
-function add_option_multiple(_menu, _optionid, _name, _values, _onchanged = noone)
+function add_option_multiple(_menu, _optionid, _name, _values, _onchanged = noone, _localization = true)
 {
 	var b = 
 	{
@@ -70,7 +70,8 @@ function add_option_multiple(_menu, _optionid, _name, _values, _onchanged = noon
 		values: _values,
 		value: 0,
 		name: _name,
-		on_changed: _onchanged
+		on_changed: _onchanged,
+		localization: _localization
 	};
 	array_push(_menu.options, b);
 	return b;
@@ -97,6 +98,7 @@ function add_option_slide(_menu, _optionid, _name, _onmove = noone, _onchanged =
 		on_move: _onmove,
 		slidecount: 0,
 		moving: false,
+		localization: true,
 		sound: -4
 	};
 	if _sound != noone

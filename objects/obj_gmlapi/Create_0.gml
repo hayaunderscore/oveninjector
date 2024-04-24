@@ -10,8 +10,6 @@ for (var i = 100001; script_exists(i); i++) {
 	if string_starts_with(s, "game_") || string_starts_with(s, "display_")
 		continue;
 	gml_func_add(":::" + s + "(...):", i);
-	if string_starts_with(s, "live_")
-		show_debug_message("Added script to the Snippet API: " + s);
 }
 gml_func_add(":::live_snippet_create(str):", function(str)
 {
@@ -21,6 +19,12 @@ gml_func_add(":::live_snippet_call(snip):", function(snip)
 {
 	return live_snippet_call(snip);
 });
+
+// Custom stuff
+gml_func_add(":::trace(...):", live_trace);
+gml_func_add(":::show_debug_message(...):", live_trace);
+gml_func_add(":::game_end(...):", live_game_end);
+// gml_func_add(":::instance_custom(...):", instance_custom);
 
 // From ToppinLoader
 // TODO: Redo this this fucking sucks

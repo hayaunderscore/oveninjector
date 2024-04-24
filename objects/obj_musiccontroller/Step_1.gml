@@ -8,12 +8,16 @@ if room != Loadiingroom
 	if ((!paused) && instance_exists(obj_player1) && key_start && room != Mainmenu && room != Finalintro && room != hub_loadingscreen && room != Endingroom && room != Creditsroom && room != Johnresurrectionroom && room != Longintro && room != Realtitlescreen && room != rank_room) {
 		paused = true;
 	}
+	if ignoreNaturalPause
+		paused = false;
 	if music != undefined
 	{
 		if (paused) {
 			audio_pause_sound(music);
+			real_paused = true;
 		} else {
 			audio_resume_sound(music);
+			real_paused = false;
 		}
 	}
 }
